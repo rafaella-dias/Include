@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+
+    {% if current_user.is_authenticated %}
+        <h1>Olá, {{current_user.nome}}.Você está logado(a).</h1>
+
+    {% else %}
+        <h1>Você não está logado.</h1>
+
+    {% endif %}
+    
+{% endblock %}
