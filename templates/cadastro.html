@@ -7,10 +7,17 @@
     <div>
 
         <form action="" method="post">
-            Nome: <input type="text" name="nomeForm" id=""> <br>
-            Senha: <input type="password" name="senhaForm" id=""> <br>
+            Nome Completo: <input type="text" name="nome_completoForm" value="{{ form_data.nome_completoForm if form_data else ''}}" required> <br>
+            Nome Usuario: <input type="text" name="nome_usuarioForm" value="{{ form_data.nome_usuarioForm if form_data else '' }}" required> <br>
+            Email: <input type="email" name="emailForm" value="{{ form_data.emailForm if form_data else '' }}" placeholder="exemplo@email.com" required> <br>
+            Senha: <input type="password" name="senhaForm" required> <br>
+            Confirmar Senha: <input type="password" name="confirmacao_senhaForm" required> <br>
             <input type="submit" value="Cadastrar">
-        </form>
+        </form> <br>
+
+        <p>Já tem uma conta? <br>
+            <a href="{{ url_for('login' ) }}">Clique aqui</a>
+        </p>
 
     </div>
 

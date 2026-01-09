@@ -20,6 +20,9 @@ class Usuario(UserMixin, db.Model):
 
     atividades = db.relationship('Atividade', backref='autor', lazy=True)
 
+    def get_id(self):
+        return str(self.id_usuario)
+
     def __repr__(self):
         return f'<{self.nome_usuario}>'
     
