@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+
+    <div class="conteudo">
+        <h1>Editar Perfil</h1>
+        {% if current_user.public_id %}
+            <img src="{{current_user.foto_url}}" alt="Foto de perfil">
+
+            <form action="{{ url_for('delete_image' ) }}" method="post">
+                <button type="submit">Remover Foto</button>
+            </form>
+
+        {% else %}
+            <img src="{{ url_for('static', filename='images/default.png')    }} " alt="Foto de perfil padrão">
+                
+        {% endif %}
+            
+        <form action="" method="post" enctype="multipart/form-data">
+            Editar Foto: <input type="file" name="foto_perfilForm" id="">
+            Editar Nome Completo: <input type="text" name="nome_completoForm" id="" value="{{current_user.nome_completo}}">
+            Editar Nome Usuario: <input type="text" name="nome_usuarioForm" id="" value="{{current_user.nome_usuario}}">
+            Editar Descrição: <input type="text" name="descricaoForm" id="" placeholder="Adicionar descrição..." value="{{current_user.descricao if current_user.descricao else ''}}">
+            Editar Senha: <input type="password" name="senhaForm" id="">
+            Confirmar Senha <input type="password" name="confirmacao_senhaForm" id="">
+            <input type="submit" value="Salvar Alterações">
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

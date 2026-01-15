@@ -4,8 +4,36 @@
 
 {% block content %}
 
+    <div class="banner_perfil">
+        {% if current_user.public_id %}
+            <img src="{{current_user.foto_url}}" alt="Foto de perfil">
+
+        {% else %}
+            <img src="static/images/default.png" alt="Foto de perfil padrão">    
+
+        {% endif %}
+
+        <h1>{{ current_user.nome_completo }}</h1>
+        <h3>{{ current_user.email}}</h3>
+        <p>{{ current_user.descricao }}</p>
+        <button>
+            <a href="{{ url_for('editar_perfil' ) }}">Editar perfil</a>
+        </button>
         <button>
             <a href="{{ url_for('logout' ) }}">Sair</a>
         </button>
+
+    </div>
+
+    <div>
+        <div class="conteudo">
+            <h1>Conteúdos Publicados</h1>
+            <button>
+                <a href="{{ url_for('publicar' ) }}">Publicar Atividade</a>
+            </button>
+
+        </div>
+
+    </div>
 
 {% endblock %}

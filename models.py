@@ -15,8 +15,11 @@ class Usuario(UserMixin, db.Model):
     nome_completo = db.Column(db.String(50), nullable=False)
     nome_usuario = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
+    descricao = db.Column(db.String(200))
     senha = db.Column(db.String(255), nullable=False)
     tipo =  db.Column(db.String(20), nullable=False)
+    public_id = db.Column(db.String(255))
+    foto_url = db.Column(db.String(255))
 
     atividades = db.relationship('Atividade', backref='autor', lazy=True)
 
