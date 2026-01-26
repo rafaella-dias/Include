@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Tags{% endblock %}
+
+{% block content %}
+
+    <div>
+        <h1>Crie uma Nova Tag</h1>
+        <form action="" method="post">
+            Nome: <input type="text" name="nomeForm" required>
+            Cor: <input type="color" name="corForm" list="coresDisp" value="6090c2" required>
+            <datalist id="coresDisp">
+                <option value="#6090c2">Azul</option>
+                <option value="#62c47b">Verde</option>
+                <option value="#fcbd6f">Laranja</option>
+                <option value="#f9be3c">Amarelo</option>
+                <option value="#f15490">Rosa</option>
+                <option value="#cf9cef">Lilás</option>
+            </datalist>
+            Categoria: <input type="text" name="categoriaForm" list="categoriasDisp">
+            <datalist id="categoriasDisp">
+                {% for classe in classes %}
+                    <option value="{{ classe.nome }}"></option>
+                    
+                {% endfor %}
+                <option value="Classe Indeterminada"></option>
+            </datalist>
+
+        </form>
+
+    </div>
+    
+{% endblock %}

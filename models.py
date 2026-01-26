@@ -17,8 +17,8 @@ class Usuario(UserMixin, db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     descricao = db.Column(db.String(200))
     senha = db.Column(db.String(255), nullable=False)
-    tipo =  db.Column(db.String(20), nullable=False)
-    public_id = db.Column(db.String(255))
+    tipo =  db.Column(db.String(20), default='user')
+    public_id = db.Column(db.String(100))
     foto_url = db.Column(db.String(255))
 
     atividades = db.relationship('Atividade', backref='autor', lazy=True)
@@ -40,8 +40,26 @@ class Atividade(db.Model):
     id_curso =  db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     id_materia =  db.Column(db.Integer, db.ForeignKey('materias.id_materia'), nullable=False)
 
+    arquivos = db.relationship('Arquivo', backref='atividade', lazy=True)
+
     def __repr__(self):
         return f'<{self.titulo}>'
+
+   
+class Arquivo(db.Model):
+    __tablename__ = 'arquivos'
+
+    id_arquivo = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    tipo = db.Column(db.String(50), nullable=False)
+    tamanho = db.Column(db.Integer)
+    arquivo_url = db.Column(db.String(255), nullable=False)
+    data_upload = db.Column(db.DateTime, default=datetime.utcnow)
+    id_atividade = db.Column(db.Integer, db.ForeignKey('atividades.id_atividade'), nullable=False)
+
+    def __repr__(self):
+        return f'<{self.nome}>'
+
     
 class Curso(db.Model):
     __tablename__ = 'cursos'
