@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel Admin{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Tags</h1>
+        {% for classe in classes %}
+        <h3>{{ classe.nome }}</h3>
+        <div>
+            {% for tag in classe.tags %}
+                <span class="badge rounded-pill">
+                    {{ tag.nome }}
+                </span>
+                
+            {% endfor %}
+            
+        </div>
+            
+        {% endfor %}
+
+        {% for curso in cursos %}
+        <h3>{{ curso.nome }}</h3>
+        <div>
+            {% for materia in curso.materias %}
+                <span class="badge rounded-pill">
+                    {{ materia.nome }}
+                </span>
+                
+            {% endfor %}
+
+        </div>
+            
+        {% endfor %}
+
+    </div>
+    
+{% endblock %}

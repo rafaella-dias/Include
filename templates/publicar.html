@@ -8,8 +8,24 @@
         <h1>Publicar Atividade Adaptada</h1>
         <form action="" method="post" enctype="multipart/form-data">
             Adicionar Arquivo: <input type="file" name="arquivoForm" id="" required>
-            Titulo: <input type="text" name="tiuloForm" id="" required>
+            Titulo: <input type="text" name="tituloForm" id="" required>
             Descrição: <input type="text" name="descricaoForm" id="" required>
+            Materia:
+            <select name="materiaForm" id="">
+                <option value="" disabled selected>Selecione uma matéria</option>
+                    {% for materia in materias %}
+                        <option value="{{ materia.id_materia }}">{{ materia.nome }}</option>
+                        
+                    {% endfor %}
+            </select>
+            Tags: 
+            <select name="tagsForm" id="" multiple>
+                <option value="" disabled selected>Selecione as tags</option>
+                    {% for tag in tags %}
+                        <option value="{{ tag.id_tag }}">{{ tag.nome }}</option>
+                        
+                    {% endfor %}
+            </select>
             <input type="submit" value="Publicar">
 
         </form>

@@ -5,11 +5,15 @@
 {% block content %}
 
     {% if current_user.is_authenticated %}
-        <h1>Olá {{current_user.nome_usuario}}.Você está logado(a).</h1>
+        <h1>Olá {{current_user.nome_completo}}.Você está logado(a).</h1>
 
     {% else %}
         <h1>Você não está logado.</h1>
 
     {% endif %}
+
+    <footer>
+        <p>© 2026 - Repositório de Atividades Adaptadas para NEE</p>
+    </footer>
     
 {% endblock %}

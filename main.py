@@ -9,10 +9,11 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 
 #Dados
 from db import db
-from models import Tag, Classe_Tag, Usuario
+from models import Arquivo, Atividade, Materia, Curso, Tag, Classe_Tag, Usuario
 
 #Segurança
 from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.utils import secure_filename
 
 #.env
 from dotenv import load_dotenv
@@ -57,6 +58,51 @@ def imagem_permitida(filename):
     return(
         '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS_IMAGES
     )
+
+
+ALLOWED_EXTENSIONS_ARQUIVOS = {'pdf', 'doc', 'docx', 'ppt', 'pptx',
+                            'xls', 'xlsx', 'txt', 
+                            'png', 'jpg', 'jpeg', }
+ALLOWED_MIME_TYPES_ARQUIVOS = {
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/plain',
+    'image/jpeg',
+    'image/png'}
+MAX_SIZE_ARQUIVOS = 1024 * 1024 * 10
+
+def extensão_permitida(filename):
+    if '.' not in filename:
+        return False
+    extensão = filename.split('.', 1)[1].lower()
+    return extensão in ALLOWED_EXTENSIONS_ARQUIVOS
+
+def getfilesize(file):
+    file.seek(0, os.SEEK_END)
+    tamanho = file.tell()
+    file.seek(0)
+    return tamanho
+
+def validar_arquivo(file):
+    if not file:
+        return False, 'Nenhum arquivo enviado'
+    
+    if file.filename ==  '':
+        return False, 'Nome do arquivo inválido'
+    
+    if not extensão_permitida(file.filename):
+        return False, 'Extensão do arquivo inválida'
+    
+    tamanho = getfilesize(file)
+    if tamanho > MAX_SIZE_ARQUIVOS:
+        return False, 'O arquivo excede o tamanho permitido'
+    
+    return True, tamanho
 
 
 @login_manager.user_loader
@@ -249,50 +295,137 @@ def delete_image():
 @app.route('/publicar', methods = ['GET', 'POST'])
 @login_required
 def publicar():
+    materias = Materia.query.all()
+    tags = Tag.query.all()
+
     if request.method == 'GET':
-        return render_template('publicar.html')
+        return render_template('publicar.html', materias=materias, tags=tags)
     
-    elif request.methods == 'POST':
-        titulo = (request.form.get('tituloForm'))
-        descricao = request.form.get('descricaForm')
+    try: #tira o elif pq só tem POST como segunda opção
+        titulo = request.form.get('tituloForm')
+        descricao = request.form.get('descricaoForm')
+        id_materia = request.form.get('materiaForm')
+        ids_tags = request.form.getlist('tagsForm')
+        materia = Materia.query.get_or_404(id_materia)
+        id_curso = materia.id_curso
 
+        nova_atividade = Atividade(titulo=titulo,
+                                   descricao=descricao, 
+                                   id_curso=id_curso, 
+                                   id_materia=id_materia, 
+                                   id_usuario=current_user.id_usuario )
+        db.session.add(nova_atividade)
+        db.session.flush()
 
+        for id_tag in ids_tags:
+            tag = Tag.query.get(id_tag)
+            nova_atividade.tags.append(tag)
 
         arquivo = request.files.get('arquivoForm')
+        valido, resultado = validar_arquivo(arquivo)
 
-        nome = arquivo.filename
-        tipo = arquivo.mimetype
-        tamanho = len(arquivo.read())
+        if not valido:
+            raise ValueError(resultado)
+
+        nome = secure_filename(arquivo.filename)
+        tipo = arquivo.mimetype        
+        tamanho = resultado
+        arquivo_url = 'default'
+        id_atividade = nova_atividade.id_atividade
+
+        novo_arquivo = Arquivo(nome=nome, 
+                               tipo=tipo, 
+                               tamanho=tamanho, 
+                               arquivo_url=arquivo_url,
+                               id_atividade=id_atividade)
+
+        db.session.add(novo_arquivo)
+        db.session.commit()
+        flash('Atividade publicada com sucesso.', 'success')
+        return redirect(url_for('publicar'))
+
+    except Exception as e:
+        db.session.rollback()
+        flash(str(e), 'danger')
+        return redirect(url_for('publicar'))
 
 
-@app.route('/tags', methods = ['GET', 'POST'])
+@app.route('/admin/materias', methods = ['GET', 'POST'])
+@login_required
+def gerenciar_materias():
+    if request.method == 'GET': 
+        all_cursos = Curso.query.all()
+        return render_template('administrador/materias.html', cursos=all_cursos)
+    
+    elif request.method == 'POST':
+        nome = request.form.get('nomeForm')
+        id_curso = request.form.get('cursoForm')
+
+        materia_existente = Materia.query.filter_by(nome=nome).first()
+        if materia_existente:
+            flash('Essa matéria já foi registrada', 'danger')
+            return render_template('materias.html')
+
+        nova_materia = Materia(nome=nome, id_curso=id_curso)
+        db.session.add(nova_materia)
+        db.session.commit()
+
+        flash('Materia adicionada com sucesso!', 'success')
+        return redirect(url_for('gerenciar_materias'))
+
+
+@app.route('/admin/cursos', methods = ['GET', 'POST'])
+@login_required
+def gerenciar_cursos():
+    if request.method == 'GET':
+        return render_template('administrador/cursos.html')
+
+    elif request.method =='POST':
+        nome = request.form.get('nomeForm')
+
+        curso_existente = Curso.query.filter_by(nome=nome).first()
+        if curso_existente:
+            flash('Esse curso já foi registrado', 'danger')
+            return render_template('cursos.html', form_data=request.form)
+
+        novo_curso = Curso(nome=nome)
+        db.session.add(novo_curso)
+        db.session.commit()
+
+        flash('Curso adicionado com sucesso!', 'success')
+        return redirect(url_for('gerenciar_cursos'))
+
+
+@app.route('/admin/tags', methods = ['GET', 'POST'])
 @login_required
 def gerenciar_tags():
     if request.method == 'GET': 
         all_classes = Classe_Tag.query.all()
-        return render_template('tags.html', classes=all_classes)
+        return render_template('administrador/tags.html', classes=all_classes)
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
         cor = request.form.get('corForm')
-        categoria = request.form.ger('categoriaForm')
+        id_classe = request.form.get('classeForm')
 
-        tag_existente = Tag.queru.filter_by(nome=nome).first()
+        tag_existente = Tag.query.filter_by(nome=nome).first()
         if tag_existente:
             flash('Essa tag já foi registrada', 'danger')
-            return render_template('tags.html')
+            return redirect(url_for('tags.html'))
 
-        nova_tag = Tag(nome=nome, cor=cor, categoria=categoria)
+        nova_tag = Tag(nome=nome, cor=cor, id_classe=id_classe)
         db.session.add(nova_tag)
-        db.commit()
+        db.session.commit()
+
+        flash('Tag criada com sucesso!', 'success')
+        return redirect(url_for('gerenciar_tags'))
 
 
-
-@app.route('/classes', methods = ['GET', 'POST'])
+@app.route('/admin/classes', methods = ['GET', 'POST'])
 @login_required
 def gerenciar_classes():
     if request.method == 'GET':
-        return render_template('classe_tag.html')
+        return render_template('administrador/classe_tag.html')
 
     elif request.method =='POST':
         nome_classe = request.form.get('nome_classeForm')
@@ -306,7 +439,21 @@ def gerenciar_classes():
         db.session.add(nova_classe)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        flash('Categoria criada com sucesso!', 'success')
+        return redirect(url_for('gerenciar_classes'))
+    
+
+@app.route('/admin/dashboard')
+@login_required
+def dashboard():
+    cursos = Curso.query.all()
+    materias = Materia.query.all()
+    classes = Classe_Tag.query.all()
+    tags = Tag.query.all()
+    
+    return render_template('administrador/dashboard.html', cursos=cursos, materias=materias, classes=classes, tags=tags )
+
+
 
 if __name__ == '__main__':
     with app.app_context():

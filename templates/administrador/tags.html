@@ -17,14 +17,16 @@
                 <option value="#f15490">Rosa</option>
                 <option value="#cf9cef">Lilás</option>
             </datalist>
-            Categoria: <input type="text" name="categoriaForm" list="categoriasDisp">
-            <datalist id="categoriasDisp">
+            Classe: 
+            <select name="classeForm" id="" required>
+                <option value="" disabled selected>Selecione uma classe</option>
                 {% for classe in classes %}
-                    <option value="{{ classe.nome }}"></option>
+                    <option value="{{ classe.id_classe }}">{{ classe.nome }}</option>
                     
                 {% endfor %}
-                <option value="Classe Indeterminada"></option>
-            </datalist>
+
+            </select>
+            <input type="submit" value="Criar">
 
         </form>
 

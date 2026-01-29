@@ -15,7 +15,7 @@
 
         <h1>{{ current_user.nome_completo }}</h1>
         <h3>{{ current_user.email}}</h3>
-        <p>{{ current_user.descricao }}</p>
+        <p>{{ current_user.descricao if current_user.descricao else ' ' }}</p>
         <button>
             <a href="{{ url_for('editar_perfil' ) }}">Editar perfil</a>
         </button>

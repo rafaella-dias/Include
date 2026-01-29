@@ -41,6 +41,7 @@ class Atividade(db.Model):
     id_materia =  db.Column(db.Integer, db.ForeignKey('materias.id_materia'), nullable=False)
 
     arquivos = db.relationship('Arquivo', backref='atividade', lazy=True)
+    tags = db.relationship('Tag', secondary=atividade_tag, backref='atividades')
 
     def __repr__(self):
         return f'<{self.titulo}>'
