@@ -60,9 +60,8 @@ def imagem_permitida(filename):
     )
 
 
-ALLOWED_EXTENSIONS_ARQUIVOS = {'pdf', 'doc', 'docx', 'ppt', 'pptx',
-                            'xls', 'xlsx', 'txt', 
-                            'png', 'jpg', 'jpeg', }
+ALLOWED_EXTENSIONS_ARQUIVOS = {'png', 'jpg', 'jpeg'}
+
 ALLOWED_MIME_TYPES_ARQUIVOS = {
     'application/pdf',
     'application/msword',
@@ -120,7 +119,8 @@ def inicio():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html')
+    atividades = Atividade.query.all()
+    return render_template('home.html', atividades=atividades)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -211,7 +211,8 @@ def logout():
 @app.route('/perfil')
 @login_required
 def perfil():
-    return render_template('perfil.html')
+    atividades = Atividade.query.filter_by(id_usuario=current_user.id_usuario).order_by(Atividade.data_publicacao.desc()).all()
+    return render_template('perfil.html', atividades=atividades)
 
     
 @app.route('/perfil/editar', methods = ['GET', 'POST'])
@@ -231,7 +232,7 @@ def editar_perfil():
         if nome_completo != current_user.nome_completo:
             current_user.nome_completo = nome_completo
 
-        if nome_usuario != current_user.nome_usuario and not ' ' in nome_completo:
+        if nome_usuario != current_user.nome_usuario and not ' ' in nome_usuario:
             current_user.nome_usuario = nome_usuario
 
         if descricao and descricao != current_user.descricao:
@@ -264,7 +265,7 @@ def editar_perfil():
                                                   folder = 'perfis', 
                                                   unique_filename=True, 
                                                   overwrite=True,
-                                                  transformation = [{'width':  500, 'heigth': 500, 'crop': 'fill'}])
+                                                  transformation = [{'width':  500, 'height': 500, 'crop': 'fill'}])
             foto_url = response.get('secure_url')
             public_id = response.get('public_id')
 
@@ -276,7 +277,7 @@ def editar_perfil():
         return redirect(url_for('perfil'))
 
     
-@app.route('/delete', methods = ['POST'])
+@app.route('/delete/image/perfil', methods = ['POST'])
 @login_required
 def delete_image():
     try:
@@ -322,21 +323,29 @@ def publicar():
             nova_atividade.tags.append(tag)
 
         arquivo = request.files.get('arquivoForm')
+        
         valido, resultado = validar_arquivo(arquivo)
 
         if not valido:
             raise ValueError(resultado)
 
         nome = secure_filename(arquivo.filename)
-        tipo = arquivo.mimetype        
+        tipo = arquivo.mimetype 
         tamanho = resultado
-        arquivo_url = 'default'
         id_atividade = nova_atividade.id_atividade
 
+        response = cloudinary.uploader.upload(arquivo,
+                                              folder = 'atividades',
+                                              unique_filename = True,
+                                              overwrite = True,
+                                              )
+        
+        url = response.get('secure_url')
+       
         novo_arquivo = Arquivo(nome=nome, 
                                tipo=tipo, 
                                tamanho=tamanho, 
-                               arquivo_url=arquivo_url,
+                               arquivo_url=url,
                                id_atividade=id_atividade)
 
         db.session.add(novo_arquivo)
@@ -347,7 +356,22 @@ def publicar():
     except Exception as e:
         db.session.rollback()
         flash(str(e), 'danger')
-        return redirect(url_for('publicar'))
+        return redirect(url_for('publicar', form_data=request.form))
+
+
+@app.route('/delete/atividade', methods = ['POST'])
+@login_required
+def excluir_atividade():
+    atividade = Atividade.query.get_or_404(id)
+
+    if atividade.id_usuario != current_user.id_usuario:
+        abort(403)
+
+    db.session.delete(atividade)
+    db.session.commit
+
+    flash('Atividade excluida com sucesso', 'success')
+    return redirect(url_for('perfil'))
 
 
 @app.route('/admin/materias', methods = ['GET', 'POST'])

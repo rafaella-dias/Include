@@ -4,7 +4,8 @@
 
 {% block content %}
 
-    <div class="conteudo">
+<main class="main-container">
+    <div class="container-form">
         <h1>Editar Perfil</h1>
         {% if current_user.public_id %}
             <img src="{{current_user.foto_url}}" alt="Foto de perfil">
@@ -31,5 +32,6 @@
 
     </div>
 
+</main>
 
 {% endblock %}

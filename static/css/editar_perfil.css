@@ -1,0 +1,64 @@
+/* ===============================
+   CONTEÚDO / EDITAR PERFIL
+================================ */
+/* FOTO DE PERFIL */
+.container-form {
+  max-width: 420px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.container-form img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 15px;
+  display: block;
+  border: 3px solid #004aad;
+}
+
+/* ===============================
+   BOTÃO REMOVER FOTO
+================================ */
+.container-form form button[type="submit"] {
+  margin: 10px auto 20px auto;
+  padding: 10px;
+  max-width: 260px;
+  width: 100%;
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.container-form form button[type="submit"]:hover {
+  background-color: #a93226;
+}
+
+/* ===============================
+   BOTÃO SALVAR ALTERAÇÕES
+================================ */
+.container-form input[type="submit"] {
+  margin-top: 20px;
+  align-self: center;
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #004aad;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.container-form input[type="submit"]:hover {
+  background-color: #003580;
+}

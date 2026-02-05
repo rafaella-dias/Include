@@ -80,7 +80,7 @@ class Materia(db.Model):
 
     id_materia = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(50), nullable=False, unique=True)
-    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'))
+    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     
     atividades = db.relationship('Atividade', backref='materia', lazy=True)
 

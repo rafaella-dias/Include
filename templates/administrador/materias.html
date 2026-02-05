@@ -9,7 +9,7 @@
         <form action="" method="post">
             Nome: <input type="text" name="nomeForm" required>
             Curso: 
-            <select name="cursoForm" id="">
+            <select name="cursoForm" id="" required>
                 <option value="" disabled selected>Selecione um curso</option>
                 {% for curso in cursos %}
                     <option value="{{ curso.id_curso }}">{{ curso.nome }}</option>

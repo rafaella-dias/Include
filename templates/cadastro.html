@@ -4,22 +4,58 @@
 
 {% block content %}
 
-    <div>
+<main class="container-form">
+  <h2>Cadastrar</h2>
 
-        <form action="" method="post">
-            Nome Completo: <input type="text" name="nome_completoForm" value="{{ form_data.nome_completoForm if form_data else ''}}" required> <br>
-            Nome Usuario: <input type="text" name="nome_usuarioForm" value="{{ form_data.nome_usuarioForm if form_data else '' }}" required> <br>
-            Email: <input type="email" name="emailForm" value="{{ form_data.emailForm if form_data else '' }}" placeholder="exemplo@email.com" required> <br>
-            Senha: <input type="password" name="senhaForm" required> <br>
-            Confirmar Senha: <input type="password" name="confirmacao_senhaForm" required> <br>
-            <input type="submit" value="Cadastrar">
-        </form> <br>
+  <form action="" method="post" id="formCadastro">
 
-        <p>Já tem uma conta? <br>
-            <a href="{{ url_for('login' ) }}">Clique aqui</a>
-        </p>
-
+    <div class="form-group">
+      <label for="nome_completo">Nome completo</label>
+      <input type="text" id="nome_completo" name="nome_completoForm" required>
+      <div class="invalid-feedback">
+        Informe seu nome.
+      </div>
     </div>
+
+    <div class="form-group">
+      <label for="nome_usuario">Nome de usuário</label>
+      <input type="text" id="nome_usuario" name="nome_usuarioForm" required>
+      <div class="invalid-feedback">
+        Informe um nome de usuário.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="emailCadastro">E-mail</label>
+      <input type="email" id="emailCadastro" name="emailForm" required>
+      <div class="invalid-feedback">
+        Informe um e-mail válido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="senhaCadastro">Senha</label>
+      <input type="password" id="senhaCadastro" name="senhaForm" required>
+      <div class="invalid-feedback">
+        Informe uma senha.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmarSenha">Confirmar senha</label>
+      <input type="password" id="confirmarSenha" name="confirmacao_senhaForm" required>
+      <div class="invalid-feedback">
+        Confirme sua senha.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-block">Cadastrar</button>
+  </form>
+
+  <p>Já possui cadastro?<br>
+    <a href="{{ url_for('login') }}">Faça login</a>.
+  </p>
+</main>  
 
 {% endblock %}
 

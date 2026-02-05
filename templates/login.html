@@ -4,18 +4,33 @@
 
 {% block content %}
 
-    <div>
+<main class="container-form">
+    <h2>Entrar</h2>
 
-        <form action="" method="post">
-            Email: <input type="email" name="emailForm" value="{{ form_data.emailForm if form_data else ''}}" placeholder="exemplo@email.com" required> <br>
-            Senha: <input type="password" name="senhaForm" required> <br>
-            <input type="submit" value="Logar">
-        </form> <br>
+    <form action="" method="post" id="formLogin">
+      <div class="form-group">
+        <label for="email">Insira seu e-mail</label>
+        <input type="email" name="emailForm" value="{{ form_data.emailForm if form_data else ''}}" placeholder="exemplo@email.com" required>
+        <div class="invalid-feedback">
+          Informe um e-mail válido.
+        </div>
+      </div>
 
-        <p>Não está cadastrado? <br>
-            <a href="{{ url_for('cadastro') }}">Clique aqui</a>
-        </p>
+      <div class="form-group">
+        <label for="senha">Insira sua senha</label>
+        <input type="password" name="senhaForm" required>
+        <div class="invalid-feedback">
+          A senha é obrigatória.
+        </div>
+      </div>
 
-    </div>
+      <button type="submit" class="btn btn-warning btn-block">Entrar</button>
+    </form>
+
+    <p>Ainda não possui cadastro? <br>
+      <a href="{{ url_for('cadastro') }}">Cadastre-se aqui.</a>
+    </p>
+
+  </main>
  
 {% endblock %}

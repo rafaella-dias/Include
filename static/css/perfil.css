@@ -1,0 +1,172 @@
+/* ===============================
+   LAYOUT GERAL DO PERFIL
+================================ */
+.profile-layout-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  display: flex;
+  gap: 30px;
+}
+
+/* ===============================
+   CARD PERFIL
+================================ */
+.profile-section {
+  width: 320px;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/* ===============================
+   HEADER DO PERFIL
+================================ */
+.profile-header {
+  display: block;
+  gap: 15px;
+  align-items: center;
+}
+
+/* FOTO DE PERFIL */
+.profile-header img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #004aad;
+}
+
+/* ===============================
+   INFO DO USUÁRIO
+================================ */
+.user-info h2 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.user-info h3 {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.user-info p {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+/* ===============================
+   AÇÕES DO PERFIL
+================================ */
+.profile-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-actions button {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #004aad;
+}
+
+.profile-actions button a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   CONTEÚDOS PUBLICADOS
+================================ */
+.published-content {
+  flex: 1;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/* Cabeçalho */
+.add-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-content-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #004aad;
+  cursor: pointer;
+}
+
+.add-content-btn a {
+  color: #fff;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+/* Lista */
+.content-list-area p {
+  margin-bottom: 10px;
+}
+
+
+
+.atividade-card{
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.atividade-preview{
+    height: 140px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.atividade-conteudo{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  
+}
+
+.atividade-acoes{
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+    gap: 6px;
+}
+
+.btn-icon{
+    text-decoration: none;
+    font-size: 16px;
+    padding: 6px;
+    border-radius: 6px;
+    background: #f1f5f9;
+}
+
+.btn-icon:hover {
+    background: #e2e8f0;
+}
+
+.btn-icon-danger{
+    color: #b91c1c;
+}

@@ -4,7 +4,8 @@
 
 {% block content %}
 
-    <div>
+<main class="main-container">
+    <div class="container-form">
         <h1>Publicar Atividade Adaptada</h1>
         <form action="" method="post" enctype="multipart/form-data">
             Adicionar Arquivo: <input type="file" name="arquivoForm" id="" required>
@@ -18,9 +19,8 @@
                         
                     {% endfor %}
             </select>
-            Tags: 
-            <select name="tagsForm" id="" multiple>
-                <option value="" disabled selected>Selecione as tags</option>
+            <label for="tags">Tags:</label> 
+            <select name="tagsForm" id="" multiple size=6 class="tags-select">
                     {% for tag in tags %}
                         <option value="{{ tag.id_tag }}">{{ tag.nome }}</option>
                         
@@ -31,5 +31,7 @@
         </form>
 
     </div>
+
+</main>
 
 {% endblock %}

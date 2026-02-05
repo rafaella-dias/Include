@@ -4,16 +4,34 @@
 
 {% block content %}
 
-    {% if current_user.is_authenticated %}
-        <h1>Olá {{current_user.nome_completo}}.Você está logado(a).</h1>
+<main class="main-container">
 
-    {% else %}
-        <h1>Você não está logado.</h1>
+  {% if current_user.is_authenticated %}
+    <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
+    <p>Você está logado(a).</p>
+  {% else %}
+    <h2>Bem-vindo(a) à plataforma</h2>
+    <p>Você não está logado(a).</p>
+  {% endif %}
 
-    {% endif %}
+  <h3 style="margin-top: 30px;">Atividades publicadas</h3>
 
-    <footer>
-        <p>© 2026 - Repositório de Atividades Adaptadas para NEE</p>
-    </footer>
-    
+  <div class="search-bar">
+    <input type="text" placeholder="Pesquisar atividades...">
+    {% for atividade in atividades %}
+        <p>{{ atividade.titulo }}</p>
+
+    {% endfor %}
+
+    <a href="{{ url_for('publicar') }}" class="btn btn-primary">Adicionar atividades</a>
+    <a href="" class="btn btn-secondary">Pesquisar atividades</a>
+
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 - Repositório de Atividades Adaptadas para NEE</p>
+</footer>
+
 {% endblock %}

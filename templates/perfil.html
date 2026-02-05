@@ -3,37 +3,81 @@
 {% block title %}Perfil{% endblock %}
 
 {% block content %}
+  <main class="main-container">
+    
+    <div class="profile-layout-container">
+        <section class="profile-section">
+            <div class="profile-header">
+                {% if current_user.public_id %}
+                    <img src="{{current_user.foto_url}}" alt="Foto de perfil">
 
-    <div class="banner_perfil">
-        {% if current_user.public_id %}
-            <img src="{{current_user.foto_url}}" alt="Foto de perfil">
+                {% else %}
+                    <img src="static/images/default.png" alt="Foto de perfil padrão">    
 
-        {% else %}
-            <img src="static/images/default.png" alt="Foto de perfil padrão">    
+                {% endif %}
 
-        {% endif %}
+                <div class="user-info">
+                    <h2>{{ current_user.nome_completo }}</h2>
+                    <h3>{{ current_user.email}}</h3>
+                    <p>{{ current_user.descricao if current_user.descricao else ' ' }}</p>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="edit-btn">
+                    <a href="{{ url_for('editar_perfil' ) }}">Editar</a>
+                </button>
+                <button class="logout-btn">
+                    <a href="{{ url_for('logout' ) }}">Sair</a>
+                </button>
+            </div>
+        </section>
 
-        <h1>{{ current_user.nome_completo }}</h1>
-        <h3>{{ current_user.email}}</h3>
-        <p>{{ current_user.descricao if current_user.descricao else ' ' }}</p>
-        <button>
-            <a href="{{ url_for('editar_perfil' ) }}">Editar perfil</a>
-        </button>
-        <button>
-            <a href="{{ url_for('logout' ) }}">Sair</a>
-        </button>
+        <section class="published-content">
+            <div class="add-content-header">
+                <h3>Conteúdos Publicados</h3>
+                 <button class="add-content-btn" title="Adicionar Conteúdo">
+                    <a href="{{ url_for('publicar') }}">+</a>
+                 </button>
+            </div>
+           
+            <div class="content-list-area">
+                {% if atividades %}
+                    {% for atividade in atividades %}
+                        <div class="atividade-card">
+                            <div class="atividade-preview">
+                                <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview">
 
+                            </div>
+
+                            <div class="atividade-conteudo">
+                                <h5>{{ atividade.titulo }}</h5>
+
+                            </div>
+
+                            <div class="atividade-acoes">
+                                <a href="{{ atividade.arquivos[0].arquivo_url }}" target="_blank" class="btn-icon">
+                                    ⬇
+                                </a>
+    
+                                <a href="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" class="btn-icon-danger">
+                                    🗑
+                                </a>
+
+                            </div>
+
+                        </div>
+                        <p>{{ atividade.titulo }}</p>
+
+                    {% endfor %}
+
+                {% else %}
+                    <p>Nenhum conteúdo publicado ainda.</p>
+
+                {% endif %}
+            </div>
+        </section>
     </div>
 
-    <div>
-        <div class="conteudo">
-            <h1>Conteúdos Publicados</h1>
-            <button>
-                <a href="{{ url_for('publicar' ) }}">Publicar Atividade</a>
-            </button>
-
-        </div>
-
-    </div>
+  </main>
 
 {% endblock %}
