@@ -1,0 +1,74 @@
+/* ===============================
+   INICIO
+================================ */
+.institucional {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+.intro h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 1.05rem;
+    color: #4b5563;
+    max-width: 70ch;
+}
+.texto-institucional {
+    max-width: 75ch;
+}
+
+.texto-institucional p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #374151;
+}
+footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ===============================
+   HOME 
+================================ */
+.home-searh {
+  margin-top: 24px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.home-searh input {
+  width: 100%;
+  padding: 12px 14px;
+
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+}
+
+.home-searh input:focus {
+  outline: none;
+  border-color: var(--azul-principal);
+}
+
+.search-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .search-actions {
+    flex-direction: column;
+  }
+}
+

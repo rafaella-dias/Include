@@ -120,7 +120,8 @@ def inicio():
 @login_required
 def home():
     atividades = Atividade.query.all()
-    return render_template('home.html', atividades=atividades)
+    cursos = Curso.query.all()
+    return render_template('home.html', atividades=atividades, cursos=cursos)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -289,9 +290,34 @@ def delete_image():
         flash('Foto de perfil removida com sucesso', 'success')
 
     except Exception:
-        flash('Erro ao remover a imagem', 'danger')
+        flash('Não foi possível remover a imagem', 'danger')
     
     return redirect(url_for('perfil'))
+
+
+@app.route('/delete/atividade/<int:id>', methods = ['POST'])
+@login_required
+def excluir_atividade(id):
+    atividade = Atividade.query.get_or_404(id)
+
+    if atividade.id_usuario != current_user.id_usuario:
+        abort(403)
+
+    try: 
+        for arquivo in atividade.arquivos:
+            cloudinary.uploader.destroy(arquivo.public_id)
+
+        db.session.delete(atividade)
+        db.session.commit()
+
+        flash('Atividade excluida com sucesso', 'success')
+
+    except Exception as e:
+        db.session.rollback()
+        flash('Não foi possível excluir a atividade', 'danger')
+
+    return redirect(url_for('perfil'))
+
 
 @app.route('/publicar', methods = ['GET', 'POST'])
 @login_required
@@ -340,12 +366,14 @@ def publicar():
                                               overwrite = True,
                                               )
         
-        url = response.get('secure_url')
+        secure_url = response.get('secure_url')
+        public_id = response.get('public_id')
        
         novo_arquivo = Arquivo(nome=nome, 
                                tipo=tipo, 
                                tamanho=tamanho, 
-                               arquivo_url=url,
+                               arquivo_url=secure_url,
+                               public_id=public_id,
                                id_atividade=id_atividade)
 
         db.session.add(novo_arquivo)
@@ -358,20 +386,6 @@ def publicar():
         flash(str(e), 'danger')
         return redirect(url_for('publicar', form_data=request.form))
 
-
-@app.route('/delete/atividade', methods = ['POST'])
-@login_required
-def excluir_atividade():
-    atividade = Atividade.query.get_or_404(id)
-
-    if atividade.id_usuario != current_user.id_usuario:
-        abort(403)
-
-    db.session.delete(atividade)
-    db.session.commit
-
-    flash('Atividade excluida com sucesso', 'success')
-    return redirect(url_for('perfil'))
 
 
 @app.route('/admin/materias', methods = ['GET', 'POST'])

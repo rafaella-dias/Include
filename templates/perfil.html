@@ -44,13 +44,20 @@
                 {% if atividades %}
                     {% for atividade in atividades %}
                         <div class="atividade-card">
-                            <div class="atividade-preview">
-                                <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview">
+                            <div class="preview">
+                                {% if atividade.arquivos %}
+                                <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                                
+                                {% else %}
+                                <div class="Preview-vazio">Sem preview</div>
+                                
+                                {% endif %}
 
                             </div>
 
-                            <div class="atividade-conteudo">
-                                <h5>{{ atividade.titulo }}</h5>
+                            <div class="info">
+                                <h3>{{ atividade.titulo }}</h3>
+                                <p class="materia">{{ atividade.materia.nome }}</p>
 
                             </div>
 
@@ -58,10 +65,11 @@
                                 <a href="{{ atividade.arquivos[0].arquivo_url }}" target="_blank" class="btn-icon">
                                     ⬇
                                 </a>
-    
-                                <a href="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" class="btn-icon-danger">
-                                    🗑
-                                </a>
+                                
+                                <form action="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" method="POST">
+                                    <button type="submit" class="btn-icon-danger">🗑</button>
+
+                                </form>
 
                             </div>
 

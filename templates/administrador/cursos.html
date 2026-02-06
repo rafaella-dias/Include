@@ -3,14 +3,19 @@
 {% block title %}Gerenciar Cursos{% endblock %}
 
 {% block content %}
-    <div>
-        <h1>Asicione um Curso</h1>
-        <form action="" method="post">
-            <input type="text" name="nomeForm" value="{{form_data if nomeForm else ' '}}" required>
-            <input type="submit" value="Adicionar">
+<main class="main-container">
+    <div class="container-form">
+        <div>
+                <h1>Asicione um Curso</h1>
+                <form action="" method="post">
+                    <input type="text" name="nomeForm" value="{{form_data if nomeForm else ' '}}" required>
+                    <input type="submit" value="Adicionar">
 
-        </form>
+                </form>
 
+            </div>
+            
     </div>
-    
+
+</main>
 {% endblock %}

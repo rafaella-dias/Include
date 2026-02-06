@@ -5,30 +5,56 @@
 {% block content %}
 
 <main class="main-container">
-
-  {% if current_user.is_authenticated %}
+  <section class="home-header">
     <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
-    <p>Você está logado(a).</p>
-  {% else %}
-    <h2>Bem-vindo(a) à plataforma</h2>
-    <p>Você não está logado(a).</p>
-  {% endif %}
 
-  <h3 style="margin-top: 30px;">Atividades publicadas</h3>
+  </section> 
 
-  <div class="search-bar">
+  <section class="home-searh">
     <input type="text" placeholder="Pesquisar atividades...">
-    {% for atividade in atividades %}
-        <p>{{ atividade.titulo }}</p>
+    <div class="search-actions">
+      <a href="{{ url_for('publicar') }}" class="btn btn-primary">Publicar atividade</a>
+      <button class="btn btn-secondary">Pesquisar</button>
 
+    </div>
+
+  </section>
+
+  <section class="atividades">
+    {% for curso in cursos %}
+      <h2>{{ curso.nome }}</h2>
+
+      {% if curso.atividades %}
+        <div class="atividade-lista">
+          {% for atividade in curso.atividades %}
+            <div class="atividade-card">
+
+              <div class="preview">
+                {% if atividade.arquivos %}
+                  <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                
+                {% else %}
+                  <div class="Preview-vazio">Sem preview</div>
+                
+                {% endif %}
+
+              </div>
+
+              <div class="info">
+                <h3>{{ atividade.titulo }}</h3>
+                <p class="materia">{{ atividade.materia.nome }}</p>
+
+              </div>
+
+            </div>
+
+          {% endfor %}
+
+      {% endif %}
+    
     {% endfor %}
 
-    <a href="{{ url_for('publicar') }}" class="btn btn-primary">Adicionar atividades</a>
-    <a href="" class="btn btn-secondary">Pesquisar atividades</a>
-
-  </div>
-
-</main>
+  </section>
 
 <footer>
   <p>© 2026 - Repositório de Atividades Adaptadas para NEE</p>

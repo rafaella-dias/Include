@@ -122,36 +122,6 @@ body {
 }
 
 /* ===============================
-   FORMULÁRIOS 
-================================ */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-label {
-  font-size: 0.9rem;
-  color: var(--texto-secundario);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="file"] {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
-}
-
-input:focus {
-  outline: none;
-  border-color: var(--azul-principal);
-}
-
-/* ===============================
    BOTÕES 
 ================================ */
 .btn {

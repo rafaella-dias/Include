@@ -3,23 +3,27 @@
 {% block title %}Gerenciar Materias{% endblock %}
 
 {% block content %}
-
+<main class="main-container">
+    <div class="container-form">
     <div>
-        <h1>Crie uma Nova Materia</h1>
-        <form action="" method="post">
-            Nome: <input type="text" name="nomeForm" required>
-            Curso: 
-            <select name="cursoForm" id="" required>
-                <option value="" disabled selected>Selecione um curso</option>
-                {% for curso in cursos %}
-                    <option value="{{ curso.id_curso }}">{{ curso.nome }}</option>
-                    
-                {% endfor %}
-            </select>
-            <input type="submit" value="Criar">
+            <h1>Crie uma Nova Materia</h1>
+            <form action="" method="post">
+                Nome: <input type="text" name="nomeForm" required>
+                Curso: 
+                <select name="cursoForm" id="" required>
+                    <option value="" disabled selected>Selecione um curso</option>
+                    {% for curso in cursos %}
+                        <option value="{{ curso.id_curso }}">{{ curso.nome }}</option>
+                        
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Criar">
 
-        </form>
+            </form>
+
+        </div>
 
     </div>
-    
+ 
+</main>
 {% endblock %}

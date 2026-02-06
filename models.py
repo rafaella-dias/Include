@@ -55,6 +55,7 @@ class Arquivo(db.Model):
     tipo = db.Column(db.String(50), nullable=False)
     tamanho = db.Column(db.Integer)
     arquivo_url = db.Column(db.String(255), nullable=False)
+    public_id = db.Column(db.String(255), nullable=False)
     data_upload = db.Column(db.DateTime, default=datetime.utcnow)
     id_atividade = db.Column(db.Integer, db.ForeignKey('atividades.id_atividade'), nullable=False)
 
