@@ -55,20 +55,29 @@ body {
   padding: 0 40px;
   background-color: var(--azul-principal);
   z-index: 1000;
-}
-
-.logo-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: #ffffff;
+  
+  background: linear-gradient(
+    135deg,
+    #004aad,
+    #003a8c
+  );
 }
 
 .logo-header img {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
+  height: 44px;
+}
+
+.logo-header {
+  padding: 0;
+  border-radius: 0;
+}
+
+.logo-header:hover {
+  background: none;
+}
+
+.logo-header:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .nav-links {
@@ -77,15 +86,36 @@ body {
   gap: 28px;
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 .nav-links a {
-  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
   text-decoration: none;
-  font-size: 0.95rem;
+  color: #ffffff;
+  font-size: 0.85rem;
   font-weight: 500;
+
+  transition: background-color 0.2s ease;
+}
+
+.nav-links a img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ===============================
@@ -139,7 +169,9 @@ body {
   text-decoration: none;
   cursor: pointer;
 
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease,
+              color 0.2s ease,
+              border-color 0.2s ease;
 }
 
 .btn-primary {
@@ -180,28 +212,77 @@ body {
   background-color: rgba(0, 74, 173, 0.08);
 }
 
-.btn-block {
-  width: 100%;
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 6px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--texto-principal);
+  background: #f1f5f9;
+
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-center {
-  margin: 0 auto;
+.btn-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.btn-icon-danger {
+  color: #b91c1c;
+}
+
+.btn-icon-danger:hover {
+  background: #e2e8f0;
+  background-color: rgba(220, 38, 38, 0.1);
 }
 
 /* ===============================
    RESPONSIVIDADE
 ================================ */
 @media (max-width: 768px) {
+  :root {
+    --navbar-height: 88px;
+  }
+
   .navbar-body {
     padding: 0 20px;
+    align-items: center;
   }
 
-  .main-container {
-    margin: 28px auto;
-    padding: 0 16px;
+  .logo-header img {
+    height: 30px;
   }
 
-  .btn {
-    width: 100%;
+  .nav-text {
+    display: none;
+  }
+
+  .nav-links {
+    margin-left: auto;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+  }
+
+  .nav-links a img {
+    width: 24px;
+    height: 24px;
   }
 }
+

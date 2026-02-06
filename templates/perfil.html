@@ -40,7 +40,7 @@
                  </button>
             </div>
            
-            <div class="content-list-area">
+            <div class="atividade-lista">
                 {% if atividades %}
                     {% for atividade in atividades %}
                         <div class="atividade-card">
@@ -61,21 +61,22 @@
 
                             </div>
 
-                            <div class="atividade-acoes">
-                                <a href="{{ atividade.arquivos[0].arquivo_url }}" target="_blank" class="btn-icon">
+                            <div class="acoes">
+                                <a href="{{ atividade.arquivos[0].arquivo_url }}" 
+                                    target="_blank" 
+                                    class="btn-icon"
+                                    title="Baixar">
                                     ⬇
                                 </a>
-                                
+
                                 <form action="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" method="POST">
-                                    <button type="submit" class="btn-icon-danger">🗑</button>
+                                    <button type="submit" class="btn-icon btn-icon-danger" title="Excluir">
+                                    🗑
+                                    </button>
 
                                 </form>
 
-                            </div>
-
                         </div>
-                        <p>{{ atividade.titulo }}</p>
-
                     {% endfor %}
 
                 {% else %}

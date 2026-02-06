@@ -15,13 +15,14 @@
 
 .atividade-card {
   background-color: #ffffff;
-  padding: 16px;
   border-radius: 12px;
+  padding: 14px;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .preview {
@@ -56,4 +57,13 @@
 .info .materia {
   font-size: 0.85rem;
   color: var(--texto-secundario);
+}
+
+.acoes{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  margin-top: 10px;
 }
