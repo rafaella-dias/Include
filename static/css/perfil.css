@@ -148,17 +148,94 @@
 }
 
 /* ===============================
-   RESPONSIVO
+   RESPONSIVIDADE
 ================================ */
 @media (max-width: 600px) {
   .profile-page {
     grid-template-columns: 1fr;
-    margin-left: 0;
-    width: 100%;
+    padding: 22px 8px 0;
+    gap: 12px;
   }
 
   .profile-card {
     position: static;
+    width: 100%;
+    min-height: auto;
+
+    margin-bottom: 18px;
+    padding: 16px 12px;
+    gap: 12px;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .profile-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .profile-top img {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .user-info {
+    margin-top: 16px;
+    flex: 1;
+  }
+
+  .user-info h2{
+    text-align: left;
+  }
+
+  .user-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .user-main h2,
+  .user-main h3 {
+    text-align: left;
+    margin: 0;
+  }
+
+  .user-main h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .user-main h3 {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--texto-secundario);
+  }
+
+  .user-description {
+    width: 100%;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    text-align: justify;
+    margin-top: 8px;
+  }
+
+  .profile-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .profile-actions a {
+    flex: 1;
+    padding: 8px 0;
+    font-size: 0.75rem;
+    text-align: center;
   }
 }
-

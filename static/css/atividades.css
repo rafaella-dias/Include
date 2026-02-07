@@ -67,43 +67,21 @@
 /* TEXTO */
 .info h3 {
   font-size: 0.95rem;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 
 .info p {
   font-size: 0.8rem;
   color: var(--texto-secundario);
+  margin-bottom: 0;
 }
 
 .info .materia {
   font-size: 0.75rem;
 }
 
-.acoes {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  margin-top: 6px;
-}
 
-.acoes button,
-.acoes a {
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-
-  color: var(--texto-secundario);
-}
-
-.acoes button:hover,
-.acoes a:hover {
-  color: var(--azul-principal);
-}
-
-
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .atividade-lista {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;

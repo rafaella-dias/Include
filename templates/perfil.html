@@ -11,7 +11,7 @@
                 {% if current_user.public_id %}
                     <img src="{{current_user.foto_url}}" alt="Foto de perfil">
 
-                {% else %}
+                 {% else %}
                     <img src="static/images/default.png" alt="Foto de perfil padrão">    
 
                 {% endif %}
@@ -20,10 +20,8 @@
                     <h2>{{ current_user.nome_completo }}</h2>
                     <h3>{{ current_user.nome_usuario }}</h3>
                     <h3>{{ current_user.email}}</h3>
-                    <p>{{ current_user.descricao if current_user.descricao else ' ' }}</p>
-
                 </div>
-
+                <p class="user-description">{{ current_user.descricao if current_user.descricao else ' ' }}</p>
 
                 <div class="profile-actions">
                     <a href="{{ url_for('editar_perfil' ) }}" class="btn btn-primary">Editar perfil</a>
@@ -64,25 +62,9 @@
 
                                 <div class="info">
                                     <h3>{{ atividade.titulo }}</h3>
+                                    <p>{{ atividade.curso.nome }}</p>
                                     <p class="materia">{{ atividade.materia.nome }}</p>
 
-                                </div>
-
-                                <div class="acoes">
-                                    <a href="{{ atividade.arquivos[0].arquivo_url }}" 
-                                        target="_blank" 
-                                        class="btn-icon"
-                                        title="Baixar">
-                                        ⬇
-                                    </a>
-
-                                    <form action="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" method="POST">
-                                        <button type="submit" class="btn-icon btn-icon-danger" title="Excluir">
-                                        🗑
-                                        </button>
-
-                                    </form>
-                                
                                 </div>
 
                             </div>
