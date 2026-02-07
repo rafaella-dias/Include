@@ -20,6 +20,9 @@
   --amarelo-destaque: #f5b700;
   --amarelo-hover: #d6a400;
 
+  --vermelho-alerta: #cf0101;
+  --vermelho-hover: #ba0000;
+
   --texto-principal: #1f2937;
   --texto-secundario: #4b5563;
 
@@ -159,6 +162,7 @@ footer p {
   font-size: 0.85rem;
   color: var(--texto-secundario);
   text-align: center;
+  margin: 0;  
 }
 
 /* ===============================

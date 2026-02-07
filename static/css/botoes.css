@@ -99,6 +99,9 @@
   width: 52px;
   height: 52px;
 
+  border: none;
+  outline: none;
+
   border-radius: 50%;
   background-color: var(--amarelo-destaque);
   color: #1f2937;

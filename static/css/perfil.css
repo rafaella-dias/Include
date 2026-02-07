@@ -1,37 +1,44 @@
 /* ===============================
-   LAYOUT GERAL DO PERFIL
+   LAYOUT GERAL
 ================================ */
-.profile-layout-container {
-  max-width: 1200px;
-  margin: 30px auto;
+.profile-page {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.content-card {
+  display: contents;
+}
+
+/* ===============================
+   CARD DE PERFIL (FIXO)
+================================ */
+.profile-card {
+  position: sticky;
+  top: calc(var(--navbar-height) + 24px);
+
+  width: 260px;
+
+  min-height: calc(100vh - var(--navbar-height) - 48px);
+
+  background: #fff;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  padding: 22px 20px;
   display: flex;
-  gap: 30px;
-}
-
-/* ===============================
-   CARD PERFIL
-================================ */
-.profile-section {
-  width: 320px;
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.08);
-}
-
-/* ===============================
-   HEADER DO PERFIL
-================================ */
-.profile-header {
-  display: block;
-  gap: 15px;
+  flex-direction: column;
   align-items: center;
+  gap: 16px;
 }
 
-/* FOTO DE PERFIL */
-.profile-header img {
-  width: 100px;
-  height: 100px;
+.profile-card img {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 6px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #004aad;
@@ -40,30 +47,53 @@
 /* ===============================
    INFO DO USUÁRIO
 ================================ */
-.user-info h2 {
-  font-size: 1.2rem;
-  margin-bottom: 4px;
+.user-info {
+  width: 100%;
+  text-align: left;
 }
 
-.user-info h3 {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 6px;
+.user-info h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.user-info h3:first-of-type {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--azul-principal);
+  margin-bottom: 2px;
+}
+
+.user-info h3:last-of-type {
+  font-size: 0.75rem;
+  color: var(--texto-secundario);
+  margin-bottom: 12px;
 }
 
 .user-info p {
-  font-size: 0.85rem;
-  color: #444;
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+  line-height: 1.6;
+  
+  margin-top: 0;
+
+  text-align: justify;
+  hyphens: auto;
 }
 
 /* ===============================
-   AÇÕES DO PERFIL
+   AÇÕES
 ================================ */
 .profile-actions {
-  margin-top: 20px;
+  width: 100%;
+  margin-top: auto;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  margin-top: auto;
+  gap: 6px;
 }
 
 .profile-actions button {
@@ -71,46 +101,64 @@
   padding: 8px;
   border-radius: 6px;
   border: none;
+  background: #004aad;
   cursor: pointer;
-  background-color: #004aad;
 }
 
-.profile-actions button a {
+.profile-actions a {
   color: #fff;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.profile-actions .btn-secondary {
+  background: none;
+  color: var(--vermelho-alerta);
+  font-size: 0.7rem;
+  padding: 2px;
+}
+
+.profile-actions .btn-secondary:hover {
+  background: none;
+  color: var(--vermelho-hover);
 }
 
 /* ===============================
-   CONTEÚDOS PUBLICADOS
+   ÁREA DE CONTEÚDOS
 ================================ */
-.published-content {
-  flex: 1;
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+.content-area {
+  display: flex;
+  flex-direction: column;
+
+  max-height: calc(100vh - var(--navbar-height) - 48px);
 }
 
-/* Cabeçalho */
-.add-content-header {
+.content-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
 }
 
-.add-content-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: #004aad;
-  cursor: pointer;
+.content-header h3 {
+  font-size: 1.1rem;
 }
 
-.add-content-btn a {
-  color: #fff;
-  font-size: 1.5rem;
-  text-decoration: none;
+/* ===============================
+   RESPONSIVO
+================================ */
+@media (max-width: 600px) {
+  .profile-page {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .profile-card {
+    position: static;
+  }
 }
+
