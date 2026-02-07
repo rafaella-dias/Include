@@ -5,59 +5,79 @@
 {% block content %}
 
 <main class="main-container">
-  <section class="home-header">
-    <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
-
-  </section> 
-
-  <section class="home-searh">
-    <input type="text" placeholder="Pesquisar atividades...">
-    <div class="search-actions">
-      <a href="{{ url_for('publicar') }}" class="btn btn-primary">Publicar atividade</a>
-      <button class="btn btn-secondary">Pesquisar</button>
+  <section class="home-fixed">
+    <div class="home-header">
+      <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
 
     </div>
 
+      <div class="home-actions">
+        <div class="search-wrapper">
+          <input type="text" placeholder="Pesquisar atividades...">
+          <button class="search-btn" aria-label="Pesquisar">
+            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
+
+          </button>
+
+        </div>
+
+        <div class="publish-wrapper">
+          <a href="{{ url_for('publicar') }}" class="publish-btn">
+            <span class="plus">+</span>
+          </a>
+          <span class="publish-label">Publicar recurso</span>
+
+        </div>
+
+
+    </div>
+  
   </section>
 
   <section class="atividades">
     {% for curso in cursos %}
-      <h2>{{ curso.nome }}</h2>
+      <div class="curso-section">
+        <h2>{{ curso.nome }}</h2>
 
-      {% if curso.atividades %}
-        <div class="atividade-lista">
-          {% for atividade in curso.atividades %}
-            <div class="atividade-card">
+        {% if curso.atividades %}
+          <div class="atividade-lista">
+            {% for atividade in curso.atividades %}
+              <div class="atividade-card">
 
-              <div class="preview">
-                {% if atividade.arquivos %}
-                  <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
-                
-                {% else %}
-                  <div class="Preview-vazio">Sem preview</div>
-                
-                {% endif %}
+                <div class="preview">
+                  {% if atividade.arquivos %}
+                    <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                  
+                  {% else %}
+                    <div class="Preview-vazio">Sem preview</div>
+                  
+                  {% endif %}
+
+                </div>
+
+                <div class="info">
+                  <h3>{{ atividade.titulo }}</h3>
+                  <p>{{ atividade.curso }}</p>
+                  <p class="materia">{{ atividade.materia.nome }}</p>
+
+                </div>
 
               </div>
 
-              <div class="info">
-                <h3>{{ atividade.titulo }}</h3>
-                <p class="materia">{{ atividade.materia.nome }}</p>
+            {% endfor %}
 
-              </div>
+        {% endif %}
 
-            </div>
-
-          {% endfor %}
-
-      {% endif %}
+      </div>
     
     {% endfor %}
 
   </section>
 
+</main>
+
 <footer>
-  <p>© 2026 - Repositório de Atividades Adaptadas para NEE</p>
+  <p>© 2026 - Include: Repositório de Atividades Adaptadas para NEE dos Cursos Técnicos</p>
 </footer>
 
 {% endblock %}

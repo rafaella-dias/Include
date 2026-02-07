@@ -139,6 +139,29 @@ body {
 }
 
 /* ===============================
+   FOOTER
+================================ */
+footer {
+  width: 100%;
+  margin-top: 64px;
+
+  padding: 20px 16px;
+
+  background-color: #eef0f4;
+  border-top: 1px solid #e5e7eb;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer p {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+/* ===============================
    TIPOGRAFIA
 ================================ */
 .main-container h1 {
@@ -149,97 +172,6 @@ body {
 .main-container h2 {
   font-size: 1.6rem;
   font-weight: 500;
-}
-
-/* ===============================
-   BOTÕES 
-================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: none;
-
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-
-  transition: background-color 0.2s ease,
-              color 0.2s ease,
-              border-color 0.2s ease;
-}
-
-.btn-primary {
-  background-color: var(--azul-principal);
-  color: #ffffff;
-}
-
-.btn-primary:hover {
-  background-color: var(--azul-escuro);
-}
-
-.btn-warning {
-  background-color: var(--amarelo-destaque);
-  color: #1f2937;
-  font-weight: 600;
-}
-
-.btn-warning:hover {
-  background-color: var(--amarelo-hover);
-}
-
-.btn-secondary {
-  background-color: #e5e7eb;
-  color: var(--texto-principal);
-}
-
-.btn-secondary:hover {
-  background-color: #d1d5db;
-}
-
-.btn-outline {
-  background-color: transparent;
-  border: 1px solid var(--azul-principal);
-  color: var(--azul-principal);
-}
-
-.btn-outline:hover {
-  background-color: rgba(0, 74, 173, 0.08);
-}
-
-.btn-icon {
-  background: none;
-  border: none;
-  padding: 6px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1rem;
-  cursor: pointer;
-  color: var(--texto-principal);
-  background: #f1f5f9;
-
-  border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.btn-icon:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-.btn-icon-danger {
-  color: #b91c1c;
-}
-
-.btn-icon-danger:hover {
-  background: #e2e8f0;
-  background-color: rgba(220, 38, 38, 0.1);
 }
 
 /* ===============================

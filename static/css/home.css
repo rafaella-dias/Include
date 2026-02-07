@@ -1,0 +1,111 @@
+/* ===============================
+   BARRA FIXA
+================================ */
+.home-fixed {
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 20;
+
+  background-color: var(--fundo-pagina);
+  padding: 24px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.home-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+
+  height: 52px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.search-wrapper input {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  font-size: 1rem;
+  color: #374151;
+}
+
+.search-btn {
+  width: 44px;
+  height: 44px;
+  margin-right: 6px;
+
+  border-radius: 50%;
+  border: none;
+
+  background-color: var(--azul-principal);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color 0.2s ease;
+}
+
+.search-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.search-btn:hover {
+  background-color: var(--azul-escuro);
+}
+
+.publish-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+@media (max-width: 600px) {
+  .home-search {
+    max-width: 100%;
+  }
+
+  .publish-wrapper {
+    display: none;
+  }
+
+  .home-actions {
+    gap: 0;
+  }
+
+}
+@media (max-width: 768px) {
+  .home-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* ===============================
+   BARRA ATIVIDADES
+================================ */
+.atividades {
+  padding-top: 12px;
+}
+
+.atividades h2 {
+  margin-top: 12px;
+  margin-bottom: 16px;
+}

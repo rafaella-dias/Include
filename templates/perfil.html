@@ -35,9 +35,17 @@
         <section class="published-content">
             <div class="add-content-header">
                 <h3>Conteúdos Publicados</h3>
-                 <button class="add-content-btn" title="Adicionar Conteúdo">
-                    <a href="{{ url_for('publicar') }}">+</a>
-                 </button>
+
+                <div class="publish-wrapper">
+                    <button class="publish-btn" title="Adicionar Conteúdo">
+                        <a href="{{ url_for('publicar') }}" class="publish-btn">
+                            <span class="plus">+</span>
+                        </a>
+                        <span class="publish-label">Publicar recurso</span>
+                        
+                    </button>
+
+                </div>
             </div>
            
             <div class="atividade-lista">
