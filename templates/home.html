@@ -3,36 +3,41 @@
 {% block title %}Página Inicial{% endblock %}
 
 {% block content %}
+<section class="home-fixed">
+  <div class="home-fixed-inner">
+
+    <div class="home-actions">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Pesquisar atividades...">
+        <button class="search-btn" aria-label="Pesquisar">
+          <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
+
+        </button>
+
+      </div>
+
+      <div class="publish-wrapper">
+        <a href="{{ url_for('publicar') }}" class="publish-btn">
+          <span class="plus">+</span>
+        </a>
+        <span class="publish-label">Publicar recurso</span>
+
+      </div>
+
+    </div>
+    
+  </div>
+
+</section>
+
 
 <main class="main-container">
-  <section class="home-fixed">
-    <div class="home-header">
-      <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
 
-    </div>
+  <div class="home-header">
+   <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
+    <p>Começe a explorar nossa biblioteca de atividade aqui!</p>
 
-      <div class="home-actions">
-        <div class="search-wrapper">
-          <input type="text" placeholder="Pesquisar atividades...">
-          <button class="search-btn" aria-label="Pesquisar">
-            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
-
-          </button>
-
-        </div>
-
-        <div class="publish-wrapper">
-          <a href="{{ url_for('publicar') }}" class="publish-btn">
-            <span class="plus">+</span>
-          </a>
-          <span class="publish-label">Publicar recurso</span>
-
-        </div>
-
-
-    </div>
-  
-  </section>
+  </div>
 
   <section class="atividades">
     {% for curso in cursos %}
@@ -57,7 +62,7 @@
 
                 <div class="info">
                   <h3>{{ atividade.titulo }}</h3>
-                  <p>{{ atividade.curso }}</p>
+                  <p>{{ atividade.curso.nome }}</p>
                   <p class="materia">{{ atividade.materia.nome }}</p>
 
                 </div>
@@ -65,6 +70,9 @@
               </div>
 
             {% endfor %}
+
+        {% else %}
+          <p>Nenhum conteúdo publicado até o momento.</p>
 
         {% endif %}
 
@@ -77,7 +85,7 @@
 </main>
 
 <footer>
-  <p>© 2026 - Include: Repositório de Atividades Adaptadas para NEE dos Cursos Técnicos</p>
+  <p>© 2026 - Include: Repositório de Atividades Adaptadas para NEE nos Cursos Técnicos</p>
 </footer>
 
 {% endblock %}

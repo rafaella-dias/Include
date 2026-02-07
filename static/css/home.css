@@ -7,8 +7,19 @@
   z-index: 20;
 
   background-color: var(--fundo-pagina);
-  padding: 24px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.home-fixed-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;  
 }
 
 .home-actions {
@@ -21,7 +32,7 @@
   position: relative;
   flex: 1;
 
-  height: 52px;
+  height: 46px;
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 999px;
@@ -43,8 +54,8 @@
 }
 
 .search-btn {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   margin-right: 6px;
 
   border-radius: 50%;
@@ -77,23 +88,32 @@
 
 
 @media (max-width: 600px) {
-  .home-search {
-    max-width: 100%;
-  }
-
   .publish-wrapper {
     display: none;
   }
 
-  .home-actions {
-    gap: 0;
+  .home-fixed {
+    padding: 6px 0;
   }
 
+  .home-fixed {
+    position: sticky;
+    top: 0;              
+    z-index: 900;
+  }
 }
+
+
 @media (max-width: 768px) {
   .home-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+  }
+
+  .home-fixed-inner {
+    max-width: 100%;
+    padding: 0 16px;
   }
 }
 
@@ -102,10 +122,10 @@
    BARRA ATIVIDADES
 ================================ */
 .atividades {
-  padding-top: 12px;
+  padding-top: 4px;
 }
 
 .atividades h2 {
-  margin-top: 12px;
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 12px;
 }

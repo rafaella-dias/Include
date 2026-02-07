@@ -1,43 +1,46 @@
 .curso-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .atividades {
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 32x;
+  gap: 24px; /* corrigido (antes estava 32x) */
 }
 
 .atividades h2 {
-  font-size: 1.4rem;
-  margin-bottom: 8px;
+  font-size: 1.3rem;
+  margin-bottom: 6px;
 }
 
+/* GRID */
 .atividade-lista {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
 }
 
+/* CARD */
 .atividade-card {
   background-color: #ffffff;
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: 10px;
+  padding: 10px;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* PREVIEW MENOR */
 .preview {
   width: 100%;
-  height: 140px;
-  border-radius: 8px;
+  height: 110px;
+  border-radius: 6px;
   overflow: hidden;
   background-color: #f3f4f6;
 }
@@ -54,25 +57,64 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--texto-secundario);
 }
 
+/* TEXTO */
 .info h3 {
-  font-size: 1rem;
-  margin-bottom: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.info p {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
 }
 
 .info .materia {
-  font-size: 0.85rem;
-  color: var(--texto-secundario);
+  font-size: 0.75rem;
 }
 
-.acoes{
+.acoes {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 6px;
+  margin-top: 6px;
+}
 
-  margin-top: 10px;
+.acoes button,
+.acoes a {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+
+  color: var(--texto-secundario);
+}
+
+.acoes button:hover,
+.acoes a:hover {
+  color: var(--azul-principal);
+}
+
+
+@media (max-width: 600px) {
+  .atividade-lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .preview {
+    height: 90px;
+  }
+
+  .atividade-card {
+    padding: 8px;
+  }
+
+  .info h3 {
+    font-size: 0.85rem;
+  }
 }
