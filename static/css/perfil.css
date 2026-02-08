@@ -83,6 +83,13 @@
   hyphens: auto;
 }
 
+  .user-description {
+    width: 100%;
+    font-size: 0.85rem;
+    line-height: 1.50;
+    text-align: justify;
+  }
+
 /* ===============================
    AÇÕES
 ================================ */
@@ -111,6 +118,27 @@
   font-size: 0.85rem;
 }
 
+.profile-actions a.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-actions a.btn img {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-bottom: none;
+  border-radius: 0;
+  border: none;
+}
+
 .profile-actions .btn-secondary {
   background: none;
   color: var(--vermelho-alerta);
@@ -123,6 +151,42 @@
   color: var(--vermelho-hover);
 }
 
+@media (min-width: 601px) {
+  .profile-actions a.btn img {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-actions {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .profile-actions a.btn {
+    background: transparent;
+    padding: 6px;
+    font-size: 0.75rem;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .profile-actions a.btn img {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .profile-actions a.btn span {
+    display: inline-block;
+    margin-left: 4px;
+    color: var(--texto-principal);
+  }
+
+  .profile-actions a.btn:hover {
+    background-color: rgba(0,0,0,0.05);
+  }
+}
 /* ===============================
    ÁREA DE CONTEÚDOS
 ================================ */
@@ -217,10 +281,8 @@
   }
 
   .user-description {
-    width: 100%;
     font-size: 0.75rem;
     line-height: 1.45;
-    text-align: justify;
     margin-top: 8px;
   }
 

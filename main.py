@@ -275,6 +275,7 @@ def editar_perfil():
 
         db.session. commit()
 
+        flash('Dados editados com sucesso', 'success')
         return redirect(url_for('perfil'))
 
     

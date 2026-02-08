@@ -1,0 +1,83 @@
+/* ===============================
+   INICIO
+================================ */
+.inicio-acoes {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left; 
+  flex-wrap: wrap; 
+}
+
+.intro h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    margin-bottom: 12px;
+    max-width: 40ch;
+}
+
+.subtitle {
+    font-size: 1.05rem;
+    color: var(--texto-secundario);
+    max-width: 70ch;
+}
+.texto-institucional {
+    max-width: 75ch;
+}
+
+.texto-institucional p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--texto-principal);
+}
+
+
+@media (max-width: 600px) {
+  .inicio-acoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .institucional {
+    margin-top: 28px;
+    margin-bottom: 40px;
+  }
+
+  .intro h1 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+
+  .texto-institucional {
+    max-width: 100%;
+  }
+
+  .texto-institucional p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 900px) {
+  .inicio-acoes {
+    flex-wrap: wrap; 
+  }
+
+  .intro h1 {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    max-width: 90%;
+  }
+
+  .texto-institucional {
+    max-width: 90%;
+  }
+}

@@ -24,8 +24,14 @@
                 <p class="user-description">{{ current_user.descricao if current_user.descricao else ' ' }}</p>
 
                 <div class="profile-actions">
-                    <a href="{{ url_for('editar_perfil' ) }}" class="btn btn-primary">Editar perfil</a>
-                    <a href="{{ url_for('logout' ) }}" class="btn btn-secondary">Sair</a>
+                    <a href="{{ url_for('editar_perfil' ) }}" class="btn btn-primary">
+                        <img src="{{ url_for('static', filename='images/icons/icon-editar.png') }}" alt="">
+                        <span>Editar perfil</span>
+                    </a>
+                    <a href="{{ url_for('logout' ) }}" class="btn btn-secondary">
+                        <img src="{{ url_for('static', filename='images/icons/icon-sair.png') }}" alt=""> 
+                        <span>Sair</span>
+                    </a>
 
                 </div>
 
