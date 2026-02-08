@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Busca{% endblock %}
+
+{% block content %}
+
+
+<section class="home-fixed">
+  <div class="home-fixed-inner">
+
+    <div class="home-actions">
+      <form class="search-wrapper" action="" method="GET">
+          <input type="text" name="q" placeholder="Buscar atividades...">
+          <button class="search-btn" aria-label="Pesquisar">
+            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
+
+          </button>
+        
+      </form>
+
+      <div class="publish-wrapper">
+        <a href="{{ url_for('publicar') }}" class="publish-btn">
+          <span class="plus">+</span>
+        </a>
+        <span class="publish-label">Publicar recurso</span>
+
+      </div>
+
+    </div>
+    
+  </div>
+
+</section>
+
+
+<main class="main-container">
+
+    <div class="home-header">
+    <h2>Resultados para "{{ termo }}"</h2>
+
+    </div>
+
+    <section class="atividades">
+        {% if atividades %}
+            <div class="atividade-lista">
+                {% for atividade in atividades %}
+                    <div class="atividade-card">
+
+                        <div class="atividade-preview">
+                            {% if atividade.arquivos %}
+                                <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                  
+                            {% else %}
+                                <div class="atividade-preview-vazio">Sem preview</div>
+                  
+                            {% endif %}
+
+                        </div>
+
+                        <div class="atividade-info">
+                            <h3>{{ atividade.titulo }}</h3>
+                            <p>{{ atividade.curso.nome }}</p>
+                            <p class="info-materia">{{ atividade.materia.nome }}</p>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+            
+            </div> 
+            
+        {% else %}
+            <p>Nenhum conteúdo publicado até o momento.</p>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+{% endblock %}

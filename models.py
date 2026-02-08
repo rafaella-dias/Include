@@ -40,7 +40,7 @@ class Atividade(db.Model):
     id_curso =  db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     id_materia =  db.Column(db.Integer, db.ForeignKey('materias.id_materia'), nullable=False)
 
-    arquivos = db.relationship('Arquivo', backref='atividade', lazy=True)
+    arquivos = db.relationship('Arquivo', backref='atividade', cascade='all, delete-orphan' , lazy=True)
     tags = db.relationship('Tag', secondary=atividade_tag, backref='atividades')
 
     def __repr__(self):

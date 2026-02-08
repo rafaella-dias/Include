@@ -55,21 +55,32 @@
                     {% if atividades %}
                         {% for atividade in atividades %}
                             <div class="atividade-card">
-                                <div class="preview">
+                                <div class="atividade-preview">
                                     {% if atividade.arquivos %}
                                     <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
                                     
                                     {% else %}
-                                    <div class="Preview-vazio">Sem preview</div>
+                                    <div class="atividade-preview-vazio">Sem preview</div>
                                     
                                     {% endif %}
 
                                 </div>
 
-                                <div class="info">
+                                <div class="atividade-info">
                                     <h3>{{ atividade.titulo }}</h3>
                                     <p>{{ atividade.curso.nome }}</p>
-                                    <p class="materia">{{ atividade.materia.nome }}</p>
+                                    <p class="info-materia">{{ atividade.materia.nome }}</p>
+
+                                </div>
+
+                                <div class="atividade-actions">
+                                    <form action="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" method="POST"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?')">
+                                        <button type="submit" class="btn-icon-danger">
+                                            <img src="{{ url_for('static', filename='images/icons/icon-excluir.png')}}" alt="Excluir atividade">
+
+                                        </button>
+                                    </form>
 
                                 </div>
 

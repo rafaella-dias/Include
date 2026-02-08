@@ -28,12 +28,13 @@
 }
 
 .btn-action-submit {
-  background-color: var(--amarelo-destaque);
-  color: var(--texto-principal);
+  background-color: var(--amarelo-destaque) !important;
+  color: var(--texto-principal) !important;
+  border: none;
 }
 
 .btn-action-submit:hover {
-  background-color: var(--amarelo-hover);
+  background-color: var(--amarelo-hover) !important;
 }
 
 .btn-warning {
@@ -87,15 +88,30 @@
 .btn-icon:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
 .btn-icon-danger {
-  color: #b91c1c;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.btn-icon-danger img {
+  width: 18px;
+  height: 18px;
 }
 
 .btn-icon-danger:hover {
-  background: #d9dadc;
-  background-color: rgba(220, 38, 38, 0.1);
+  opacity: 0.75;
 }
 
+
+@media (max-width: 600px) {
+  .btn-icon-danger img{
+    width: 16px;
+    height: 16px;
+  }
+}
 /* -------- ACOES -------- */
 .btn-action {
   display: inline-flex;

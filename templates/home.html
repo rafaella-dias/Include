@@ -7,14 +7,14 @@
   <div class="home-fixed-inner">
 
     <div class="home-actions">
-      <div class="search-wrapper">
-        <input type="text" placeholder="Pesquisar atividades...">
-        <button class="search-btn" aria-label="Pesquisar">
-          <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
+      <form class="search-wrapper" action="{{ url_for('busca' )}}" method="GET">
+          <input type="text" name="q" placeholder="Buscar atividades..." value="{{ termo or ''}}">
+          <button class="search-btn" aria-label="Pesquisar">
+            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
 
-        </button>
-
-      </div>
+          </button>
+        
+      </form>
 
       <div class="publish-wrapper">
         <a href="{{ url_for('publicar') }}" class="publish-btn">
@@ -35,7 +35,7 @@
 
   <div class="home-header">
    <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
-    <p>Começe a explorar nossa biblioteca de atividades aqui!</p>
+    <p>Começe a explorar nosso repositório de atividades aqui!</p>
 
   </div>
 
@@ -49,21 +49,21 @@
             {% for atividade in curso.atividades %}
               <div class="atividade-card">
 
-                <div class="preview">
+                <div class="atividade-preview">
                   {% if atividade.arquivos %}
                     <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
                   
                   {% else %}
-                    <div class="Preview-vazio">Sem preview</div>
+                    <div class="atividade-preview-vazio">Sem preview</div>
                   
                   {% endif %}
 
                 </div>
 
-                <div class="info">
+                <div class="atividade-info">
                   <h3>{{ atividade.titulo }}</h3>
                   <p>{{ atividade.curso.nome }}</p>
-                  <p class="materia">{{ atividade.materia.nome }}</p>
+                  <p class="info-materia">{{ atividade.materia.nome }}</p>
 
                 </div>
 

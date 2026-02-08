@@ -76,11 +76,8 @@ body {
 }
 
 .logo-header:hover {
-  background: none;
-}
-
-.logo-header:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: transparent;
+  transform: translateY(-2px);
 }
 
 .nav-links {
@@ -118,7 +115,8 @@ body {
 }
 
 .nav-links a:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: transparent;
+  transform: translateY(-2px);
 }
 
 /* ===============================

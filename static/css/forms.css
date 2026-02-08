@@ -57,6 +57,57 @@ textarea {
   font-size: 0.9rem;
 }
 
+select[multiple] {
+  min-height: 140px;
+  cursor: pointer;
+}
+
+select optgroup {
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+select option {
+  font-weight: 400;
+  padding: 6px;
+}
+
+small{
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 600px) {
+
+  form select:not([multiple]) {
+    height: 44px;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  form select[multiple] {
+    min-height: 120px;
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+  }
+
+  form select option {
+    padding: 10px;
+  }
+
+  form select optgroup {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+
+  .container-form {
+    width: calc(100% - 24px);
+    margin: 16px auto;
+    padding: 20px;
+  }
+}
+
+
 .container-form {
   max-width: 420px;
   margin: 50px auto;

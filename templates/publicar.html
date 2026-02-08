@@ -14,18 +14,35 @@
             Materia:
             <select name="materiaForm" id="">
                 <option value="" disabled selected>Selecione uma matéria</option>
-                    {% for materia in materias %}
+                {% for curso in cursos %}
+                    <optgroup label="{{ curso.nome }}"></optgroup>
+                    {% for materia in curso.materias %}
                         <option value="{{ materia.id_materia }}">{{ materia.nome }}</option>
                         
                     {% endfor %}
+                {% endfor %}
             </select>
+
             <label for="tags">Tags:</label> 
-            <select name="tagsForm" id="" multiple size=6 class="tags-select">
-                    {% for tag in tags %}
-                        <option value="{{ tag.id_tag }}">{{ tag.nome }}</option>
-                        
-                    {% endfor %}
+            <select name="tagsForm" id="" multiple size="6">
+                {% for classe in classes %}
+                    {% if classe.tags %}
+                        <optgroup label="{{ classe.nome }}">
+                            {% for tag in classe.tags %}
+                                <option value="{{ tag.id_tag }}">{{ tag.nome }}</option>
+                            
+                            {% endfor %}
+                        </optgroup>
+                    
+                    {% endif %}
+
+                {% endfor %}
             </select>
+
+            <small>
+                Segure <strong>Ctrl + clique</strong> (ou toque longo no celular) para selecionar múltiplas tags.
+            </small>
+
             <input type="submit" value="Publicar" class="btn btn-action-submit">
 
         </form>

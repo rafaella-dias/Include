@@ -124,6 +124,20 @@ def home():
     return render_template('home.html', atividades=atividades, cursos=cursos)
 
 
+@app.route('/busca')
+@login_required
+def busca():
+    termo = request.args.get('q', '').strip()
+
+    if not termo:
+        return redirect(url_for('home'))
+    
+    atividades = Atividade.query.filter(
+        Atividade.titulo.ilike(f'%{termo}%')
+    ).all()
+    return render_template('busca.html', atividades=atividades, termo=termo)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -315,6 +329,7 @@ def excluir_atividade(id):
 
     except Exception as e:
         db.session.rollback()
+        print(e)
         flash('Não foi possível excluir a atividade', 'danger')
 
     return redirect(url_for('perfil'))
@@ -323,11 +338,11 @@ def excluir_atividade(id):
 @app.route('/publicar', methods = ['GET', 'POST'])
 @login_required
 def publicar():
-    materias = Materia.query.all()
-    tags = Tag.query.all()
+    cursos = Curso.query.all()
+    classes = Classe_Tag.query.all()
 
     if request.method == 'GET':
-        return render_template('publicar.html', materias=materias, tags=tags)
+        return render_template('publicar.html', cursos=cursos, classes=classes)
     
     try: #tira o elif pq só tem POST como segunda opção
         titulo = request.form.get('tituloForm')
@@ -386,7 +401,6 @@ def publicar():
         db.session.rollback()
         flash(str(e), 'danger')
         return redirect(url_for('publicar', form_data=request.form))
-
 
 
 @app.route('/admin/materias', methods = ['GET', 'POST'])
