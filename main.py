@@ -242,22 +242,22 @@ def editar_perfil():
         if senha:
             if len(senha) < 8 or ' ' in senha:
                 flash('A senha deve ter no mínimo 8 caracteres e não pode ter espaços')
-                return render_template('perfil.html')
+                return render_template('editar_perfil.html')
             
             if senha != confirmacao_senha:
                 flash('As senhas devem ser iguais')
-                return render_template('perfil.html')
+                return render_template('editar_perfil.html')
             
             current_user.senha = generate_password_hash(senha)
 
         if foto_perfil and foto_perfil.filename != '':
             if not imagem_permitida(foto_perfil.filename):
                 flash('Formato de imagem inválido.', 'danger')
-                return render_template('perfil.html')
+                return render_template('editar_perfil.html')
             
             if not foto_perfil.mimetype.startswith('image/'):
                 flash('O arquivo não é uma imagem válida', 'danger')
-                return render_template('perfil.html')
+                return render_template('editar_perfil.html')
             
             if current_user.public_id:
                 cloudinary.uploader.destroy(current_user.public_id)

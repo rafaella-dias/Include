@@ -4,7 +4,8 @@
 
 {% block content %}
 
-<main class="container-form">
+<main class="main-container">
+  <div class="container-form">
     <h2>Entrar</h2>
 
     <form action="" method="post" id="formLogin">
@@ -24,13 +25,15 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-warning btn-block">Entrar</button>
+      <input type="submit" value="Entrar" class="btn btn-primary">
     </form>
 
     <p>Ainda não possui cadastro? <br>
       <a href="{{ url_for('cadastro') }}">Cadastre-se aqui.</a>
     </p>
 
-  </main>
+  </div>
+    
+</main>
  
 {% endblock %}

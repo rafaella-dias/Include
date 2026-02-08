@@ -27,14 +27,23 @@
   background-color: var(--azul-escuro);
 }
 
-.btn-warning {
+.btn-action-submit {
   background-color: var(--amarelo-destaque);
+  color: var(--texto-principal);
+}
+
+.btn-action-submit:hover {
+  background-color: var(--amarelo-hover);
+}
+
+.btn-warning {
+  background-color: var(--vermelho-alerta);
   color: #1f2937;
   font-weight: 600;
 }
 
 .btn-warning:hover {
-  background-color: var(--amarelo-hover);
+  background-color: var(--vermelho-hover);
 }
 
 .btn-secondary {
