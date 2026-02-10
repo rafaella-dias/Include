@@ -10,6 +10,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 #Dados
 from db import db
 from models import Arquivo, Atividade, Materia, Curso, Tag, Classe_Tag, Usuario
+from sqlalchemy import desc
 
 #Segurança
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -60,7 +61,7 @@ def imagem_permitida(filename):
     )
 
 
-ALLOWED_EXTENSIONS_ARQUIVOS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS_ARQUIVOS = {'png', 'jpg', 'jpeg', 'webp'}
 
 ALLOWED_MIME_TYPES_ARQUIVOS = {
     'application/pdf',
@@ -119,8 +120,8 @@ def inicio():
 @app.route('/home')
 @login_required
 def home():
-    atividades = Atividade.query.all()
     cursos = Curso.query.all()
+    atividades = Atividade.query.order_by(Atividade.data_publicacao.desc()).all()
     return render_template('home.html', atividades=atividades, cursos=cursos)
 
 
@@ -395,7 +396,7 @@ def publicar():
         db.session.add(novo_arquivo)
         db.session.commit()
         flash('Atividade publicada com sucesso.', 'success')
-        return redirect(url_for('publicar'))
+        return redirect(url_for('perfil'))
 
     except Exception as e:
         db.session.rollback()

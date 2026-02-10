@@ -67,6 +67,14 @@
 
                 </div>
 
+                <div class="atividade-actions">
+                  <a href="{{ atividade.arquivos[0].arquivo_url
+                           | replace('/upload/', '/upload/fl_attachment:atividade') }}" 
+                           class="btn-icon-action">
+                    <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
+                  </a>
+                </div>
+
               </div>
 
             {% endfor %}

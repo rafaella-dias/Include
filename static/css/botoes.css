@@ -89,25 +89,25 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.btn-icon-danger {
+.btn-icon-action {
   background: none;
   border: none;
   cursor: pointer;
   padding: 4px;
 }
 
-.btn-icon-danger img {
+.btn-icon-action img {
   width: 18px;
   height: 18px;
 }
 
-.btn-icon-danger:hover {
+.btn-icon-action:hover {
   opacity: 0.75;
 }
 
 
 @media (max-width: 600px) {
-  .btn-icon-danger img{
+  .btn-icon-action img{
     width: 16px;
     height: 16px;
   }

@@ -76,11 +76,17 @@
                                 <div class="atividade-actions">
                                     <form action="{{ url_for('excluir_atividade', id=atividade.id_atividade) }}" method="POST"
                                     onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?')">
-                                        <button type="submit" class="btn-icon-danger">
+                                        <button type="submit" class="btn-icon-action">
                                             <img src="{{ url_for('static', filename='images/icons/icon-excluir.png')}}" alt="Excluir atividade">
 
                                         </button>
                                     </form>
+
+                                    <a href="{{ atividade.arquivos[0].arquivo_url
+                                    | replace('/upload/', '/upload/fl_attachment:atividade/') }}" 
+                                    class="btn-icon-action">
+                                        <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
+                                    </a>
 
                                 </div>
 
