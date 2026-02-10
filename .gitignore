@@ -1,13 +1,13 @@
-# Ambiente virtual
 venv/
+.env
+.env.local
+.env.porduction
 .env/
 __pycache__/
 *.pyc
 
-# IDE
 .vscode/
 .idea/
 
-#Flask
 db.sqlite3
 *.log
