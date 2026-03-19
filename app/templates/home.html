@@ -7,7 +7,7 @@
   <div class="home-fixed-inner">
 
     <div class="home-actions">
-      <form class="search-wrapper" action="{{ url_for('busca' )}}" method="GET">
+      <form class="search-wrapper" action="{{ url_for('main.busca')}}" method="GET">
           <input type="text" name="q" placeholder="Buscar atividades..." value="{{ termo or ''}}">
           <button class="search-btn" aria-label="Pesquisar">
             <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
@@ -17,7 +17,7 @@
       </form>
 
       <div class="publish-wrapper">
-        <a href="{{ url_for('publicar') }}" class="publish-btn">
+        <a href="{{ url_for('activities.publicar') }}" class="publish-btn">
           <span class="plus">+</span>
         </a>
         <span class="publish-label">Publicar recurso</span>

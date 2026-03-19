@@ -10,7 +10,7 @@
         {% if current_user.public_id %}
             <img src="{{current_user.foto_url}}" alt="Foto de perfil">
 
-            <form action="{{ url_for('delete_image' ) }}" method="post">
+            <form action="{{ url_for('user.delete_image' ) }}" method="post">
                 <button type="submit" class="btn btn-warning">Remover Foto</button>
             </form>
 

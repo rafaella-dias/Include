@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<main class="main-container ">
+<main class="main-container">
 
     <section class="intro">
         <h1>Include: Repositório de Atividades Adaptadas para NEE dos Cursos Técnicos</h1>
@@ -33,13 +33,13 @@
     </section>
 
     <section class="inicio-acoes">
-        <a href="{{ url_for('publicar') }}" class="btn-action">
+        <a href="{{ url_for('activities.publicar') }}" class="btn-action"> <!-- mudar para a rota publicar-->
             <img src="{{ url_for('static', filename='images/icons/icon-publi-preto.png') }}" alt="">
             <span>Publique uma atividade</span>
         </a>
 
-        <a href="{{ url_for('home') }}" class="btn-action">
-            <img src="{{ url_for('static', filename='images/icons/icon-repo.png') }}" alt="">
+        <a href="{{ url_for('main.home') }}" class="btn-action">
+            <img src="{{ url_for('static', filename='images/icons/icon-repo.png') }}" alt=""><!-- mudar para a rota home-->
             <span>Conheça o repositório</span>
         </a>
     </section>
