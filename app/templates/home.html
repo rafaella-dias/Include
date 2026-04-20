@@ -61,7 +61,9 @@
                 </div>
 
                 <div class="atividade-info">
-                  <h3>{{ atividade.titulo }}</h3>
+                  <a href="{{ url_for('activities.detalhes_atividade', id=atividade.id_atividade)}}">
+                    <h3>{{ atividade.titulo }}</h3>
+                  </a>
                   <p>{{ atividade.curso.nome }}</p>
                   <p class="info-materia">{{ atividade.materia.nome }}</p>
 

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes da Atividade{% endblock %}
+
+{% block content %}
+    <main class="main-container">
+        <h2>{{ atividade.titulo }}</h2>
+        <h4>{{ atividade.data_publicacao }}</h4>
+        <h3>{{ atividade.autor.nome_completo }}</h3>
+        <p>{{ atividade.descricao }}</p>
+
+        {% for arquivo in atividade.arquivos  %}
+            <div class="preview-arquivo">
+                <img src="{{ arquivo.arquivo_url }}" alt="">
+            </div>
+
+        {% endfor %}
+
+    </main>
+
+{% endblock %}

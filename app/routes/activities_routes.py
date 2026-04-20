@@ -1,39 +1,33 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 
-from werkzeug.utils import secure_filename
-import cloudinary.uploader
-
 from app.extensions import db
-from app.models import Atividade, Arquivo, Materia, Curso, Tag, Classe_Tag
-from app.utils.upload import validar_arquivo
+from app.models import Atividade, Curso, Classe_Tag
+from app.services import storage_service, activities_service, file_service
 
 activities_bp = Blueprint('activities', __name__)
+
 
 
 @activities_bp.route('/delete/atividade/<int:id>', methods = ['POST'])
 @login_required
 def excluir_atividade(id):
     atividade = Atividade.query.get_or_404(id)
+    id_usuario = current_user.id_usuario
 
-    if atividade.id_usuario != current_user.id_usuario:
+    try:
+        activities_service.excluir_atividade(id_usuario, atividade)
+        flash('Atividade excluida com sucesso.', 'success')
+    
+    except PermissionError:
         abort(403)
 
-    try: 
-        for arquivo in atividade.arquivos:
-            cloudinary.uploader.destroy(arquivo.public_id)
-
-        db.session.delete(atividade)
-        db.session.commit()
-
-        flash('Atividade excluida com sucesso', 'success')
-
-    except Exception as e:
-        db.session.rollback()
-        print(e)
+    except Exception:
         flash('Não foi possível excluir a atividade', 'danger')
 
     return redirect(url_for('user.perfil'))
+
+
 
 @activities_bp.route('/publicar', methods = ['GET', 'POST'])
 @login_required
@@ -45,59 +39,40 @@ def publicar():
         return render_template('publicar.html', cursos=cursos, classes=classes)
     
     try: #tira o elif pq só tem POST como segunda opção
+        #---- dados ----
+        arquivo = request.files.get('arquivoForm')
+        if not arquivo:
+            raise ValueError('Arquivo não enviado')
+        dados_arquivo = storage_service.upload_arquivo(arquivo)
+
         titulo = request.form.get('tituloForm')
         descricao = request.form.get('descricaoForm')
         id_materia = request.form.get('materiaForm')
         ids_tags = request.form.getlist('tagsForm')
-        materia = Materia.query.get_or_404(id_materia)
-        id_curso = materia.id_curso
 
-        nova_atividade = Atividade(titulo=titulo,
-                                   descricao=descricao, 
-                                   id_curso=id_curso, 
-                                   id_materia=id_materia, 
-                                   id_usuario=current_user.id_usuario )
-        db.session.add(nova_atividade)
-        db.session.flush()
-
-        for id_tag in ids_tags:
-            tag = Tag.query.get(id_tag)
-            nova_atividade.tags.append(tag)
-
-        arquivo = request.files.get('arquivoForm')
-        
-        valido, resultado = validar_arquivo(arquivo)
-
-        if not valido:
-            raise ValueError(resultado)
-
-        nome = secure_filename(arquivo.filename)
-        tipo = arquivo.mimetype 
-        tamanho = resultado
+        #--- serviços ---
+        nova_atividade = activities_service.criar_atividade(titulo, descricao, id_materia, ids_tags, current_user.id_usuario)
         id_atividade = nova_atividade.id_atividade
+        file_service.registrar_arquivo(dados_arquivo, id_atividade)
 
-        response = cloudinary.uploader.upload(arquivo,
-                                              folder = 'atividades',
-                                              unique_filename = True,
-                                              overwrite = True,
-                                              )
-        
-        secure_url = response.get('secure_url')
-        public_id = response.get('public_id')
-       
-        novo_arquivo = Arquivo(nome=nome, 
-                               tipo=tipo, 
-                               tamanho=tamanho, 
-                               arquivo_url=secure_url,
-                               public_id=public_id,
-                               id_atividade=id_atividade)
-
-        db.session.add(novo_arquivo)
         db.session.commit()
         flash('Atividade publicada com sucesso.', 'success')
         return redirect(url_for('user.perfil'))
 
+    except ValueError as e:
+        flash(str(e), 'warning')
+        return redirect(url_for('activities.publicar', form_data=request.form))
+    
     except Exception as e:
         db.session.rollback()
-        flash(str(e), 'danger')
+        if dados_arquivo and dados_arquivo.get('public_id'):
+            storage_service.delete_cloudinary(dados_arquivo['public_id'])
+        flash('Erro interno no servidor', 'danger')
         return redirect(url_for('activities.publicar', form_data=request.form))
+
+
+
+@activities_bp.route('/detalhes/<int:id>')
+def detalhes_atividade(id):
+    atividade = Atividade.query.get_or_404(id)
+    return render_template('detalhes.html', atividade=atividade)
