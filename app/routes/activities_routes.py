@@ -9,26 +9,6 @@ activities_bp = Blueprint('activities', __name__)
 
 
 
-@activities_bp.route('/delete/atividade/<int:id>', methods = ['POST'])
-@login_required
-def excluir_atividade(id):
-    atividade = Atividade.query.get_or_404(id)
-    id_usuario = current_user.id_usuario
-
-    try:
-        activities_service.excluir_atividade(id_usuario, atividade)
-        flash('Atividade excluida com sucesso.', 'success')
-    
-    except PermissionError:
-        abort(403)
-
-    except Exception:
-        flash('Não foi possível excluir a atividade', 'danger')
-
-    return redirect(url_for('user.perfil'))
-
-
-
 @activities_bp.route('/publicar', methods = ['GET', 'POST'])
 @login_required
 def publicar():
@@ -69,6 +49,26 @@ def publicar():
             storage_service.delete_cloudinary(dados_arquivo['public_id'])
         flash('Erro interno no servidor', 'danger')
         return redirect(url_for('activities.publicar', form_data=request.form))
+
+
+
+@activities_bp.route('/delete/atividade/<int:id>', methods = ['POST'])
+@login_required
+def excluir_atividade(id):
+    atividade = Atividade.query.get_or_404(id)
+    id_usuario = current_user.id_usuario
+
+    try:
+        activities_service.excluir_atividade(id_usuario, atividade)
+        flash('Atividade excluida com sucesso.', 'success')
+    
+    except PermissionError:
+        abort(403)
+
+    except Exception:
+        flash('Não foi possível excluir a atividade', 'danger')
+
+    return redirect(url_for('user.perfil'))
 
 
 
