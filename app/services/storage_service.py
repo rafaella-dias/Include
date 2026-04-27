@@ -1,12 +1,36 @@
 from werkzeug.utils import secure_filename
 import cloudinary.uploader
 
-from app.utils.upload import validar_arquivo
+from app.utils import upload
+
+
 
 def upload_arquivo(arquivo):
     #---- arquivo e validação ---- 
             
-        valido, resultado = validar_arquivo(arquivo)
+        valido, resultado = upload.validar_arquivo(arquivo)
+
+        if not valido:
+            raise ValueError(resultado)
+
+        response = cloudinary.uploader.upload(arquivo,
+                                            folder = 'atividades',
+                                            unique_filename = True,
+                                            overwrite = True,
+                                            )
+        return {
+              'secure_url': response.get('secure_url'),
+              'public_id': response.get('public_id'),
+              'nome': secure_filename(arquivo.filename),
+              'tipo': arquivo.mimetype,
+              'tamanho': resultado
+        }
+
+
+
+
+def upload_imagem(arquivo):#---- imagem e validação ----
+        valido, resultado = upload.validar_imagem(arquivo)
 
         if not valido:
             raise ValueError(resultado)
@@ -27,4 +51,4 @@ def upload_arquivo(arquivo):
 
 
 def delete_cloudinary(public_id):
-        cloudinary.uploader.destroy(public_id)
+    cloudinary.uploader.destroy(public_id)

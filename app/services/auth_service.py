@@ -42,5 +42,6 @@ def cadastrar_usuario(nome_completo, nome_usuario, email, senha):
 
 
 def verif_corresp_senha(usuario, senha):
-    if not usuario or not check_password_hash(usuario.senha, senha):
+    if not usuario:
         return False
+    return check_password_hash(usuario.senha, senha)

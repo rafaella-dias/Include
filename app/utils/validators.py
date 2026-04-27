@@ -1,5 +1,8 @@
 import re
 
+
+
+#---- autenticação e usuário----
 regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 def validar_email(email):
     if not email:
@@ -16,9 +19,13 @@ def validar_usuario(nome_usuario):
 
 
 def validar_senha(senha):
-    return len(senha) >= 8 or ' ' not in senha
+    if not senha:
+        return False
+    return len(senha) >= 8 and ' ' not in senha
 
 
 
 def validar_confirm_senha(senha, confirmacao_senha):
+    if not confirmacao_senha:
+        return False
     return senha == confirmacao_senha

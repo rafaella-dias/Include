@@ -16,14 +16,14 @@ def publicar():
     classes = Classe_Tag.query.all()
 
     if request.method == 'GET':
-        return render_template('publicar.html', cursos=cursos, classes=classes)
+        return render_template('publicar.html', cursos=cursos, classes=classes, form_data={})
     
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
         arquivo = request.files.get('arquivoForm')
         if not arquivo:
             raise ValueError('Arquivo não enviado')
-        dados_arquivo = storage_service.upload_arquivo(arquivo)
+        dados_arquivo = storage_service.upload_arquivo(arquivo)#salva na nuvem e responde o objeto
 
         titulo = request.form.get('tituloForm')
         descricao = request.form.get('descricaoForm')
@@ -33,7 +33,7 @@ def publicar():
         #--- serviços ---
         nova_atividade = activities_service.criar_atividade(titulo, descricao, id_materia, ids_tags, current_user.id_usuario)
         id_atividade = nova_atividade.id_atividade
-        file_service.registrar_arquivo(dados_arquivo, id_atividade)
+        file_service.registrar_arquivo(dados_arquivo, id_atividade)#cadastra no banco baseado nos dados fornecidos pelo serviço de nuvem
 
         db.session.commit()
         flash('Atividade publicada com sucesso.', 'success')
@@ -41,14 +41,14 @@ def publicar():
 
     except ValueError as e:
         flash(str(e), 'warning')
-        return redirect(url_for('activities.publicar', form_data=request.form))
+        return render_template('publicar.html', cursos=cursos, classes=classes, form_data=request.form)
     
     except Exception as e:
         db.session.rollback()
         if dados_arquivo and dados_arquivo.get('public_id'):
             storage_service.delete_cloudinary(dados_arquivo['public_id'])
         flash('Erro interno no servidor', 'danger')
-        return redirect(url_for('activities.publicar', form_data=request.form))
+        return redirect(url_for('publicar.html', form_data=request.form))
 
 
 

@@ -49,7 +49,7 @@ def cadastro():
 
     #validação
     if not validators.validar_usuario(nome_usuario):
-        flash('O nome de usuário não deve ter espaços.')
+        flash('O nome de usuário não deve ter espaços.', 'danger')
         return render_template('cadastro.html', form_data=request.form)
 
     if not validators.validar_email(email):
@@ -65,7 +65,7 @@ def cadastro():
         return render_template('cadastro.html', form_data=request.form)
 
     if not validators.validar_confirm_senha(senha, confirmacao_senha):
-        flash('As senhas devem ser iguais', 'danger')
+        flash('As senhas devem ser correspondentes', 'danger')
         return render_template('cadastro.html', form_data=request.form)
         
     #cadastro
