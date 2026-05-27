@@ -57,11 +57,26 @@
                             <div class="atividade-card">
                                 <div class="atividade-preview">
                                     {% if atividade.arquivos %}
-                                    <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                                        {% set arquivo = atividade.arquivos[0] %}
+
+                                        {% if 'image' in arquivo.tipo %}
+                                            <img class="preview-img" src="{{ arquivo.arquivo_url }}">
+                                            
+                                        {% elif 'application/pdf' in arquivo.tipo %}
+                                            <iframe class="preview" src="{{ arquivo.arquivo_url }}"></iframe>
+                                                
+                                        {% elif 'word' in arquivo.tipo %}
+                                            <div class="preview-doc">
+                                                <img src="{{ url_for('static', filename='images/icons/icon-word.png') }}" alt="Documento Word">    
+                                                <p>{{ arquivo.nome }}</p>
+
+                                            </div>
                                     
-                                    {% else %}
-                                    <div class="atividade-preview-vazio">Sem preview</div>
-                                    
+                                        {% else %}
+                                        <div class="atividade-preview-vazio">Sem preview</div>
+
+                                        {% endif %}
+                                        
                                     {% endif %}
 
                                 </div>
