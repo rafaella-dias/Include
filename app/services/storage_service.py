@@ -1,6 +1,7 @@
+import uuid
 from werkzeug.utils import secure_filename
 import cloudinary.uploader
-
+from app.extensions import supabase
 from app.utils import upload
 
 
@@ -12,20 +13,31 @@ def upload_arquivo(arquivo):
 
         if not valido:
             raise ValueError(resultado)
+        
+        nome_seguro = secure_filename(arquivo.filename)
+        nome_unico = f'{uuid.uuid4()}_{nome_seguro}'
+        conteudo = arquivo.read()
 
-        response = cloudinary.uploader.upload(arquivo,
-                                            folder = 'atividades',
-                                            unique_filename = True,
-                                            overwrite = True,
-                                            )
+        response = supabase.storage.from_('include-arquivos').upload(
+              path=nome_unico, 
+              file=conteudo,
+              file_options={'content-type': arquivo.mimetype}
+              )
+
+        url_publica = supabase.storage.from_('include-arquivos').get_public_url(response.path)
+
         return {
-              'secure_url': response.get('secure_url'),
-              'public_id': response.get('public_id'),
-              'nome': secure_filename(arquivo.filename),
-              'tipo': arquivo.mimetype,
-              'tamanho': resultado
-        }
+            'nome': nome_seguro,
+            'tipo': arquivo.mimetype,
+            'tamanho': resultado,
+            'arquivo_url': url_publica,
+            'storage_path': response.path
+            }
 
+
+
+def delete_arquivo(path):
+      supabase.storage.from_('include-arquivos').remove([path])
 
 
 

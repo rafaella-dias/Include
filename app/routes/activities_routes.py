@@ -1,9 +1,8 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 
-from app.extensions import db
 from app.models import Atividade, Curso, Classe_Tag
-from app.services import storage_service, activities_service, file_service
+from app.services import activities_service
 
 activities_bp = Blueprint('activities', __name__)
 
@@ -20,35 +19,26 @@ def publicar():
     
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
-        arquivo = request.files.get('arquivoForm')
-        if not arquivo:
-            raise ValueError('Arquivo não enviado')
-        dados_arquivo = storage_service.upload_arquivo(arquivo)#salva na nuvem e responde o objeto
-
         titulo = request.form.get('tituloForm')
         descricao = request.form.get('descricaoForm')
         id_materia = request.form.get('materiaForm')
         ids_tags = request.form.getlist('tagsForm')
+        id_usuario = current_user.id_usuario
+        arquivos = request.files.getlist('arquivosForm')
 
-        #--- serviços ---
-        nova_atividade = activities_service.criar_atividade(titulo, descricao, id_materia, ids_tags, current_user.id_usuario)
-        id_atividade = nova_atividade.id_atividade
-        file_service.registrar_arquivo(dados_arquivo, id_atividade)#cadastra no banco baseado nos dados fornecidos pelo serviço de nuvem
-
-        db.session.commit()
+        activities_service.publicar(titulo, descricao, id_materia, ids_tags, id_usuario, arquivos)
         flash('Atividade publicada com sucesso.', 'success')
         return redirect(url_for('user.perfil'))
 
     except ValueError as e:
         flash(str(e), 'warning')
+        print(e)
         return render_template('publicar.html', cursos=cursos, classes=classes, form_data=request.form)
     
     except Exception as e:
-        db.session.rollback()
-        if dados_arquivo and dados_arquivo.get('public_id'):
-            storage_service.delete_cloudinary(dados_arquivo['public_id'])
         flash('Erro interno no servidor', 'danger')
-        return redirect(url_for('publicar.html', form_data=request.form))
+        print(e)
+        return render_template('publicar.html', cursos=cursos, classes=classes, form_data=request.form)
 
 
 

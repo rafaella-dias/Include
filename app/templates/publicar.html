@@ -8,9 +8,9 @@
     <div class="container-form">
         <h2>Publicar Atividade Adaptada</h2>
         <form action="" method="post" enctype="multipart/form-data">
-            Adicionar Arquivo: <input type="file" name="arquivoForm" id="" required>
             Titulo: <input type="text" name="tituloForm" id="" value="{{ form_data.get('tituloForm', '') }}" required>
             Descrição: <input type="text" name="descricaoForm" id="" value="{{ form_data.get('descricaoForm', '') }}" required>
+            Adicionar Arquivo: <input type="file" name="arquivosForm" id="" multiple required>
             Materia:
             <select name="materiaForm" id="">
                 <option value="" disabled selected>Selecione uma matéria</option>

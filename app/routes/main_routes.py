@@ -11,7 +11,6 @@ def inicio():
     return render_template('inicio.html')
 
 @main_bp.route('/home')
-@login_required
 def home():
     cursos = Curso.query.all()
     atividades = Atividade.query.order_by(Atividade.data_publicacao.desc()).all()
