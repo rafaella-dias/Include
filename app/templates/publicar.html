@@ -10,7 +10,33 @@
         <form action="" method="post" enctype="multipart/form-data">
             Titulo: <input type="text" name="tituloForm" id="" value="{{ form_data.get('tituloForm', '') }}" required>
             Descrição: <input type="text" name="descricaoForm" id="" value="{{ form_data.get('descricaoForm', '') }}" required>
-            Adicionar Arquivo: <input type="file" name="arquivosForm" id="" multiple required>
+
+            <div class="upload-wrapper">
+
+                <label class="upload-label">
+                    Adicionar Arquivo:
+                </label>
+
+                <div class="upload-container">
+
+                    <label for="arquivosForm" class="upload-box">
+                        <span>+ Adicionar arquivos</span>
+                    </label>
+
+                    <input
+                        type="file"
+                        name="arquivosForm"
+                        id="arquivosForm"
+                        multiple
+                        hidden
+                    >
+
+                    <div id="lista-arquivos"></div>
+
+                </div>
+
+            </div>
+            
             Materia:
             <select name="materiaForm" id="">
                 <option value="" disabled selected>Selecione uma matéria</option>
@@ -47,7 +73,7 @@
                     {% endif %}
 
                 {% endfor %}
-            </select>
+            </select>   
 
             <small>
                 Segure <strong>Ctrl + clique</strong> (ou toque longo no celular) para selecionar múltiplas tags.
@@ -60,5 +86,78 @@
     </div>
 
 </main>
+
+<script>
+    const inputArquivos = document.getElementById('arquivosForm')
+    const listaArquivos = document.getElementById('lista-arquivos')
+
+    let arquivosSelecionados = []
+
+    inputArquivos.addEventListener('change', () => {
+        const novosArquivos = Array.from(inputArquivos.files)
+        
+        novosArquivos.forEach(novoArquivo => {
+            const jaExiste = arquivosSelecionados.some(arquivo =>
+                arquivo.name === novoArquivo.name &&
+                arquivo.size === novoArquivo.size
+            )
+
+            if (!jaExiste) {
+                arquivosSelecionados.push(novoArquivo)
+            }
+        })
+
+        atualizarInputFiles()
+        renderizarArquivos()
+    })
+
+    function renderizarArquivos() {
+        listaArquivos.innerHTML = ''
+
+        arquivosSelecionados.forEach((arquivo, index) => {
+
+            const item = document.createElement('div')
+            item.classList.add('upload-arquivo-item')
+
+            const tamanhoKB = (arquivo.size / 1024).toFixed(1)
+
+            item.innerHTML = `
+                <div class="upload-arquivo-info">
+                    <div class="upload-arquivo-icon">📄</div>
+
+                    <div class="upload-arquivo-textos">
+                        <span class="upload-arquivo-nome">
+                            ${arquivo.name}
+                        </span>
+
+                        <span class="upload-arquivo-tamanho">
+                            ${tamanhoKB} KB
+                        </span>
+
+                    </div>
+
+                </div>
+                <button type="button" class="upload-remover-btn" onclick="removerArquivos(${index})"> ✕ </button>
+            `
+
+            listaArquivos.appendChild(item)
+        })
+    }
+
+    function removerArquivos(index) {
+        arquivosSelecionados.splice(index,1)
+        atualizarInputFiles()
+        renderizarArquivos()
+    }
+
+    function atualizarInputFiles() {
+        const dataTransfer = new DataTransfer()
+        arquivosSelecionados.forEach(arquivo => {
+            dataTransfer.items.add(arquivo)
+        })
+
+        inputArquivos.files = dataTransfer.files
+    }
+</script>
 
 {% endblock %}

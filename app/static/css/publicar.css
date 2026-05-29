@@ -1,0 +1,181 @@
+/* =========================
+   WRAPPER
+========================= */
+
+.upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* LABEL */
+.upload-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+
+/* CONTAINER */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 12px;
+
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+
+  background-color: #fcfcfd;
+}
+
+
+/* BOTAO ADD */
+.upload-box {
+  width: 100%;
+
+  padding: 14px;
+
+  border: 1px dashed #c7d0db;
+  border-radius: 6px;
+
+  background-color: #ffffff;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: border-color 0.15s ease,
+              background-color 0.15s ease;
+}
+
+.upload-box:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+.upload-box span {
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  color: var(--azul-principal);
+}
+
+
+/* LISTA */
+#lista-arquivos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* ITEM */
+.upload-arquivo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+
+  background-color: #ffffff;
+}
+
+
+/* INFO */
+.upload-arquivo-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* ICONE */
+.upload-arquivo-icon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 6px;
+
+  background-color: #eff3f8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.95rem;
+
+  flex-shrink: 0;
+}
+
+
+/* TEXTOS */
+.upload-arquivo-textos {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+
+/* NOME */
+.upload-arquivo-nome {
+  font-size: 0.88rem;
+  font-weight: 500;
+
+  color: #334155;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* TAMANHO */
+.upload-arquivo-tamanho {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+
+/* BOTAO REMOVER */
+.upload-remover-btn {
+  width: 24px;
+  height: 24px;
+
+  border: none;
+  border-radius: 4px;
+
+  background-color: transparent;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  flex-shrink: 0;
+
+  transition: background-color 0.15s ease,
+              color 0.15s ease;
+}
+
+.upload-remover-btn:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
