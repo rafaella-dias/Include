@@ -29,6 +29,22 @@
   --fundo-pagina: #f8f9fb;
 
   --navbar-height: 84px;
+
+  /* TAGS */
+  --tag-azul-bg: #E0F2FE;
+  --tag-azul-texto: #0C4A6E;
+
+  --tag-amarelo-bg: #FEF3C7;
+  --tag-amarelo-texto: #92400E;
+
+  --tag-verde-bg: #DCFCE7;
+  --tag-verde-texto: #166534;
+
+  --tag-rosa-bg: #FCE7F3;
+  --tag-rosa-texto: #9D174D;
+
+  --tag-roxo-bg: #F3E8FF;
+  --tag-roxo-texto: #6B21A8;
 }
 
 /* ===============================

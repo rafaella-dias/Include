@@ -1,64 +1,68 @@
-/* ===============================
-   CONTEÚDO / EDITAR PERFIL
-================================ */
 /* FOTO DE PERFIL */
-.container-form {
-  max-width: 420px;
-  margin: 50px auto;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
 
-.container-form img {
+.foto-perfil {
   width: 120px;
   height: 120px;
+
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 15px;
+
   display: block;
-  border: 3px solid #004aad;
+  margin: 0 auto 15px;
+
+  border: 3px solid var(--azul-principal);
 }
 
-/* ===============================
-   BOTÃO REMOVER FOTO
-================================ */
-.container-form form button[type="submit"] {
-  margin: 10px auto 20px auto;
-  padding: 10px;
-  max-width: 260px;
+
+/* BOTAO REMOVER FOTO */
+
+.btn-remover-foto {
   width: 100%;
-  background-color: #c0392b;
-  color: #fff;
+  max-width: 260px;
+
+  margin: 10px auto 20px;
+
+  padding: 10px;
+
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+
+  background-color: #c0392b;
+  color: #fff;
+
   font-size: 0.9rem;
+
+  cursor: pointer;
 }
 
-.container-form form button[type="submit"]:hover {
+.btn-remover-foto:hover {
   background-color: #a93226;
 }
 
-/* ===============================
-   BOTÃO SALVAR ALTERAÇÕES
-================================ */
-.container-form input[type="submit"] {
-  margin-top: 20px;
-  align-self: center;
+
+/* BOTAO SALVAR */
+
+.btn-salvar-perfil {
   width: 100%;
   max-width: 300px;
+
+  margin-top: 20px;
+  align-self: center;
+
   padding: 12px;
-  border-radius: 8px;
+
   border: none;
-  background-color: #004aad;
+  border-radius: 8px;
+
+  background-color: var(--azul-principal);
   color: #fff;
+
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
+
   cursor: pointer;
 }
 
-.container-form input[type="submit"]:hover {
-  background-color: #003580;
+.btn-salvar-perfil:hover {
+  background-color: var(--azul-escuro);
 }

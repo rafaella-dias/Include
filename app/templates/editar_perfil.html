@@ -6,33 +6,132 @@
 
 <main class="main-container">
     <div class="container-form">
+
         <h2>Editar Perfil</h2>
-        {% if current_user.public_id %}
-            <img src="{{current_user.foto_url}}" alt="Foto de perfil">
 
-            <form action="{{ url_for('user.delete_image' ) }}" method="post">
-                <button type="submit" class="btn btn-warning">Remover Foto</button>
-            </form>
+        <div class="form-section">
 
-        {% else %}
-            <img src="{{ url_for('static', filename='images/default.png')    }} " alt="Foto de perfil padrão">
-                
-        {% endif %}
-            
+            {% if current_user.public_id %}
+                <img
+                    src="{{ current_user.foto_url }}"
+                    alt="Foto de perfil"
+                    class="foto-perfil"
+                >
+
+                <form action="{{ url_for('user.delete_image') }}" method="post">
+                    <button
+                        type="submit"
+                        class="btn-remover-foto"
+                    >
+                        Remover foto
+                    </button>
+                </form>
+
+            {% else %}
+
+                <img
+                    src="{{ url_for('static', filename='images/default.png') }}"
+                    alt="Foto de perfil padrão"
+                    class="foto-perfil"
+                >
+
+            {% endif %}
+
+        </div>
+
         <form action="" method="post" enctype="multipart/form-data">
-            Editar Foto: <input type="file" name="foto_perfilForm" id="">
-            Editar Nome Completo: <input type="text" name="nome_completoForm" id="" value="{{current_user.nome_completo}}">
-            Editar Nome Usuario: <input type="text" name="nome_usuarioForm" id="" value="{{current_user.nome_usuario}}">
-            Editar Descrição: <textarea name="descricaoForm" maxlength="250" rows="3" placeholder="Adicionar descrição..."
-            >{{ current_user.descricao if current_user.descricao else '' }}</textarea>
-            Editar Senha: <input type="password" name="senhaForm" id="">
-            Confirmar Senha <input type="password" name="confirmacao_senhaForm" id="">
-            <input type="submit" value="Salvar Alterações" class="btn btn-primary">
+
+            <div class="form-section">
+
+                <h3>Foto de Perfil</h3>
+
+                <label for="foto_perfilForm">
+                    Nova foto
+                </label>
+
+                <input
+                    type="file"
+                    name="foto_perfilForm"
+                    id="foto_perfilForm"
+                >
+
+            </div>
+
+            <div class="form-section">
+
+                <h3>Informações Básicas</h3>
+
+                <label for="nome_completoForm">
+                    Nome completo
+                </label>
+
+                <input
+                    type="text"
+                    name="nome_completoForm"
+                    id="nome_completoForm"
+                    value="{{ current_user.nome_completo }}"
+                >
+
+                <label for="nome_usuarioForm">
+                    Nome de usuário
+                </label>
+
+                <input
+                    type="text"
+                    name="nome_usuarioForm"
+                    id="nome_usuarioForm"
+                    value="{{ current_user.nome_usuario }}"
+                >
+
+                <label for="descricaoForm">
+                    Descrição
+                </label>
+
+                <textarea
+                    name="descricaoForm"
+                    id="descricaoForm"
+                    maxlength="250"
+                    rows="3"
+                    placeholder="Adicionar descrição..."
+                >{{ current_user.descricao if current_user.descricao else '' }}</textarea>
+
+            </div>
+
+            <div class="form-section">
+
+                <h3>Segurança</h3>
+
+                <label for="senhaForm">
+                    Nova senha
+                </label>
+
+                <input
+                    type="password"
+                    name="senhaForm"
+                    id="senhaForm"
+                >
+
+                <label for="confirmacao_senhaForm">
+                    Confirmar senha
+                </label>
+
+                <input
+                    type="password"
+                    name="confirmacao_senhaForm"
+                    id="confirmacao_senhaForm"
+                >
+
+            </div>
+
+            <input
+                type="submit"
+                value="Salvar Alterações"
+                class="btn-salvar-perfil"
+            >
 
         </form>
 
     </div>
-
 </main>
 
 {% endblock %}

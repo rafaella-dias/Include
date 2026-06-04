@@ -1,0 +1,83 @@
+/* CONTAINER DAS TAGS */
+.tag-lista {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+/* GRUPO DE TAGS */
+.tag-grupo {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-bottom: 16px;
+}
+
+
+/* TITULO */
+.tag-grupo h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  color: var(--texto-principal);
+
+  padding-bottom: 6px;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* TAG BASE */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.15s ease;
+}
+
+/* CORES */
+.tag-chip.azul {
+  background-color: var(--tag-azul-bg);
+  color: var(--tag-azul-texto);
+}
+
+.tag-chip.amarelo {
+  background-color: var(--tag-amarelo-bg);
+  color: var(--tag-amarelo-texto);
+}
+
+.tag-chip.verde {
+  background-color: var(--tag-verde-bg);
+  color: var(--tag-verde-texto);
+}
+
+.tag-chip.rosa {
+  background-color: var(--tag-rosa-bg);
+  color: var(--tag-rosa-texto);
+}
+
+.tag-chip.roxo {
+  background-color: var(--tag-roxo-bg);
+  color: var(--tag-roxo-texto);
+}
+
+.tag-chip.active {
+  background-color: var(--azul-principal);
+
+  color: white;
+
+  border-color: var(--azul-principal);
+}

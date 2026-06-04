@@ -8,82 +8,127 @@
     <div class="container-form">
         <h2>Publicar Atividade Adaptada</h2>
         <form action="" method="post" enctype="multipart/form-data">
-            Titulo: <input type="text" name="tituloForm" id="" value="{{ form_data.get('tituloForm', '') }}" required>
-            Descrição: <input type="text" name="descricaoForm" id="" value="{{ form_data.get('descricaoForm', '') }}" required>
+            <div class="form-section">
+                <h3>Informações da Atividade</h3>
 
-            <div class="upload-wrapper">
+                Titulo: <input type="text" name="tituloForm" id="" value="{{ form_data.get('tituloForm', '') }}" required>
+                Descrição: <input type="text" name="descricaoForm" id="" value="{{ form_data.get('descricaoForm', '') }}" required>
 
-                <label class="upload-label">
-                    Adicionar Arquivo:
-                </label>
+            </div>
 
-                <div class="upload-container">
+            <div class="form-section">
+                <h3>Arquivos</h3>
+                <div class="upload-wrapper">
 
-                    <label for="arquivosForm" class="upload-box">
-                        <span>+ Adicionar arquivos</span>
+                    <label class="upload-label">
+                        Adicionar Arquivo:
                     </label>
 
-                    <input
-                        type="file"
-                        name="arquivosForm"
-                        id="arquivosForm"
-                        multiple
-                        hidden
-                    >
+                    <div class="upload-container">
 
-                    <div id="lista-arquivos"></div>
+                        <label for="arquivosForm" class="upload-box">
+                            <span>+ Adicionar arquivos</span>
+                        </label>
+
+                        <input type="file" name="arquivosForm" id="arquivosForm" multiple hidden>
+
+                        <div id="lista-arquivos"></div>
+
+                    </div>
+
+                </div> 
+
+            </div>
+            
+            <div class="form-section">
+                <h3>Classificação</h3>
+                
+                Materia:
+                <select name="materiaForm" id="">
+                    <option value="" disabled selected>Selecione uma matéria</option>
+                    {% for curso in cursos %}
+                        <optgroup label="{{ curso.nome }}"></optgroup>
+                        {% for materia in curso.materias %}
+                            <option value="{{ materia.id_materia }}" 
+                                {% if form_data.get('materiaForm') == materia.id_materia|string %}
+                                    selected
+                                {% endif %}>
+                                    {{ materia.nome }}
+                            </option>
+                            
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+
+
+                <label for="tags">Tags:</label> 
+                <select name="tagsForm" id="tagsForm" multiple size="6" hidden>
+                    
+
+                    {% for classe in classes %}
+                        
+                        {% if classe.tags %}
+
+                            <optgroup label="{{ classe.nome }}">
+
+                                {% for tag in classe.tags %}
+
+                                    <option value="{{ tag.id_tag }}">
+                                        {{ tag.nome  }}
+                                </option>
+
+                                {% endfor %}
+
+                            </optgroup>
+                        
+                        {% endif %}
+
+                    {% endfor %}
+                </select> 
+                
+                {% set cores = ['azul', 'amarelo', 'verde', 'rosa', 'roxo'] %}
+                
+                <div class="tags-wrapper">
+
+                    {% for classe in classes %}
+                    
+                        {% set cor = cores[loop.index0 % 5] %}
+
+                        {% if classe.tags %}
+
+                            <div class="tag-grupo">
+                                <h4 class="tag-grupo-titulo">
+                                    {{ classe.nome }}
+
+                                </h4>
+
+                                <div class="tag-lista">
+                                    {% for tag in classe.tags %}   
+                                        
+                                    <button type="button" class="tag-chip {{ cor }}" data-tag-id="{{ tag.id_tag }}">
+                                        {{ tag.nome }}
+                                    </button>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+                            
+                        {% endif %}
+                        
+                    {% endfor %}
 
                 </div>
 
             </div>
             
-            Materia:
-            <select name="materiaForm" id="">
-                <option value="" disabled selected>Selecione uma matéria</option>
-                {% for curso in cursos %}
-                    <optgroup label="{{ curso.nome }}"></optgroup>
-                    {% for materia in curso.materias %}
-                        <option value="{{ materia.id_materia }}" 
-                            {% if form_data.get('materiaForm') == materia.id_materia|string %}
-                                selected
-                            {% endif %}>
-                                {{ materia.nome }}
-                        </option>
-                        
-                    {% endfor %}
-                {% endfor %}
-            </select>
 
-            <label for="tags">Tags:</label> 
-            <select name="tagsForm" id="" multiple size="6">
-                {% for classe in classes %}
-                    {% if classe.tags %}
-                        <optgroup label="{{ classe.nome }}">
-                            {% for tag in classe.tags %}
-                                <option value="{{ tag.id_tag }}"
-                            {% if tag.id_tag|string in form_data.get('tagsForm', []) %}
-                                selected
-                            {% endif %}>
-                                {{ tag.nome }}
-                            </option>
-                            
-                            {% endfor %}
-                        </optgroup>
-                    
-                    {% endif %}
-
-                {% endfor %}
-            </select>   
-
-            <small>
-                Segure <strong>Ctrl + clique</strong> (ou toque longo no celular) para selecionar múltiplas tags.
-            </small>
-
+            
             <input type="submit" value="Publicar" class="btn btn-action-submit">
 
         </form>
 
-    </div>
 
 </main>
 
@@ -158,6 +203,24 @@
 
         inputArquivos.files = dataTransfer.files
     }
+
+    const chips = document.querySelectorAll('.tag-chip')
+    const selectTags = document.getElementById('tagsForm')
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+
+            chip.classList.toggle('active')
+            
+            const tagId = chip.dataset.tagId
+            const option = selectTags.querySelector(
+                `option[value='${tagId}']`
+            )
+
+            option.selected = chip.classList.contains('active')
+        })
+    })
+
 </script>
 
 {% endblock %}
