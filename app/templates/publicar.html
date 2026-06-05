@@ -6,13 +6,16 @@
 
 <main class="main-container">
     <div class="container-form">
-        <h2>Publicar Atividade Adaptada</h2>
+        <h2>Publicar Material Adaptado</h2>
         <form action="" method="post" enctype="multipart/form-data">
             <div class="form-section">
                 <h3>Informações da Atividade</h3>
 
-                Titulo: <input type="text" name="tituloForm" id="" value="{{ form_data.get('tituloForm', '') }}" required>
-                Descrição: <input type="text" name="descricaoForm" id="" value="{{ form_data.get('descricaoForm', '') }}" required>
+                <label for="tituloForm">Título</label>
+                <input id="tituloForm">
+
+                <label for="descricaoForm">Descrição</label>
+                <textarea id="descricaoForm"></textarea>
 
             </div>
 
@@ -43,7 +46,7 @@
             <div class="form-section">
                 <h3>Classificação</h3>
                 
-                Materia:
+                <label for="materiaForm">Materia:</label>
                 <select name="materiaForm" id="">
                     <option value="" disabled selected>Selecione uma matéria</option>
                     {% for curso in cursos %}
@@ -132,95 +135,7 @@
 
 </main>
 
-<script>
-    const inputArquivos = document.getElementById('arquivosForm')
-    const listaArquivos = document.getElementById('lista-arquivos')
-
-    let arquivosSelecionados = []
-
-    inputArquivos.addEventListener('change', () => {
-        const novosArquivos = Array.from(inputArquivos.files)
-        
-        novosArquivos.forEach(novoArquivo => {
-            const jaExiste = arquivosSelecionados.some(arquivo =>
-                arquivo.name === novoArquivo.name &&
-                arquivo.size === novoArquivo.size
-            )
-
-            if (!jaExiste) {
-                arquivosSelecionados.push(novoArquivo)
-            }
-        })
-
-        atualizarInputFiles()
-        renderizarArquivos()
-    })
-
-    function renderizarArquivos() {
-        listaArquivos.innerHTML = ''
-
-        arquivosSelecionados.forEach((arquivo, index) => {
-
-            const item = document.createElement('div')
-            item.classList.add('upload-arquivo-item')
-
-            const tamanhoKB = (arquivo.size / 1024).toFixed(1)
-
-            item.innerHTML = `
-                <div class="upload-arquivo-info">
-                    <div class="upload-arquivo-icon">📄</div>
-
-                    <div class="upload-arquivo-textos">
-                        <span class="upload-arquivo-nome">
-                            ${arquivo.name}
-                        </span>
-
-                        <span class="upload-arquivo-tamanho">
-                            ${tamanhoKB} KB
-                        </span>
-
-                    </div>
-
-                </div>
-                <button type="button" class="upload-remover-btn" onclick="removerArquivos(${index})"> ✕ </button>
-            `
-
-            listaArquivos.appendChild(item)
-        })
-    }
-
-    function removerArquivos(index) {
-        arquivosSelecionados.splice(index,1)
-        atualizarInputFiles()
-        renderizarArquivos()
-    }
-
-    function atualizarInputFiles() {
-        const dataTransfer = new DataTransfer()
-        arquivosSelecionados.forEach(arquivo => {
-            dataTransfer.items.add(arquivo)
-        })
-
-        inputArquivos.files = dataTransfer.files
-    }
-
-    const chips = document.querySelectorAll('.tag-chip')
-    const selectTags = document.getElementById('tagsForm')
-
-    chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-
-            chip.classList.toggle('active')
-            
-            const tagId = chip.dataset.tagId
-            const option = selectTags.querySelector(
-                `option[value='${tagId}']`
-            )
-
-            option.selected = chip.classList.contains('active')
-        })
-    })
-
-</script>
+<script src="{{ url_for('static', filename='js/pages/publicar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/tags.js') }}"></script>
 
 {% endblock %}

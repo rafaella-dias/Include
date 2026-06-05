@@ -5,17 +5,29 @@ form {
   gap: 12px;
 }
 
+form input,
+form textarea,
+form select {
+    background-color: #fafafa;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    background-color: white;
+}
+
 /* SECOES */
 .form-section {
   display: flex;
   flex-direction: column;
 
-  gap: 12px;
+  gap: 16px;
 
-  padding-bottom: 20px;
+  padding-top: 24px;
   margin-bottom: 20px;
 
-  border-bottom: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
 }
 
 .form-section:last-of-type {
@@ -30,7 +42,7 @@ form {
 
   color: var(--texto-principal);
 
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 /* LABELS */
@@ -151,6 +163,15 @@ small {
   display: block;
 
   border: 3px solid #004aad;
+}
+
+.container-form h2 {
+  margin-bottom: 32px;
+
+  font-size: 2rem;
+  font-weight: 600;
+
+  color: var(--texto-principal);
 }
 
 .container-form p {
