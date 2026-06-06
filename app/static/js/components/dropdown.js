@@ -1,7 +1,7 @@
 /* 
 <button class="btn-menu" id="btn-menu">⋮</button>
 
-    <div class="material-dropdown" id="material-dropdown">
+    <div class="dropdown" id="dropdown">
         <a href="#">Baixar</a>
         <a href="#">Favoritar</a>
 
@@ -15,7 +15,7 @@
 */
 
 const btnMenu = document.getElementById('btn-menu')
-const dropdown = document.getElementById('material-dropdown')
+const dropdown = document.getElementById('dropdown')
 
 if (btnMenu && dropdown) {
 
