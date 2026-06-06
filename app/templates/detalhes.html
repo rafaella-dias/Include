@@ -4,18 +4,108 @@
 
 {% block content %}
     <main class="main-container">
-        <h2>{{ atividade.titulo }}</h2>
-        <h4>{{ atividade.data_publicacao }}</h4>
-        <h3>{{ atividade.autor.nome_completo }}</h3>
-        <p>{{ atividade.descricao }}</p>
+        
+        <div class="material-container">
 
-        {% for arquivo in atividade.arquivos  %}
-            <div class="preview-arquivo">
-                <img src="{{ arquivo.arquivo_url }}" alt="">
+            <div class="material-header">
+
+                <div class="material-info">
+                    <h1>{{ atividade.titulo }}</h1>
+
+                    <span>{{ atividade.materia.nome }}</span>
+
+                    <div class="tag-lista">
+                        {% for tag in atividade.tags %} 
+                                                
+                            <span class="tag-chip-static">
+                            {{ tag.nome }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <div class="material-actions">
+                    <button class="btn-menu" id="btn-menu">⋮</button>
+
+                    <div class="material-dropdown" id="material-dropdown">
+                        <a href="#">Compartilhar</a>
+                        <a href="#">Favoritar</a>
+
+                        {% if current_user.id_usuario == atividade.autor.id_usuario %}
+                            <a href="#">Editar</a>
+                            <form action="{{ url_for('activities.excluir_atividade', id=atividade.id_atividade) }}" method="post">
+                                <button type="submit" class="dropdown-danger">
+                                    Excluir
+                                </button>
+                            </form>
+                            
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
             </div>
 
-        {% endfor %}
+
+            <section class="material-section">
+                <h3>Descrição</h3>
+
+                <p>{{ atividade.descricao }}</p>
+
+            </section>
+
+
+            <section class="material-section">
+                <h3>Arquivos</h3>
+
+                {% for arquivo in atividade.arquivos %}
+                    <div class="arquivo-card">
+
+                        <div class="arquivo-info">
+                            📄{{ arquivo.nome }}
+
+                        </div>
+
+                        <button>Vizualizar</button>
+
+                    </div>
+                    
+                {% endfor %}
+
+            </section>
+
+
+            <section class="material-section">
+                <h3>Publicado por:</h3>
+
+                <div class="autor-card">
+                    {% if atividade.autor.foto_url %}
+                        <img src="{{ atividade.autor.foto_url }}" alt="">
+                        
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default.png') }}" alt="">
+                        
+                    {% endif %}
+
+                    <div>
+                        <strong>{{ atividade.autor.nome_completo }}</strong>
+
+                        <span>Publicado em {{ atividade.data_publicacao.strftime('%d/%m/%Y às %H:%M') }}</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
 
     </main>
+
+    <script src="{{ url_for('static', filename='js/components/dropdown.js') }}"></script>
 
 {% endblock %}

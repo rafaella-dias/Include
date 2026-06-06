@@ -46,6 +46,25 @@
   transition: 0.15s ease;
 }
 
+.tag-chip-static {
+  background-color: var(--tag-azul-bg);
+  color: var(--tag-azul-texto);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font-size: 0.82rem;
+  font-weight: 500;
+
+  transition: 0.15s ease;
+}
+
 /* CORES */
 .tag-chip.azul {
   background-color: var(--tag-azul-bg);

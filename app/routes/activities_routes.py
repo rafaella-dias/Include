@@ -54,9 +54,11 @@ def excluir_atividade(id):
     
     except PermissionError:
         abort(403)
+        return redirect(url_for('activities.detalhes_atividade', id=id))
 
     except Exception:
         flash('Não foi possível excluir a atividade', 'danger')
+        return redirect(url_for('activities.detalhes_atividade', id=id))
 
     return redirect(url_for('user.perfil'))
 
