@@ -56,8 +56,8 @@ def excluir_atividade(id_usuario, atividade):
     
     try:
         for arquivo in atividade.arquivos:
-            public_id = arquivo.public_id
-            storage_service.delete_arquivo(arquivo.public_id)
+            arquivo_url = arquivo.arquivo_url
+            storage_service.delete_arquivo(arquivo.arquivo_url)
         db.session.delete(atividade)
         db.session.commit()
 

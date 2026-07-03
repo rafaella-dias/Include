@@ -65,6 +65,7 @@ def excluir_atividade(id):
 
 
 @activities_bp.route('/detalhes/<int:id>')
+@login_required
 def detalhes_atividade(id):
     atividade = Atividade.query.get_or_404(id)
     return render_template('detalhes.html', atividade=atividade)

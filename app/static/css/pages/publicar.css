@@ -179,3 +179,12 @@
   background-color: #fee2e2;
   color: #dc2626;
 }
+
+.upload-erro {
+  margin-top: 8px;
+
+  color: var(--vermelho-alerta);
+
+  font-size: 0.85rem;
+  font-weight: 500;
+}

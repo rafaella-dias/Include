@@ -20,6 +20,14 @@
         atualizarInputFiles()
         renderizarArquivos()
     })
+  
+    form.addEventListener('submit', (event) => {
+
+        if (arquivosSelecionados.length === 0) {
+            event.preventDefault()
+            alert('Selecione pelo menos um arquivo.')
+        }
+    })
 
     function renderizarArquivos() {
         listaArquivos.innerHTML = ''
@@ -67,4 +75,5 @@
         })
 
         inputArquivos.files = dataTransfer.files
+        
     }

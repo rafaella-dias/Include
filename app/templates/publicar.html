@@ -12,12 +12,12 @@
                 <h3>Informações da Atividade</h3>
 
                 <label for="tituloForm">Título</label>
-                <input id="tituloForm">
+                <input type="text" id="tituloForm" name="tituloForm" value="{{ form_data.get('tituloForm', '') }}" required>
 
                 <label for="descricaoForm">Descrição</label>
-                <textarea id="descricaoForm"></textarea>
+                <textarea id="descricaoForm" name="descricaoForm">{{ form_data.get('descricaoForm', '') }}</textarea>
 
-            </div>
+            </div>  
 
             <div class="form-section">
                 <h3>Arquivos</h3>
@@ -36,6 +36,7 @@
                         <input type="file" name="arquivosForm" id="arquivosForm" multiple hidden>
 
                         <div id="lista-arquivos"></div>
+                        <div id="uploadErro" class="upload-erro"></div>
 
                     </div>
 
@@ -47,26 +48,32 @@
                 <h3>Classificação</h3>
                 
                 <label for="materiaForm">Materia:</label>
-                <select name="materiaForm" id="">
+                <select name="materiaForm" id="materiaForm">
                     <option value="" disabled selected>Selecione uma matéria</option>
                     {% for curso in cursos %}
+
                         <optgroup label="{{ curso.nome }}"></optgroup>
+
                         {% for materia in curso.materias %}
+
                             <option value="{{ materia.id_materia }}" 
+
                                 {% if form_data.get('materiaForm') == materia.id_materia|string %}
                                     selected
                                 {% endif %}>
+
                                     {{ materia.nome }}
                             </option>
                             
                         {% endfor %}
+
                     {% endfor %}
+                    
                 </select>
 
 
                 <label for="tagsForm">Tags:</label> 
                 <select name="tagsForm" id="tagsForm" multiple size="6" hidden>
-                    
 
                     {% for classe in classes %}
                         
@@ -76,9 +83,15 @@
 
                                 {% for tag in classe.tags %}
 
-                                    <option value="{{ tag.id_tag }}">
+                                    <option value="{{ tag.id_tag }}"
+                                        {% if tag.id_tag|string in form_data.getlist('tagsForm') %}
+                                            selected
+                                        {% endif %}
+                                    >
+
                                         {{ tag.nome  }}
-                                </option>
+                                
+                                    </option>
 
                                 {% endfor %}
 
@@ -108,8 +121,12 @@
                                 <div class="tag-lista">
                                     {% for tag in classe.tags %}   
                                         
-                                    <button type="button" class="tag-chip {{ cor }}" data-tag-id="{{ tag.id_tag }}">
+                                    <button type="button" 
+                                        class="tag-chip {{ cor }} {% if tag.id_tag|string in form_data.getlist('tagsForm') %}active{% endif %}"
+                                        data-tag-id="{{ tag.id_tag }}">
+                                        
                                         {{ tag.nome }}
+
                                     </button>
 
                                     {% endfor %}
