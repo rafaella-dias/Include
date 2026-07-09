@@ -28,6 +28,7 @@ def upload_arquivo(arquivo):
 
         return {
             'nome': nome_seguro,
+            'nome_unico': nome_unico,
             'tipo': arquivo.mimetype,
             'tamanho': resultado,
             'arquivo_url': url_publica,
@@ -36,8 +37,8 @@ def upload_arquivo(arquivo):
 
 
 
-def delete_arquivo(path):
-      supabase.storage.from_('include-arquivos').remove([path])
+def delete_arquivo(storage_path):
+      supabase.storage.from_('include-arquivos').remove([storage_path])
 
 
 

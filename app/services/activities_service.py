@@ -43,10 +43,10 @@ def publicar(titulo, descricao, id_materia, ids_tags, id_usuario, arquivos):
     except Exception:
         db.session.rollback()
         for arquivo in uploads:
-            storage_service.delete_cloudinary(arquivo['public_id'])
+            storage_service.delete_arquivo(arquivo['storage_path'])
         raise 
     
-    return None # futura (atual) função orquestradora
+    return None 
 
 
 
@@ -56,8 +56,7 @@ def excluir_atividade(id_usuario, atividade):
     
     try:
         for arquivo in atividade.arquivos:
-            arquivo_url = arquivo.arquivo_url
-            storage_service.delete_arquivo(arquivo.arquivo_url)
+            storage_service.delete_arquivo(arquivo.storage_path)
         db.session.delete(atividade)
         db.session.commit()
 
