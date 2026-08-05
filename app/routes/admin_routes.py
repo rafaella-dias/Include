@@ -2,17 +2,49 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_required
 
 from app.extensions import db
-from app.models import Curso, Materia, Tag, Classe_Tag
+from app.models import Curso, Materia, Conteudo, Classe_Tag, Tag
+from app.services import admin_service
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
+
+
+
+@admin_bp.route('/conteudos', methods = ['GET', 'POST'])
+@login_required
+def gerenciar_conteudos():
+    if request.method == 'GET':
+        cursos = Curso.query.all()
+        return render_template('administrador/conteudos.html', cursos=cursos, form_data={})
+
+    try: 
+        nome = request.form.get('nomeForm')
+        id_materia = request.form.get('materiaForm')
+
+        admin_service.registrar_conteudo(nome, id_materia)
+        db.session.commit()
+
+        flash('Conteúdo adicionado com sucesso!', 'success')
+        return redirect(url_for('admin.dashboard'))
+
+    except ValueError as e:
+        db.session.rollback()
+        flash(e, 'danger')
+        print(e)
+        return render_template('administrador/conteudos.html', cursos=cursos, form_data=request.form)
+
+    except Exception as e:
+        flash('Erro interno no servidor.', 'danger')
+        print(e)
+        return render_template('administrador/conteudos.html', cursos=cursos, form_data=request.form)
+
 
 
 @admin_bp.route('/materias', methods = ['GET', 'POST'])
 @login_required
 def gerenciar_materias():
     if request.method == 'GET': 
-        all_cursos = Curso.query.all()
-        return render_template('administrador/materias.html', cursos=all_cursos)
+        cursos = Curso.query.all()
+        return render_template('administrador/materias.html', cursos=cursos)
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
@@ -28,7 +60,8 @@ def gerenciar_materias():
         db.session.commit()
 
         flash('Materia adicionada com sucesso!', 'success')
-        return redirect(url_for('admin.gerenciar_materias'))
+        return redirect(url_for('admin.dashboard'))
+
 
 
 @admin_bp.route('/cursos', methods = ['GET', 'POST'])
@@ -50,15 +83,16 @@ def gerenciar_cursos():
         db.session.commit()
 
         flash('Curso adicionado com sucesso!', 'success')
-        return redirect(url_for('admin.gerenciar_cursos'))
+        return redirect(url_for('admin.dashboard'))
+
 
 
 @admin_bp.route('/tags', methods = ['GET', 'POST'])
 @login_required
 def gerenciar_tags():
     if request.method == 'GET': 
-        all_classes = Classe_Tag.query.all()
-        return render_template('administrador/tags.html', classes=all_classes)
+        classes = Classe_Tag.query.all()
+        return render_template('administrador/tags.html', classes=classes)
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
@@ -75,7 +109,8 @@ def gerenciar_tags():
         db.session.commit()
 
         flash('Tag criada com sucesso!', 'success')
-        return redirect(url_for('admin.gerenciar_tags'))
+        return redirect(url_for('admin.dashboard'))
+
 
 
 @admin_bp.route('/classes', methods = ['GET', 'POST'])
@@ -97,7 +132,8 @@ def gerenciar_classes():
         db.session.commit()
 
         flash('Categoria criada com sucesso!', 'success')
-        return redirect(url_for('admin.gerenciar_classes'))
+        return redirect(url_for('admin.dashboard'))
+
     
 
 @admin_bp.route('/dashboard')
@@ -105,7 +141,8 @@ def gerenciar_classes():
 def dashboard():
     cursos = Curso.query.all()
     materias = Materia.query.all()
+    conteudos = Conteudo.query.all()
     classes = Classe_Tag.query.all()
     tags = Tag.query.all()
     
-    return render_template('administrador/dashboard.html', cursos=cursos, materias=materias, classes=classes, tags=tags )
+    return render_template('administrador/dashboard.html', cursos=cursos, materias=materias,conteudos=conteudos , classes=classes, tags=tags )

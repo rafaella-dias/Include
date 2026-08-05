@@ -35,7 +35,7 @@ class Usuario(UserMixin, db.Model):
     
 
 
-class Atividade(db.Model):
+class Atividade(db.Model): #Materias
     __tablename__ = 'atividades'
 
     id_atividade = db.Column(db.Integer, primary_key=True)
@@ -125,19 +125,6 @@ class Conteudo(db.Model):
 
 
 
-
-class Tag(db.Model):
-    __tablename__ = 'tags'
-
-    id_tag = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(20), nullable=False, unique=True)
-    id_classe = db.Column(db.Integer, db.ForeignKey('classes_tag.id_classe'), nullable=False)
-
-    def __repr__(self):
-        return f'<{self.nome}>'
-
-
-
 class Classe_Tag(db.Model):
     __tablename__ = 'classes_tag'
 
@@ -146,6 +133,19 @@ class Classe_Tag(db.Model):
     cor = db.Column(db.Enum(CorTag), default=CorTag.AZUL, nullable=False)
 
     tags = db.relationship('Tag', backref='classe', lazy=True)
+
+    def __repr__(self):
+        return f'<{self.nome}>'
+
+
+
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id_tag = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(20), nullable=False, unique=True)
+    id_classe = db.Column(db.Integer, db.ForeignKey('classes_tag.id_classe'), nullable=False)
 
     def __repr__(self):
         return f'<{self.nome}>'

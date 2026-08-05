@@ -1,6 +1,6 @@
 from app.extensions import db
 from app.models import Atividade, Materia, Tag
-from app.services import storage_service, activities_service, file_service
+from app.services import storage_service, file_service
 
 
 
@@ -27,7 +27,7 @@ def publicar(titulo, descricao, id_materia, ids_tags, id_usuario, arquivos):
     try:
         uploads = []
         #---- serviços ----
-        nova_atividade = activities_service.criar_atividade(titulo, descricao, id_materia, ids_tags, id_usuario)
+        nova_atividade = criar_atividade(titulo, descricao, id_materia, ids_tags, id_usuario)
         id_atividade = nova_atividade.id_atividade
                 
         if not arquivos:

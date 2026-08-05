@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Classes{% endblock %}
+
+{% block content %}
+<main class="main-container">
+    <div class="container-form">
+        <div>
+            <h1>Adicionar Conteúdo</h1> 
+            <form action="" method="post">
+                <label>
+                    <input type="text" name="nomeForm" value="{{form_data if nomeForm else ' '}}" required>
+                </label>
+
+                <label>
+                    {% for curso in cursos %}
+                        <details>
+                            <summary>{{ curso.nome}}</summary>
+                            
+                            {% if curso.materias %}
+                                {% for materia in curso.materias %}
+                                    <label class="">
+                                        <input type="radio" name="materiaForm" value="{{ materia.id_materia }}" required>
+                                        {{ materia.nome }}
+                                    </label>
+                                    
+                                {% endfor %}
+
+                            {% else %}
+                                    <p>Nenhuma matéria cadastrada.</p>
+                            {% endif %}
+                            
+
+                        </details>
+                            
+                    {% endfor %}
+                </label>
+
+                <label>
+                    <input type="submit" value="Adicionar Conteúdo">
+                </label>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+    
+{% endblock %}
