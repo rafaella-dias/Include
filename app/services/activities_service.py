@@ -1,17 +1,51 @@
 from app.extensions import db
-from app.models import Atividade, Materia, Tag
+from app.models import Atividade, Curso, Materia, Tag
 from app.services import storage_service, file_service
 
+from sqlalchemy.orm import selectinload
 
 
-def criar_atividade(titulo, descricao, id_materia, ids_tags, id_usuario):
-    materia = Materia.query.get_or_404(id_materia)
-    id_curso = materia.id_curso
 
+def gerar_cursos_dados():
+    cursos = Curso.query.options(selectinload(Curso.materias).selectinload(Materia.conteudos)).all()
+    cursos_dados = []
+
+    for curso in cursos:
+        curso_dict = {
+            "id": curso.id_curso,
+            "nome": curso.nome,
+            "materias": []
+            }
+        
+        for materia in curso.materias:
+            materia_dict = {
+                "id": materia.id_materia,
+                "nome": materia.nome,
+                "conteudos": []
+                }    
+
+            for conteudo in materia.conteudos:
+                conteudo_dict = {
+                    "id": conteudo.id_conteudo,
+                    "nome": conteudo.nome
+                    }
+
+                materia_dict["conteudos"].append(conteudo_dict)
+
+            curso_dict["materias"].append(materia_dict)
+
+        cursos_dados.append(curso_dict)
+         
+    return cursos_dados
+
+
+
+def criar_atividade(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
     nova_atividade = Atividade(titulo=titulo,
                                descricao=descricao, 
                                id_curso=id_curso, 
-                               id_materia=id_materia, 
+                               id_materia=id_materia,
+                               id_conteudo=id_conteudo, 
                                id_usuario=id_usuario )
     db.session.add(nova_atividade)
     db.session.flush()
@@ -23,11 +57,12 @@ def criar_atividade(titulo, descricao, id_materia, ids_tags, id_usuario):
     return nova_atividade
 
 
-def publicar(titulo, descricao, id_materia, ids_tags, id_usuario, arquivos):
+
+def publicar(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos):
     try:
         uploads = []
         #---- serviços ----
-        nova_atividade = criar_atividade(titulo, descricao, id_materia, ids_tags, id_usuario)
+        nova_atividade = criar_atividade(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario)
         id_atividade = nova_atividade.id_atividade
                 
         if not arquivos:

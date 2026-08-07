@@ -8,8 +8,13 @@
     <div class="container-form">
         <h2>Publicar Material Adaptado</h2>
         <form action="" method="post" enctype="multipart/form-data">
+
+
+
+
+
             <div class="form-section">
-                <h3>Informações da Atividade</h3>
+                <h3>Informações do Material</h3>
 
                 <label for="tituloForm">Título</label>
                 <input type="text" id="tituloForm" name="tituloForm" value="{{ form_data.get('tituloForm', '') }}" required>
@@ -19,8 +24,12 @@
 
             </div>  
 
+
+
+
+
             <div class="form-section">
-                <h3>Arquivos</h3>
+                <h3>Adicionar Arquivos</h3>
                 <div class="upload-wrapper">
 
                     <label class="upload-label">
@@ -44,32 +53,31 @@
 
             </div>
             
+
+
+
+
             <div class="form-section">
-                <h3>Classificação</h3>
+                <h3>Classificação do Material</h3>
+
+                <label for="cursoForm">Curso:</label>
+                <select name="cursoForm" id="cursoForm" required>
+                    <option value="">Selecione um curso</option>
+
+                </select>
                 
                 <label for="materiaForm">Materia:</label>
-                <select name="materiaForm" id="materiaForm">
-                    <option value="" disabled selected>Selecione uma matéria</option>
-                    {% for curso in cursos %}
-
-                        <optgroup label="{{ curso.nome }}"></optgroup>
-
-                        {% for materia in curso.materias %}
-
-                            <option value="{{ materia.id_materia }}" 
-
-                                {% if form_data.get('materiaForm') == materia.id_materia|string %}
-                                    selected
-                                {% endif %}>
-
-                                    {{ materia.nome }}
-                            </option>
-                            
-                        {% endfor %}
-
-                    {% endfor %}
+                <select name="materiaForm" id="materiaForm" disabled required>
+                    <option value="" disabled selected>Selecione um curso primeiro.</option>
                     
                 </select>
+
+                <label for="conteudoForm">Conteúdo:</label>
+                <select name="conteudoForm" id="conteudoForm" disabled>
+                    <option value="" disabled selected>Selecione uma matéria primeiro.</option>
+
+                </select>
+
 
 
                 <label for="tagsForm">Tags:</label> 
@@ -152,7 +160,11 @@
 
 </main>
 
-<script src="{{ url_for('static', filename='js/pages/publicar.js') }}"></script>
+<script> 
+    const cursos = {{ cursos_json | safe }};
+</script>
+<script src="{{ url_for('static', filename='js/pages/publicar/classificacoes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/publicar/arquivos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/tags.js') }}"></script>
 
 {% endblock %}

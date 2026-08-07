@@ -52,7 +52,7 @@ class Atividade(db.Model): #Materias
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id_usuario'), nullable=False)
     id_curso =  db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     id_materia =  db.Column(db.Integer, db.ForeignKey('materias.id_materia'), nullable=False)
-    id_conteudo = db.Column(db.Integer, db.ForeignKey('conteudos.id_conteudo'), nullable=True)
+    id_conteudo = db.Column(db.Integer, db.ForeignKey('conteudos.id_conteudo'), nullable=True)#obs no True !!
 
     arquivos = db.relationship('Arquivo', backref='atividade', cascade='all, delete-orphan' , lazy=True)
     tags = db.relationship('Tag', secondary=atividade_tag, backref='atividades')

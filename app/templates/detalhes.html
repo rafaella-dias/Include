@@ -12,7 +12,9 @@
                 <div class="material-info">
                     <h1>{{ atividade.titulo }}</h1>
 
+                    <span>{{ atividade.curso.nome }}</span>
                     <span>{{ atividade.materia.nome }}</span>
+                    <span>{{ atividade.conteudo.nome }}</span>
 
                     <div class="tag-lista">
                         {% for tag in atividade.tags %} 

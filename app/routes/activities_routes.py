@@ -1,3 +1,5 @@
+import json
+
 from flask import Blueprint, request, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 
@@ -13,32 +15,35 @@ activities_bp = Blueprint('activities', __name__)
 def publicar():
     cursos = Curso.query.all()
     classes = Classe_Tag.query.all()
+    cursos_json = json.dumps(activities_service.gerar_cursos_dados(), ensure_ascii=False)
 
     if request.method == 'GET':
-        return render_template('publicar.html', cursos=cursos, classes=classes, form_data={})
+        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={})
     
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
         titulo = request.form.get('tituloForm')
         descricao = request.form.get('descricaoForm')
+        id_curso = request.form.get('cursoForm')
         id_materia = request.form.get('materiaForm')
+        id_conteudo = request.form.get('conteudoForm')
         ids_tags = request.form.getlist('tagsForm')
         id_usuario = current_user.id_usuario
         arquivos = request.files.getlist('arquivosForm')
 
-        activities_service.publicar(titulo, descricao, id_materia, ids_tags, id_usuario, arquivos)
+        activities_service.publicar(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos)
         flash('Atividade publicada com sucesso.', 'success')
         return redirect(url_for('user.perfil'))
 
     except ValueError as e:
         flash(str(e), 'warning')
         print(e)
-        return render_template('publicar.html', cursos=cursos, classes=classes, form_data=request.form)
+        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
     
     except Exception as e:
         flash('Erro interno no servidor', 'danger')
         print(e)
-        return render_template('publicar.html', cursos=cursos, classes=classes, form_data=request.form)
+        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
 
 
 
