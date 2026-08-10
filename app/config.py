@@ -9,7 +9,7 @@ class Config():
     SQLALCHEMY_DATABASE_URI = "sqlite:///DatabaseInclude.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
+    #CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
 
     SUPABASE_URL = os.getenv("SUPABASE_URL")
     SUPABASE_KEY = os.getenv("SUPABASE_KEY")

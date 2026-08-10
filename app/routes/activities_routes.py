@@ -18,7 +18,7 @@ def publicar():
     cursos_json = json.dumps(activities_service.gerar_cursos_dados(), ensure_ascii=False)
 
     if request.method == 'GET':
-        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={})
+        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={'tagsForm': []})
     
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
