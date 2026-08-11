@@ -8,7 +8,21 @@
         <div>
             <h1>Adicionar Classe de Tag</h1>
             <form action="" method="post">
-                <input type="text" name="nome_classeForm" value="{{form_data if nome_classeForm else ' '}}" required>
+                <label for="nomeForm">
+                    <input type="text" name="nomeForm" value="{{form_data if nome_classeForm else ' '}}" required>
+
+                </label>
+
+                <label for="corForm">
+                    <select name="corForm" id="corForm">
+                        <option value="azul">Azul</option>
+                        <option value="amarelo">Amarelo</option>
+                        <option value="verde">Verde</option>
+                        <option value="rosa">Rosa</option>
+                        <option value="roxo">Roxo</option>
+                    </select>
+                </label>
+                
                 <input type="submit" value="Adicionar Classe">
 
             </form>

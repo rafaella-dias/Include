@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_required
 
 from app.extensions import db
+from app.enums import CorTag
 from app.models import Curso, Materia, Conteudo, Classe_Tag, Tag
 from app.services import admin_service
 
@@ -96,7 +97,6 @@ def gerenciar_tags():
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
-        cor = request.form.get('corForm')
         id_classe = request.form.get('classeForm')
 
         tag_existente = Tag.query.filter_by(nome=nome).first()
@@ -104,7 +104,7 @@ def gerenciar_tags():
             flash('Essa tag já foi registrada', 'danger')
             return redirect(url_for('tags.html'))
 
-        nova_tag = Tag(nome=nome, cor=cor, id_classe=id_classe)
+        nova_tag = Tag(nome=nome, id_classe=id_classe)
         db.session.add(nova_tag)
         db.session.commit()
 
@@ -117,17 +117,19 @@ def gerenciar_tags():
 @login_required
 def gerenciar_classes():
     if request.method == 'GET':
-        return render_template('administrador/classe_tag.html')
+        return render_template('administrador/classe_tag.html',form_data={})
 
-    elif request.method =='POST':
-        nome_classe = request.form.get('nome_classeForm')
+    else:
+        nome_classe = request.form.get('nomeForm')
+        cor = CorTag(request.form.get('corForm'))
 
         classe_existente = Classe_Tag.query.filter_by(nome=nome_classe).first()
         if classe_existente:
+            db.session.rollback()
             flash('Essa classe já foi registrada', 'danger')
             return render_template('classe_tag.html', form_data=request.form)
 
-        nova_classe = Classe_Tag(nome=nome_classe)
+        nova_classe = Classe_Tag(nome=nome_classe, cor=cor)
         db.session.add(nova_classe)
         db.session.commit()
 
