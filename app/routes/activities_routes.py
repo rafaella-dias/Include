@@ -1,8 +1,9 @@
-import json
+import json, logging
 
 from flask import Blueprint, request, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 
+from app.extensions import db
 from app.models import Atividade, Curso, Classe_Tag
 from app.services import activities_service
 
@@ -73,4 +74,10 @@ def excluir_atividade(id):
 @login_required
 def detalhes_atividade(id):
     atividade = Atividade.query.get_or_404(id)
+    try:
+        activities_service.adicionar_visualizacao(id)
+
+    except Exception as e:
+        logging.error(f'Erro ao computar a vizualização da atividade{id}: {e}')
+        db.session.rollback()
     return render_template('detalhes.html', atividade=atividade)

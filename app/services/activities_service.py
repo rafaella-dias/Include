@@ -99,3 +99,11 @@ def excluir_atividade(id_usuario, atividade):
         db.session.rollback()
         print(e)
         raise
+
+
+
+def adicionar_visualizacao(atividade_id):
+    db.session.query(Atividade).filter_by(id_atividade=atividade_id).update({
+        Atividade.visualizacoes: Atividade.visualizacoes + 1
+    })
+    db.session.commit()
