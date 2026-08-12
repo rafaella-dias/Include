@@ -92,7 +92,7 @@
                                 {% for tag in classe.tags %}
 
                                     <option value="{{ tag.id_tag }}"
-                                        {% if tag.id_tag|string in form_data.getlist('tagsForm') %}
+                                        {% if tag.id_tag|string in form_data.get('tagsForm', []) %}
                                             selected
                                         {% endif %}
                                     >
@@ -130,7 +130,7 @@
                                     {% for tag in classe.tags %}   
                                         
                                     <button type="button" 
-                                        class="tag-chip {{ cor }} {% if tag.id_tag|string in form_data.getlist('tagsForm') %}active{% endif %}"
+                                        class="tag-chip {{ cor }} {% if tag.id_tag|string in form_data.get('tagsForm', []) %}active{% endif %}"
                                         data-tag-id="{{ tag.id_tag }}">
                                         
                                         {{ tag.nome }}
