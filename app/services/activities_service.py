@@ -40,9 +40,11 @@ def gerar_cursos_dados():
 
 
 
-def criar_atividade(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
+def criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
     nova_atividade = Atividade(titulo=titulo,
+                               subtitulo=subtitulo,
                                descricao=descricao, 
+                               conteudo_textual=conteudo_textual,
                                id_curso=id_curso, 
                                id_materia=id_materia,
                                id_conteudo=id_conteudo, 
@@ -58,11 +60,11 @@ def criar_atividade(titulo, descricao, id_curso, id_materia, id_conteudo, ids_ta
 
 
 
-def publicar(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos):
+def publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos):
     try:
         uploads = []
         #---- serviços ----
-        nova_atividade = criar_atividade(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario)
+        nova_atividade = criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario)
         id_atividade = nova_atividade.id_atividade
                 
         if not arquivos:

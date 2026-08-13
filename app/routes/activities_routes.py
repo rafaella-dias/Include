@@ -24,7 +24,9 @@ def publicar():
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
         titulo = request.form.get('tituloForm')
+        subtitulo = request.form.get('subtituloForm')
         descricao = request.form.get('descricaoForm')
+        conteudo_textual = request.form.get('textoForm')
         id_curso = request.form.get('cursoForm')
         id_materia = request.form.get('materiaForm')
         id_conteudo = request.form.get('conteudoForm')
@@ -32,7 +34,7 @@ def publicar():
         id_usuario = current_user.id_usuario
         arquivos = request.files.getlist('arquivosForm')
 
-        activities_service.publicar(titulo, descricao, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos)
+        activities_service.publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos)
         flash('Atividade publicada com sucesso.', 'success')
         return redirect(url_for('user.perfil'))
 

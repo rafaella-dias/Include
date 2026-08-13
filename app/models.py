@@ -6,8 +6,8 @@ from datetime import datetime
 
 
 atividade_tag = db.Table('atividade_tag',
-    db.Column('id_atividade', db.Integer, db.ForeignKey('atividades.id_atividade'), primary_key=True),
-    db.Column('id_tag', db.Integer, db.ForeignKey('tags.id_tag'), primary_key=True)
+    db.Column('id_atividade', db.Integer, db.ForeignKey('atividades.id_atividade', ondelete='CASCADE'), primary_key=True),
+    db.Column('id_tag', db.Integer, db.ForeignKey('tags.id_tag', ondelete='CASCADE'), primary_key=True)
 )
 
 
@@ -35,7 +35,7 @@ class Usuario(UserMixin, db.Model):
     
 
 
-class Atividade(db.Model): #Materias
+class Atividade(db.Model): #Materiais
     __tablename__ = 'atividades'
 
     id_atividade = db.Column(db.Integer, primary_key=True)
@@ -45,7 +45,7 @@ class Atividade(db.Model): #Materias
     descricao = db.Column(db.String(300), nullable=False)
     conteudo_textual = db.Column(db.Text)
 
-    data_publicacao = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    data_publicacao = db.Column(db.DateTime, default=datetime.now, nullable=False)
     visualizacoes = db.Column(db.Integer, default=0, nullable=False)
     downloads = db.Column(db.Integer, default=0, nullable=False)
 

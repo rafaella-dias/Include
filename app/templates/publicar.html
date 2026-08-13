@@ -19,8 +19,16 @@
                 <label for="tituloForm">Título</label>
                 <input type="text" id="tituloForm" name="tituloForm" value="{{ form_data.get('tituloForm', '') }}" required>
 
+                <label for="subtituloForm">Subtítulo</label>
+                <input type="text" id="subtituloForm" name="subtituloForm" value="{{ form_data.get('subtituloForm', '') }}">
+
                 <label for="descricaoForm">Descrição</label>
                 <textarea id="descricaoForm" name="descricaoForm">{{ form_data.get('descricaoForm', '') }}</textarea>
+
+                <label for="textoForm">Conteúdo Textual</label>
+                <textarea name="textoForm" id="textoForm" rows="6">{{ form_data.get('textoForm', '') }}</textarea>
+
+                
 
             </div>  
 
