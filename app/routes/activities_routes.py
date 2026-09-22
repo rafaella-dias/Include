@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash,
 from flask_login import login_required, current_user
 
 from app.extensions import db
-from app.models import Atividade, Curso, Classe_Tag
+from app.models import Material, Curso, Classe_Tag
 from app.services import activities_service
 
 activities_bp = Blueprint('activities', __name__)

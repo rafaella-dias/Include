@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.models import Atividade, Curso, Materia, Tag
+from app.models import Material, Curso, Materia, Tag
 from app.services import storage_service, file_service
 
 from sqlalchemy.orm import selectinload

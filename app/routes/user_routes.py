@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 import cloudinary.uploader
 
 from app.extensions import db
-from app.models import Atividade
+from app.models import Material
 from app.services import storage_service
 from app.utils import upload, validators
 
