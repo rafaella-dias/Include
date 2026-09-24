@@ -41,7 +41,7 @@ def gerar_cursos_dados():
 
 
 def criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
-    nova_atividade = Atividade(titulo=titulo,
+    nova_atividade = Material(titulo=titulo,
                                subtitulo=subtitulo,
                                descricao=descricao, 
                                conteudo_textual=conteudo_textual,
@@ -105,7 +105,7 @@ def excluir_atividade(id_usuario, atividade):
 
 
 def adicionar_visualizacao(atividade_id):
-    db.session.query(Atividade).filter_by(id_atividade=atividade_id).update({
-        Atividade.visualizacoes: Atividade.visualizacoes + 1
+    db.session.query(Material).filter_by(id_atividade=atividade_id).update({
+        Material.visualizacoes: Material.visualizacoes + 1
     })
     db.session.commit()

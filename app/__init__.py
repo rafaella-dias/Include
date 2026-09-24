@@ -1,7 +1,8 @@
 from flask import Flask
 
 from app.config import Config #importação das configurações
-from app.extensions import db, login_manager #importação dos objetos do banco de dados criado pelo sqlalchemy e do login manager
+from app.extensions import db, login_manager, migrate #importação dos objetos do banco de dados criado pelo sqlalchemy e do login manager
+#A importação dos models para o manuseio do flask-migrate/Asemblic é feita de forma indireta através de cada blueprint
 
 from app.routes.main_routes import main_bp
 from app.routes.auth_routes import auth_bp
@@ -17,6 +18,7 @@ def create_app(): #implementando o Application Factory
     app.config.from_object(Config) #carregamento das configurações da classe Config
 
     db.init_app(app) #passando o app como argumento à criação do banco sqlalch.
+    migrate.init_app(app, db)
     login_manager.init_app(app) #passando o app como argumento à criação do login manager
 
     login_manager.login_view = 'auth.login'

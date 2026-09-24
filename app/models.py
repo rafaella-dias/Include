@@ -102,12 +102,15 @@ class Curso(db.Model):
 class Materia(db.Model):
     __tablename__ = 'materias'
 
+    __tableargs__= (db.UniqueConstraint('nome', 'id_curso', name='uq_materia_curso'),)
+
     id_materia = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False, unique=True)
+    nome = db.Column(db.String(100), nullable=False, unique=False)
     id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     
     conteudos = db.relationship('Conteudo', backref='materia', lazy=True, cascade='all, delete-orphan')
     materiais = db.relationship('Material', backref='materia', lazy=True)
+    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
 
     def __repr__(self):
         return f'<{self.nome}>'
