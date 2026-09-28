@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Detalhes da Atividade{% endblock %}
+{% block title %}Detalhes do Material{% endblock %}
 
 {% block content %}
     <main class="main-container">
@@ -10,14 +10,14 @@
             <div class="material-header">
 
                 <div class="material-info">
-                    <h1>{{ atividade.titulo }}</h1>
+                    <h1>{{ material.titulo }}</h1>
 
-                    <span>{{ atividade.curso.nome }}</span>
-                    <span>{{ atividade.materia.nome }}</span>
-                    <span>{{ atividade.conteudo.nome }}</span>
+                    <span>{{ material.curso.nome }}</span>
+                    <span>{{ material.materia.nome }}</span>
+                    <span>{{ material.conteudo.nome }}</span>
 
                     <div class="tag-lista">
-                        {% for tag in atividade.tags %} 
+                        {% for tag in material.tags %} 
                                                 
                             <span class="tag-chip-static">
                             {{ tag.nome }}
@@ -29,7 +29,7 @@
 
                     <div>
                         <p>
-                        {{atividade.vizualizacoes}}
+                        {{material.vizualizacoes}}
                         </p>
                     </div>
 
@@ -42,9 +42,9 @@
                         <a href="#">Compartilhar</a>
                         <a href="#">Favoritar</a>
 
-                        {% if current_user.id_usuario == atividade.autor.id_usuario %}
+                        {% if current_user.id_usuario == material.autor.id_usuario %}
                             <a href="#">Editar</a>
-                            <form action="{{ url_for('activities.excluir_atividade', id=atividade.id_atividade) }}" method="post">
+                            <form action="{{ url_for('materials.excluir_material', id=material.id_material) }}" method="post">
                                 <button type="submit" class="dropdown-danger">
                                     Excluir
                                 </button>
@@ -63,7 +63,7 @@
             <section class="material-section">
                 <h3>Descrição</h3>
 
-                <p>{{ atividade.descricao }}</p>
+                <p>{{ material.descricao }}</p>
 
             </section>
 
@@ -71,7 +71,7 @@
             <section class="material-section">
                 <h3>Arquivos</h3>
 
-                {% for arquivo in atividade.arquivos %}
+                {% for arquivo in material.arquivos %}
                     <div class="arquivo-card">
 
                         <div class="arquivo-info">
@@ -92,8 +92,8 @@
                 <h3>Publicado por:</h3>
 
                 <div class="autor-card">
-                    {% if atividade.autor.foto_url %}
-                        <img src="{{ atividade.autor.foto_url }}" alt="">
+                    {% if material.autor.foto_url %}
+                        <img src="{{ material.autor.foto_url }}" alt="">
                         
                     {% else %}
                         <img src="{{ url_for('static', filename='images/default.png') }}" alt="">
@@ -101,9 +101,9 @@
                     {% endif %}
 
                     <div>
-                        <strong>{{ atividade.autor.nome_completo }}</strong>
+                        <strong>{{ material.autor.nome_completo }}</strong>
 
-                        <span>Publicado em {{ atividade.data_publicacao.strftime('%d/%m/%Y às %H:%M') }}</span>
+                        <span>Publicado em {{ material.data_publicacao.strftime('%d/%m/%Y às %H:%M') }}</span>
                     </div>
 
                 </div>

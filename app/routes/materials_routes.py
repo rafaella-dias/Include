@@ -5,18 +5,18 @@ from flask_login import login_required, current_user
 
 from app.extensions import db
 from app.models import Material, Curso, Classe_Tag
-from app.services import activities_service
+from app.services import materials_service
 
-activities_bp = Blueprint('activities', __name__)
+materials_bp = Blueprint('materials', __name__)
 
 
 
-@activities_bp.route('/publicar', methods = ['GET', 'POST'])
+@materials_bp.route('/publicar', methods = ['GET', 'POST'])
 @login_required
 def publicar():
     cursos = Curso.query.all()
     classes = Classe_Tag.query.all()
-    cursos_json = json.dumps(activities_service.gerar_cursos_dados(), ensure_ascii=False)
+    cursos_json = json.dumps(materials_service.gerar_cursos_dados(), ensure_ascii=False)
 
     if request.method == 'GET':
         return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={'tagsForm': []})
@@ -34,8 +34,8 @@ def publicar():
         id_usuario = current_user.id_usuario
         arquivos = request.files.getlist('arquivosForm')
 
-        activities_service.publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos)
-        flash('Atividade publicada com sucesso.', 'success')
+        materials_service.publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario, arquivos)
+        flash('Material publicada com sucesso.', 'success')
         return redirect(url_for('user.perfil'))
 
     except ValueError as e:
@@ -50,36 +50,36 @@ def publicar():
 
 
 
-@activities_bp.route('/delete/atividade/<int:id>', methods = ['POST'])
+@materials_bp.route('/delete/material/<int:id>', methods = ['POST'])
 @login_required
-def excluir_atividade(id):
-    atividade = Atividade.query.get_or_404(id)
+def excluir_material(id):
+    material = Material.query.get_or_404(id)
     id_usuario = current_user.id_usuario
 
     try:
-        activities_service.excluir_atividade(id_usuario, atividade)
-        flash('Atividade excluida com sucesso.', 'success')
+        materials_service.excluir_material(id_usuario, material)
+        flash('Material excluido com sucesso.', 'success')
     
     except PermissionError:
         abort(403)
-        return redirect(url_for('activities.detalhes_atividade', id=id))
+        return redirect(url_for('materials.detalhes_material', id=id))
 
     except Exception:
-        flash('Não foi possível excluir a atividade', 'danger')
-        return redirect(url_for('activities.detalhes_atividade', id=id))
+        flash('Não foi possível excluir o material', 'danger')
+        return redirect(url_for('materials.detalhes_material', id=id))
 
     return redirect(url_for('user.perfil'))
 
 
 
-@activities_bp.route('/detalhes/<int:id>')
+@materials_bp.route('/detalhes/<int:id>')
 @login_required
-def detalhes_atividade(id):
-    atividade = Atividade.query.get_or_404(id)
+def detalhes_material(id):
+    material = Material.query.get_or_404(id)
     try:
-        activities_service.adicionar_visualizacao(id)
+        materials_service.adicionar_visualizacao(id)
 
     except Exception as e:
-        logging.error(f'Erro ao computar a vizualização da atividade{id}: {e}')
+        logging.error(f'Erro ao computar a vizualização da material{id}: {e}')
         db.session.rollback()
-    return render_template('detalhes.html', atividade=atividade)
+    return render_template('detalhes.html', material=material)

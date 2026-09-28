@@ -137,7 +137,7 @@ class Classe_Tag(db.Model):
     __tablename__ = 'classes_tag'
 
     id_classe = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(20), nullable=False, unique=True)
+    nome = db.Column(db.String(50), nullable=False, unique=True)
     cor = db.Column(db.Enum(CorTag), default=CorTag.AZUL, nullable=False)
 
     tags = db.relationship('Tag', backref='classe', lazy=True)
@@ -152,7 +152,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
 
     id_tag = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(20), nullable=False, unique=True)
+    nome = db.Column(db.String(100), nullable=False, unique=True)
     id_classe = db.Column(db.Integer, db.ForeignKey('classes_tag.id_classe'), nullable=False)
 
     def __repr__(self):

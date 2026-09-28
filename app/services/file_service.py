@@ -3,14 +3,14 @@ from app.models import Arquivo
 
 
 
-def registrar_arquivo(dados_arquivo, id_atividade):
+def registrar_arquivo(dados_arquivo, id_material):
     novo_arquivo = Arquivo(nome=dados_arquivo['nome'],
                            nome_unico=dados_arquivo['nome_unico'], 
                            tipo=dados_arquivo['tipo'], 
                            tamanho=dados_arquivo['tamanho'], 
                            arquivo_url=dados_arquivo['arquivo_url'],
                            storage_path=dados_arquivo['storage_path'],
-                           id_atividade=id_atividade)
+                           id_material=id_material)
     
     db.session.add(novo_arquivo)
     db.session.flush()

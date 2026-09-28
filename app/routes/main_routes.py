@@ -14,7 +14,7 @@ def inicio():
 def home():
     cursos = Curso.query.all()
     materiais = Material.query.order_by(Material.data_publicacao.desc()).all()
-    return render_template('home.html', atividades=materiais, cursos=cursos)
+    return render_template('home.html', materiais=materiais, cursos=cursos)
 
 @main_bp.route('/busca')
 @login_required
@@ -27,4 +27,4 @@ def busca():
     materiais = Material.query.filter(
         Material.titulo.ilike(f'%{termo}%')
     ).all()
-    return render_template('busca.html', atividades=materiais, termo=termo)
+    return render_template('busca.html', materiais=materiais, termo=termo)

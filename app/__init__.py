@@ -7,7 +7,7 @@ from app.extensions import db, login_manager, migrate #importação dos objetos 
 from app.routes.main_routes import main_bp
 from app.routes.auth_routes import auth_bp
 from app.routes.user_routes import user_bp
-from app.routes.activities_routes import activities_bp
+from app.routes.materials_routes import materials_bp
 from app.routes.admin_routes import admin_bp
 
 import cloudinary
@@ -33,7 +33,7 @@ def create_app(): #implementando o Application Factory
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
-    app.register_blueprint(activities_bp)
+    app.register_blueprint(materials_bp)
     app.register_blueprint(admin_bp)
 
     return (app) #retorno da criação efetiva do app

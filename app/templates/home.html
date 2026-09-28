@@ -8,7 +8,7 @@
 
     <div class="home-actions">
       <form class="search-wrapper" action="{{ url_for('main.busca')}}" method="GET">
-          <input type="text" name="q" placeholder="Buscar atividades..." value="{{ termo or ''}}">
+          <input type="text" name="q" placeholder="Buscar materiais..." value="{{ termo or ''}}">
           <button class="search-btn" aria-label="Pesquisar">
             <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
 
@@ -17,7 +17,7 @@
       </form>
 
       <div class="publish-wrapper">
-        <a href="{{ url_for('activities.publicar') }}" class="publish-btn">
+        <a href="{{ url_for('materials.publicar') }}" class="publish-btn">
           <span class="plus">+</span>
         </a>
         <span class="publish-label">Publicar recurso</span>
@@ -35,23 +35,23 @@
 
   <div class="home-header">
    <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
-    <p>Começe a explorar nosso repositório de atividades aqui!</p>
+    <p>Começe a explorar nosso repositório de materiais aqui!</p>
 
   </div>
 
-  <section class="atividades">
+  <section class="materiais">
     {% for curso in cursos %}
       <div class="curso-section">
         <h2>{{ curso.nome }}</h2>
 
-        {% if curso.atividades %}
-          <div class="atividade-lista">
-            {% for atividade in curso.atividades %}
-              <div class="atividade-card">
+        {% if curso.materiais %}
+          <div class="material-lista">
+            {% for material in curso.materiais %}
+              <div class="material-card">
 
-                <div class="atividade-preview">
-                                      {% if atividade.arquivos %}
-                                        {% set arquivo = atividade.arquivos[0] %}
+                <div class="material-preview">
+                                      {% if material.arquivos %}
+                                        {% set arquivo = material.arquivos[0] %}
 
                                         {% if 'image' in arquivo.tipo %}
                                             <img class="preview-img" src="{{ arquivo.arquivo_url }}" loading="lazy">
@@ -67,7 +67,7 @@
                                             </div>
                                     
                                         {% else %}
-                                        <div class="atividade-preview-vazio">Sem preview</div>
+                                        <div class="material-preview-vazio">Sem preview</div>
 
                                         {% endif %}
                                         
@@ -75,18 +75,18 @@
 
                 </div>
 
-                <div class="atividade-info">
-                  <a href="{{ url_for('activities.detalhes_atividade', id=atividade.id_atividade)}}">
-                    <h3>{{ atividade.titulo }}</h3>
+                <div class="material-info">
+                  <a href="{{ url_for('materials.detalhes_material', id=material.id_material)}}">
+                    <h3>{{ material.titulo }}</h3>
                   </a>
-                  <p>{{ atividade.curso.nome }}</p>
-                  <p class="info-materia">{{ atividade.materia.nome }}</p>
+                  <p>{{ material.curso.nome }}</p>
+                  <p class="info-materia">{{ material.materia.nome }}</p>
 
                 </div>
 
-                <div class="atividade-actions">
-                  <a href="{{ atividade.arquivos[0].arquivo_url
-                           | replace('/upload/', '/upload/fl_attachment:atividade') }}" 
+                <div class="material-actions">
+                  <a href="{{ material.arquivos[0].arquivo_url
+                           | replace('/upload/', '/upload/fl_attachment:material') }}" 
                            class="btn-icon-action">
                     <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
                   </a>
@@ -110,7 +110,7 @@
 </main>
 
 <footer>
-  <p>© 2026 - Include: Repositório de Atividades Adaptadas para NEE nos Cursos Técnicos</p>
+  <p>© 2026 - Include: Repositório de materiais Adaptadas para NEE nos Cursos Técnicos</p>
 </footer>
 
 {% endblock %}

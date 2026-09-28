@@ -5,5 +5,14 @@ from sqlalchemy import text
 app = create_app()
 
 with app.app_context():
-    resultado = db.session.execute(text("SELECT 1"))
-    print(resultado.scalar())
+    resultado = db.session.execute(
+        text("""
+            SELECT table_name
+            FROM information_schema.tables
+            WHERE table_schema = 'public'
+            ORDER BY table_name
+        """)
+    )
+
+    for tabela in resultado:
+        print(tabela[0])

@@ -15,8 +15,8 @@ user_bp = Blueprint('user', __name__)
 @user_bp.route('/perfil')
 @login_required
 def perfil():
-    atividades = Atividade.query.filter_by(id_usuario=current_user.id_usuario).order_by(Atividade.data_publicacao.desc()).all()
-    return render_template('perfil.html', atividades=atividades)
+    materiais = Material.query.filter_by(id_usuario=current_user.id_usuario).order_by(Material.data_publicacao.desc()).all()
+    return render_template('perfil.html', materiais=materiais)
 
     
 @user_bp.route('/perfil/editar', methods = ['GET', 'POST'])

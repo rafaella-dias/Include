@@ -42,7 +42,7 @@
                     <h2>Conteúdos Publicados</h2>
 
                     <div class="publish-wrapper">
-                        <a href="{{ url_for('activities.publicar') }}" class="publish-btn" title="Adicionar Conteúdo">
+                        <a href="{{ url_for('materials.publicar') }}" class="publish-btn" title="Adicionar Conteúdo">
                         +
                         </a>
 
@@ -51,13 +51,13 @@
 
                 </header>
 
-                <div class="atividade-lista">
-                    {% if atividades %}
-                        {% for atividade in atividades %}
-                            <div class="atividade-card">
-                                <div class="atividade-preview">
-                                    {% if atividade.arquivos %}
-                                        {% set arquivo = atividade.arquivos[0] %}
+                <div class="material-lista">
+                    {% if materiais %}
+                        {% for material in materiais %}
+                            <div class="material-card">
+                                <div class="material-preview">
+                                    {% if material.arquivos %}
+                                        {% set arquivo = material.arquivos[0] %}
 
                                         {% if 'image' in arquivo.tipo %}
                                             <img class="preview-img" src="{{ arquivo.arquivo_url }}">
@@ -73,7 +73,7 @@
                                             </div>
                                     
                                         {% else %}
-                                        <div class="atividade-preview-vazio">Sem preview</div>
+                                        <div class="material-preview-vazio">Sem preview</div>
 
                                         {% endif %}
                                         
@@ -81,24 +81,24 @@
 
                                 </div>
 
-                                <div class="atividade-info">
-                                    <h3>{{ atividade.titulo }}</h3>
-                                    <p>{{ atividade.curso.nome }}</p>
-                                    <p class="info-materia">{{ atividade.materia.nome }}</p>
+                                <div class="material-info">
+                                    <h3>{{ material.titulo }}</h3>
+                                    <p>{{ material.curso.nome }}</p>
+                                    <p class="info-materia">{{ material.materia.nome }}</p>
 
                                 </div>
 
-                                <div class="atividade-actions">
-                                    <form action="{{ url_for('activities.excluir_atividade', id=atividade.id_atividade) }}" method="POST"
-                                    onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?')">
+                                <div class="material-actions">
+                                    <form action="{{ url_for('materials.excluir_material', id=material.id_material) }}" method="POST"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir esta material?')">
                                         <button type="submit" class="btn-icon-action">
-                                            <img src="{{ url_for('static', filename='images/icons/icon-excluir.png')}}" alt="Excluir atividade">
+                                            <img src="{{ url_for('static', filename='images/icons/icon-excluir.png')}}" alt="Excluir material">
 
                                         </button>
                                     </form>
 
-                                    <a href="{{ atividade.arquivos[0].arquivo_url
-                                    | replace('/upload/', '/upload/fl_attachment:atividade/') }}" 
+                                    <a href="{{ material.arquivos[0].arquivo_url
+                                    | replace('/upload/', '/upload/fl_attachment:material/') }}" 
                                     class="btn-icon-action">
                                         <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
                                     </a>

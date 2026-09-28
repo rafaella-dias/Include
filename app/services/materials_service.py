@@ -40,8 +40,8 @@ def gerar_cursos_dados():
 
 
 
-def criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
-    nova_atividade = Material(titulo=titulo,
+def criar_material(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario):
+    novo_material = Material(titulo=titulo,
                                subtitulo=subtitulo,
                                descricao=descricao, 
                                conteudo_textual=conteudo_textual,
@@ -49,14 +49,14 @@ def criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id
                                id_materia=id_materia,
                                id_conteudo=id_conteudo, 
                                id_usuario=id_usuario )
-    db.session.add(nova_atividade)
+    db.session.add(novo_material)
     db.session.flush()
 
     for id_tag in ids_tags:
         tag = Tag.query.get(id_tag)
-        nova_atividade.tags.append(tag)
+        novo_material.tags.append(tag)
     
-    return nova_atividade
+    return novo_material
 
 
 
@@ -64,8 +64,8 @@ def publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materi
     try:
         uploads = []
         #---- serviços ----
-        nova_atividade = criar_atividade(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario)
-        id_atividade = nova_atividade.id_atividade
+        novo_material = criar_material(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materia, id_conteudo, ids_tags, id_usuario)
+        id_material = novo_material.id_material
                 
         if not arquivos:
             raise ValueError('Arquivo não enviado')
@@ -73,7 +73,7 @@ def publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materi
         for arquivo in arquivos:
             dados_arquivo = storage_service.upload_arquivo(arquivo)#salva na nuvem e responde o 
             uploads.append(dados_arquivo)
-            file_service.registrar_arquivo(dados_arquivo, id_atividade)#cadastra no banco baseado nos dados fornecidos pelo serviço de nuvem
+            file_service.registrar_arquivo(dados_arquivo, id_material)#cadastra no banco baseado nos dados fornecidos pelo serviço de nuvem
         
         db.session.commit()
 
@@ -87,14 +87,14 @@ def publicar(titulo, subtitulo, descricao, conteudo_textual, id_curso, id_materi
 
 
 
-def excluir_atividade(id_usuario, atividade):
-    if atividade.id_usuario != id_usuario:
+def excluir_material(id_usuario, material):
+    if material.id_usuario != id_usuario:
         raise PermissionError()
     
     try:
-        for arquivo in atividade.arquivos:
+        for arquivo in material.arquivos:
             storage_service.delete_arquivo(arquivo.storage_path)
-        db.session.delete(atividade)
+        db.session.delete(material)
         db.session.commit()
 
     except Exception as e:
@@ -104,8 +104,8 @@ def excluir_atividade(id_usuario, atividade):
 
 
 
-def adicionar_visualizacao(atividade_id):
-    db.session.query(Material).filter_by(id_atividade=atividade_id).update({
+def adicionar_visualizacao(material_id):
+    db.session.query(Material).filter_by(id_material=material_id).update({
         Material.visualizacoes: Material.visualizacoes + 1
     })
     db.session.commit()

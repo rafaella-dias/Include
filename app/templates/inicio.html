@@ -8,9 +8,9 @@
 <main class="main-container">
 
     <section class="intro">
-        <h1>Include: Repositório de Atividades Adaptadas para NEE dos Cursos Técnicos</h1>
+        <h1>Include: Repositório de Materiais Adaptadas para NEE dos Cursos Técnicos</h1>
         <p class="subtitle">
-            Plataforma colaborativa destinada à disponibilização de atividades
+            Plataforma colaborativa destinada à disponibilização de materiais
             educacionais adaptadas para estudantes com Necessidades Educacionais
             Especiais (NEE), no contexto dos cursos técnicos.
         </p>
@@ -18,7 +18,7 @@
 
     <section class="texto-institucional">
         <p>
-            O Repositório de Atividades Adaptadas tem como finalidade apoiar docentes
+            O Repositório de Materiais Adaptadas tem como finalidade apoiar docentes
             e instituições de ensino na promoção de práticas pedagógicas inclusivas,
             por meio da organização, do armazenamento e da disponibilização de materiais educacionais
             adaptados para o ensino profissionalizante às diferentes necessidades de aprendizagem.
@@ -26,16 +26,16 @@
 
         <p>
             A plataforma possibilita que docentes publiquem, consultem e reutilizem
-            atividades pedagógicas adaptadas, contribuindo para a ampliação do acesso,
+            materiais pedagógicas adaptadas, contribuindo para a ampliação do acesso,
             da acessibilidade e da equidade no processo educacional no âmbito do ensino
             técnico e profissionalizante.
         </p>
     </section>
 
     <section class="inicio-acoes">
-        <a href="{{ url_for('activities.publicar') }}" class="btn-action"> <!-- mudar para a rota publicar-->
+        <a href="{{ url_for('materials.publicar') }}" class="btn-action"> <!-- mudar para a rota publicar-->
             <img src="{{ url_for('static', filename='images/icons/icon-publi-preto.png') }}" alt="">
-            <span>Publique uma atividade</span>
+            <span>Publique um material</span>
         </a>
 
         <a href="{{ url_for('main.home') }}" class="btn-action">
@@ -47,7 +47,7 @@
 </main>
 
 <footer>
-  <p>© 2026 - Include: Repositório de Atividades Adaptadas para NEE nos Cursos Técnicos</p>
+  <p>© 2026 - Include: Repositório de Materiais Adaptados para NEE nos Cursos Técnicos</p>
 </footer>
 
 {% endblock %}

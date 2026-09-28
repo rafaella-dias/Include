@@ -10,7 +10,7 @@
 
     <div class="home-actions">
       <form class="search-wrapper" action="" method="GET">
-          <input type="text" name="q" placeholder="Buscar atividades...">
+          <input type="text" name="q" placeholder="Buscar materiais...">
           <button class="search-btn" aria-label="Pesquisar">
             <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
 
@@ -19,7 +19,7 @@
       </form>
 
       <div class="publish-wrapper">
-        <a href="{{ url_for('activities.publicar') }}" class="publish-btn">
+        <a href="{{ url_for('materials.publicar') }}" class="publish-btn">
           <span class="plus">+</span>
         </a>
         <span class="publish-label">Publicar recurso</span>
@@ -40,33 +40,33 @@
 
     </div>
 
-    <section class="atividades">
-        {% if atividades %}
-            <div class="atividade-lista">
-                {% for atividade in atividades %}
-                    <div class="atividade-card">
+    <section class="materiais">
+        {% if materiais %}
+            <div class="material-lista">
+                {% for material in materiais %}
+                    <div class="material-card">
 
-                        <div class="atividade-preview">
-                            {% if atividade.arquivos %}
-                                <img src="{{ atividade.arquivos[0].arquivo_url }}" alt="Preview da atividade">
+                        <div class="material-preview">
+                            {% if material.arquivos %}
+                                <img src="{{ material.arquivos[0].arquivo_url }}" alt="Preview da material">
                   
                             {% else %}
-                                <div class="atividade-preview-vazio">Sem preview</div>
+                                <div class="material-preview-vazio">Sem preview</div>
                   
                             {% endif %}
 
                         </div>
 
-                        <div class="atividade-info">
-                            <h3>{{ atividade.titulo }}</h3>
-                            <p>{{ atividade.curso.nome }}</p>
-                            <p class="info-materia">{{ atividade.materia.nome }}</p>
+                        <div class="material-info">
+                            <h3>{{ material.titulo }}</h3>
+                            <p>{{ material.curso.nome }}</p>
+                            <p class="info-materia">{{ material.materia.nome }}</p>
 
                         </div>
 
-                        <div class="atividade-actions">
-                            <a href="{{ atividade.arquivos[0].arquivo_url
-                            | replace('/upload/', '/upload/fl_attachment:atividade/') }}" 
+                        <div class="material-actions">
+                            <a href="{{ material.arquivos[0].arquivo_url
+                            | replace('/upload/', '/upload/fl_attachment:material/') }}" 
                             class="btn-icon-action">
                                 <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
                             </a>

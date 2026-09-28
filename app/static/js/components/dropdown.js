@@ -5,7 +5,7 @@
         <a href="#">Baixar</a>
         <a href="#">Favoritar</a>
 
-        {% if current_user.id_usuario == atividade.autor.id_usuario %}
+        {% if current_user.id_usuario == material.autor.id_usuario %}
             <a href="#">Editar</a>
             <a href="#" class="danger">Excluir</a>
                             
