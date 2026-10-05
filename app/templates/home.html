@@ -1,116 +1,163 @@
 {% extends "base.html" %}
-
 {% block title %}Página Inicial{% endblock %}
 
 {% block content %}
-<section class="home-fixed">
-  <div class="home-fixed-inner">
+{# >>> AJUSTE aqui os caminhos reais das imagens (dentro de static/) <<< #}
+{% set img_logo = 'images/hero-logo.png' %}
+{% set img_slide_1 = 'images/slide-01.png' %}
 
-    <div class="home-actions">
-      <form class="search-wrapper" action="{{ url_for('main.busca')}}" method="GET">
-          <input type="text" name="q" placeholder="Buscar materiais..." value="{{ termo or ''}}">
-          <button class="search-btn" aria-label="Pesquisar">
-            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
+{% from "components/card_material.html" import lista_materiais, prateleira_materiais %}
 
-          </button>
-        
-      </form>
+<header class="hm-hero">
+  <form class="hm-search" role="search" action="{{ url_for('main.busca') }}" method="GET">
+    <input type="search" name="q" placeholder="Buscar materiais..." aria-label="Buscar materiais"
+           value="{{ termo or '' }}" autocomplete="off">
+    <button type="submit" aria-label="Pesquisar">
+      <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+    </button>
+  </form>
+  <img class="hm-hero__logo" src="{{ url_for('static', filename=img_logo) }}" alt="Include">
+</header>
 
-      <div class="publish-wrapper">
-        <a href="{{ url_for('materials.publicar') }}" class="publish-btn">
-          <span class="plus">+</span>
-        </a>
-        <span class="publish-label">Publicar recurso</span>
+{# Só esta área rola; o topo azul fica parado #}
+<div class="hm-body">
 
+<main class="hm-sheet">
+
+  <section class="hm-carousel" aria-label="Destaques">
+    <div class="hm-carousel__track">
+      <div class="hm-carousel__slide">
+        <img src="{{ url_for('static', filename=img_slide_1) }}"
+             alt="Compartilhe. Inspire. Transforme. Materiais que conectam professores e alunos.">
       </div>
-
     </div>
-    
-  </div>
-
-</section>
-
-
-<main class="main-container">
-
-  <div class="home-header">
-   <h2>Olá, {{ current_user.nome_completo }} 👋</h2>
-    <p>Começe a explorar nosso repositório de materiais aqui!</p>
-
-  </div>
-
-  <section class="materiais">
-    {% for curso in cursos %}
-      <div class="curso-section">
-        <h2>{{ curso.nome }}</h2>
-
-        {% if curso.materiais %}
-          <div class="material-lista">
-            {% for material in curso.materiais %}
-              <div class="material-card">
-
-                <div class="material-preview">
-                                      {% if material.arquivos %}
-                                        {% set arquivo = material.arquivos[0] %}
-
-                                        {% if 'image' in arquivo.tipo %}
-                                            <img class="preview-img" src="{{ arquivo.arquivo_url }}" loading="lazy">
-                                            
-                                        {% elif 'application/pdf' in arquivo.tipo %}
-                                            <iframe class="preview" src="{{ arquivo.arquivo_url }}" loading="lazy"></iframe>
-                                                
-                                        {% elif 'word' in arquivo.tipo %}
-                                            <div class="preview-doc">
-                                                <img src="{{ url_for('static', filename='images/icons/icon-word.png') }}" alt="Documento Word">    
-                                                <p>{{ arquivo.nome }}</p>
-
-                                            </div>
-                                    
-                                        {% else %}
-                                        <div class="material-preview-vazio">Sem preview</div>
-
-                                        {% endif %}
-                                        
-                                    {% endif %}
-
-                </div>
-
-                <div class="material-info">
-                  <a href="{{ url_for('materials.detalhes_material', id=material.id_material)}}">
-                    <h3>{{ material.titulo }}</h3>
-                  </a>
-                  <p>{{ material.curso.nome }}</p>
-                  <p class="info-materia">{{ material.materia.nome }}</p>
-
-                </div>
-
-                <div class="material-actions">
-                  <a href="{{ material.arquivos[0].arquivo_url
-                           | replace('/upload/', '/upload/fl_attachment:material') }}" 
-                           class="btn-icon-action">
-                    <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
-                  </a>
-                </div>
-
-              </div>
-
-            {% endfor %}
-
-        {% else %}
-          <p>Nenhum conteúdo publicado até o momento.</p>
-
-        {% endif %}
-
-      </div>
-    
-    {% endfor %}
-
+    <div class="hm-carousel__dots"></div>
   </section>
 
+  <section class="hm-section" aria-labelledby="t-materias">
+    <div class="hm-title-row">
+      <h2 class="hm-title" id="t-materias">Cursos</h2>
+      <button type="button" class="hm-arrow" id="hm-cursos-next" aria-controls="hm-cursos" aria-label="Ver mais cursos">
+        <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
+      </button>
+    </div>
+    <div class="hm-cursos" id="hm-cursos">
+      {% for curso in cursos %}
+      <button type="button" class="hm-curso" aria-pressed="false" data-target="curso-{{ loop.index }}">
+        <svg class="icon" aria-hidden="true">
+          {% set n = curso.nome|lower %}
+          <use href="#{{ 'i-monitor' if 'inform' in n else ('i-atom' if 'qu' in n and 'mica' in n else ('i-sprout' if 'agro' in n else 'i-wrench')) }}"/>
+        </svg>
+        <div><strong>{{ curso.nome }}</strong><span>{{ curso.materiais|length }} Materiais</span></div>
+      </button>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# ===== Visão de um curso (aparece ao clicar numa matéria) ===== #}
+  {% for curso in cursos %}
+  <section class="hm-section hm-panel" id="curso-{{ loop.index }}" aria-labelledby="curso-{{ loop.index }}-t" hidden>
+    <div class="hm-panel__head">
+      <h2 class="hm-title" id="curso-{{ loop.index }}-t">{{ curso.nome }}</h2>
+      <button type="button" class="hm-panel__close" data-clear>Ver tudo</button>
+    </div>
+    {{ lista_materiais(curso.materiais, 'Nenhum material de ' ~ curso.nome ~ ' publicado ainda.') }}
+  </section>
+  {% endfor %}
+
+  {# ===== Visão padrão (some quando um curso é escolhido) ===== #}
+  <div id="hm-default">
+
+    {# Usa "recentes" da rota; se não vier, pega os mais novos (maior id) a partir dos cursos #}
+    {% set todos = [] %}
+    {% for c in cursos %}{% for m in c.materiais %}{% set _ = todos.append(m) %}{% endfor %}{% endfor %}
+    {% set lista_recentes = recentes if recentes else (todos|sort(attribute='id_material', reverse=true)|list)[:6] %}
+
+    <section class="hm-section" aria-labelledby="t-recentes">
+      <h2 class="hm-title hm-title--icon" id="t-recentes">
+        <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Publicações recentes
+      </h2>
+      <p class="hm-sub">Materiais mais recentes dos professores</p>
+      {{ lista_materiais(lista_recentes, 'Nenhum conteúdo publicado até o momento.') }}
+    </section>
+
+    {# Prateleiras: a rota pode enviar mais_vistos / mais_baixados; senão calculamos a partir dos cursos #}
+    {% set l_vistos = mais_vistos if mais_vistos else (todos|selectattr('visualizacoes')|sort(attribute='visualizacoes', reverse=true)|list)[:8] %}
+    {% set l_baixados = mais_baixados if mais_baixados else (todos|selectattr('downloads')|sort(attribute='downloads', reverse=true)|list)[:8] %}
+    {% set videos = [] %}
+    {% for m in todos %}{% if m.arquivos and 'video' in (m.arquivos[0].tipo or '') %}{% set _ = videos.append(m) %}{% endif %}{% endfor %}
+
+    {{ prateleira_materiais('Mais vistos', l_vistos, 'views') }}
+    {{ prateleira_materiais('Mais baixados', l_baixados, 'downloads') }}
+    {{ prateleira_materiais('Vídeos', (videos|sort(attribute='id_material', reverse=true)|list)[:8], 'views') }}
+
+  </div>
 </main>
 
-<footer>
-  <p>© 2026 - Include: Repositório de materiais Adaptadas para NEE nos Cursos Técnicos</p>
-</footer>
+{% include "components/footer.html" %}
+</div>
 
+<script>
+/* static/js/home.js */
+(() => {
+  /* Carrossel: bolinhas */
+  const track = document.querySelector('.hm-carousel__track');
+  const dots = document.querySelector('.hm-carousel__dots');
+  if (track && dots) {
+    const slides = [...track.children];
+    dots.hidden = slides.length < 2;
+    slides.forEach((slide, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Ir para o slide ${i + 1}`);
+      b.addEventListener('click', () =>
+        slide.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }));
+      dots.appendChild(b);
+    });
+    const sync = () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth);
+      [...dots.children].forEach((d, j) => d.setAttribute('aria-current', String(i === j)));
+    };
+    track.addEventListener('scroll', sync, { passive: true });
+    sync();
+  }
+
+  /* Matérias técnicas: mostra só os materiais do curso escolhido */
+  const pills = [...document.querySelectorAll('.hm-curso')];
+  const panels = [...document.querySelectorAll('.hm-panel')];
+  const home = document.getElementById('hm-default');
+
+  const select = (id) => {
+    pills.forEach(p => p.setAttribute('aria-pressed', String(p.dataset.target === id)));
+    panels.forEach(p => { p.hidden = p.id !== id; });
+    if (home) home.hidden = Boolean(id);
+  };
+  pills.forEach(p => p.addEventListener('click', () =>
+    select(p.getAttribute('aria-pressed') === 'true' ? null : p.dataset.target)));
+  document.querySelectorAll('[data-clear]').forEach(b =>
+    b.addEventListener('click', () => select(null)));
+
+  /* Matérias: seta que avança o carrossel (volta ao início no fim) */
+  const list = document.getElementById('hm-cursos');
+  const next = document.getElementById('hm-cursos-next');
+  if (list && next) {
+    const atEnd = () => list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
+    const update = () => {
+      next.hidden = list.scrollWidth <= list.clientWidth + 4;
+      next.dataset.end = String(atEnd());
+    };
+    next.addEventListener('click', () => {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      list.scrollTo({
+        left: atEnd() ? 0 : list.scrollLeft + list.clientWidth + 10,
+        behavior: reduce ? 'auto' : 'smooth'
+      });
+    });
+    list.addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+  }
+
+})();
+</script>
 {% endblock %}

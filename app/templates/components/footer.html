@@ -1,0 +1,28 @@
+{# Rodapé compacto. Usar: {% include "components/footer.html" %}
+   Estilo: static/css/components/footer.css
+   E-mail: defina CONTATO_EMAIL no config do Flask, ou troque o valor padrão abaixo. #}
+{% set contato_email = config.get('CONTATO_EMAIL', 'contato@seudominio.com') %}
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <p class="site-footer__brand">Include</p>
+      <p class="site-footer__tag">Materiais adaptados para NEE nos cursos técnicos.</p>
+    </div>
+    <a class="site-footer__mail" href="mailto:{{ contato_email }}">
+      <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>{{ contato_email }}
+    </a>
+    <div class="site-footer__bottom">
+      <p class="site-footer__copy">© 2026 Include</p>
+      <button type="button" class="site-footer__top" data-scroll-top>
+        Topo <svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg>
+      </button>
+    </div>
+  </div>
+</footer>
+<script>
+  /* rola a área com scroll própria (.hm-body) ou a janela, conforme a página */
+  document.querySelector('[data-scroll-top]')?.addEventListener('click', () => {
+    const alvo = document.querySelector('.hm-body') || window;
+    alvo.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+</script>
