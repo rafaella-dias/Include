@@ -6,8 +6,9 @@
 {% set img_logo = 'images/hero-logo.png' %}
 {% set img_slide_1 = 'images/slide-01.png' %}
 
-{% from "components/card_material.html" import lista_materiais, prateleira_materiais %}
+{% from "components/card_material.html" import lista_materiais, secao_materiais, ver_mais %}
 
+<div class="hm-page">
 <header class="hm-hero">
   <form class="hm-search" role="search" action="{{ url_for('main.busca') }}" method="GET">
     <input type="search" name="q" placeholder="Buscar materiais..." aria-label="Buscar materiais"
@@ -18,9 +19,6 @@
   </form>
   <img class="hm-hero__logo" src="{{ url_for('static', filename=img_logo) }}" alt="Include">
 </header>
-
-{# Só esta área rola; o topo azul fica parado #}
-<div class="hm-body">
 
 <main class="hm-sheet">
 
@@ -61,7 +59,11 @@
       <h2 class="hm-title" id="curso-{{ loop.index }}-t">{{ curso.nome }}</h2>
       <button type="button" class="hm-panel__close" data-clear>Ver tudo</button>
     </div>
-    {{ lista_materiais(curso.materiais, 'Nenhum material de ' ~ curso.nome ~ ' publicado ainda.') }}
+    {% set mats = curso.materiais|sort(attribute='id_material', reverse=true)|list %}
+    {{ lista_materiais(mats[:5], 'Nenhum material de ' ~ curso.nome ~ ' publicado ainda.') }}
+    {% if mats|length > 5 %}
+      {{ ver_mais(url_for('main.busca', curso=curso.nome), 'Ver todos os materiais de ' ~ curso.nome) }}
+    {% endif %}
   </section>
   {% endfor %}
 
@@ -71,14 +73,14 @@
     {# Usa "recentes" da rota; se não vier, pega os mais novos (maior id) a partir dos cursos #}
     {% set todos = [] %}
     {% for c in cursos %}{% for m in c.materiais %}{% set _ = todos.append(m) %}{% endfor %}{% endfor %}
-    {% set lista_recentes = recentes if recentes else (todos|sort(attribute='id_material', reverse=true)|list)[:6] %}
+    {% set lista_recentes = recentes if recentes else (todos|sort(attribute='id_material', reverse=true)|list)[:5] %}
 
     <section class="hm-section" aria-labelledby="t-recentes">
       <h2 class="hm-title hm-title--icon" id="t-recentes">
         <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Publicações recentes
       </h2>
       <p class="hm-sub">Materiais mais recentes dos professores</p>
-      {{ lista_materiais(lista_recentes, 'Nenhum conteúdo publicado até o momento.') }}
+      {{ lista_materiais(lista_recentes[:5], 'Nenhum conteúdo publicado até o momento.') }}
     </section>
 
     {# Prateleiras: a rota pode enviar mais_vistos / mais_baixados; senão calculamos a partir dos cursos #}
@@ -87,15 +89,15 @@
     {% set videos = [] %}
     {% for m in todos %}{% if m.arquivos and 'video' in (m.arquivos[0].tipo or '') %}{% set _ = videos.append(m) %}{% endif %}{% endfor %}
 
-    {{ prateleira_materiais('Mais vistos', l_vistos, 'views') }}
-    {{ prateleira_materiais('Mais baixados', l_baixados, 'downloads') }}
-    {{ prateleira_materiais('Vídeos', (videos|sort(attribute='id_material', reverse=true)|list)[:8], 'views') }}
+    {{ secao_materiais('Mais vistos', l_vistos) }}
+    {{ secao_materiais('Mais baixados', l_baixados) }}
+    {{ secao_materiais('Vídeos', videos|sort(attribute='id_material', reverse=true)|list) }}
 
   </div>
 </main>
+</div>
 
 {% include "components/footer.html" %}
-</div>
 
 <script>
 /* static/js/home.js */

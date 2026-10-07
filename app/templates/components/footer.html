@@ -1,12 +1,12 @@
 {# Rodapé compacto. Usar: {% include "components/footer.html" %}
    Estilo: static/css/components/footer.css
    E-mail: defina CONTATO_EMAIL no config do Flask, ou troque o valor padrão abaixo. #}
-{% set contato_email = config.get('CONTATO_EMAIL', 'contato@seudominio.com') %}
+{% set contato_email = config.get('CONTATO_EMAIL', 'include_ifrn@gmail.com') %}
 <footer class="site-footer">
   <div class="site-footer__inner">
     <div>
       <p class="site-footer__brand">Include</p>
-      <p class="site-footer__tag">Materiais adaptados para NEE nos cursos técnicos.</p>
+      <p class="site-footer__tag">Construindo caminhos para uma educação técnica mais inclusiva.</p>
     </div>
     <a class="site-footer__mail" href="mailto:{{ contato_email }}">
       <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>{{ contato_email }}

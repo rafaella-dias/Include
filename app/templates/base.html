@@ -29,7 +29,7 @@
 
 </head>
 <body>
-    {% include '_icons.html' %}
+    {% include 'components/_icons.html' %}
 
     <header>
         <nav class="navbar-body">
@@ -40,32 +40,32 @@
 
             {% set ep = request.endpoint %}
                 <div class="nav-links">
-                <a href="{{ url_for('main.home') }}" class="nav-solid" {% if ep == 'main.home' %}aria-current="page"{% endif %}>
-                    <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span class="nav-text">Início</span>
-                </a>
-                
-                {% if current_user.is_authenticated %}
-                <a href="{{ url_for('user.perfil') }}" class="nav-solid" {% if ep == 'user.perfil' %}aria-current="page"{% endif %}>
-                    <svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span class="nav-text">Perfil</span>
-                </a>
-                {% else %}
-                <a href="{{ url_for('auth.login') }}">
-                    <svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span class="nav-text">Entrar</span>
-                </a>
-                {% endif %}
-                
-                <a href="{{ url_for('materials.publicar') }}" id="nav-publish" class="nav-publish">
-                    <svg class="icon" aria-hidden="true"><use href="#i-circle-plus"/></svg><span class="nav-text">Publicar</span>
-                </a>
-                
-                <a href="{{ url_for('main.busca') }}" {% if ep == 'main.busca' %}aria-current="page"{% endif %}>
-                    <svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg><span class="nav-text">Explorar</span>
-                </a>
-                
-                {# TROQUE "#" pela rota de materiais salvos quando existir #}
-                <a href="#" class="nav-solid">
-                    <svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg><span class="nav-text">Salvos</span>
-                </a>
+                    <a href="{{ url_for('main.home') }}" {% if on_home %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-home-fill' if on_home else 'i-home' }}"/></svg><span class="nav-text">Início</span>
+                    </a>
+                    
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('user.perfil') }}" {% if on_perfil %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-user-fill' if on_perfil else 'i-user' }}"/></svg><span class="nav-text">Perfil</span>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('auth.login') }}" {% if on_perfil %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-user-fill' if on_perfil else 'i-user' }}"/></svg><span class="nav-text">Entrar</span>
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('materials.publicar') }}" {% if on_publicar %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-circle-plus-fill' if on_publicar else 'i-circle-plus' }}"/></svg><span class="nav-text">Publicar</span>
+                    </a>
+                    
+                    <a href="{{ url_for('main.busca') }}" {% if on_busca %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-compass-fill' if on_busca else 'i-compass' }}"/></svg><span class="nav-text">Explorar</span>
+                    </a>
+                    
+                    {# TROQUE "#" pela rota de materiais salvos quando existir #}
+                    <a href="#" {% if on_salvos %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#{{ 'i-bookmark-fill' if on_salvos else 'i-bookmark' }}"/></svg><span class="nav-text">Salvos</span>
+                    </a>
                 </div>
 
         </nav>

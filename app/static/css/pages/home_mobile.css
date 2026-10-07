@@ -186,13 +186,17 @@ button.hm-curso{justify-content:flex-start;min-height:52px;padding:6px 12px;gap:
 }
 tail
 
-/* Rodapé */
-.hm-footer{
-  display:block;margin:0;border:0;
-  background:var(--azul-escuro);color:#fff;text-align:center;
-  padding:28px 24px calc(88px + env(safe-area-inset-bottom,0px));
+
+/* O rodapé sobe 28px sobre a folha branca */
+.hm-sheet{padding-bottom:56px}
+.hm-sheet + .site-footer{margin-top:-28px}
+
+/* Topo + folha branca ocupam pelo menos a tela inteira: o rodapé fica abaixo da dobra
+   e só aparece ao rolar (o espaço que sobra fica em branco). */
+.hm-page{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+.hm-page .hm-sheet{flex:1 0 auto;width:100%;padding-bottom:56px}   /* 28px de folga + 28px que o rodapé cobre */
+.hm-page + .site-footer{margin-top:-28px}
+@media (min-width:601px){
+  .hm-page{min-height:calc(100vh - var(--navbar-height));min-height:calc(100dvh - var(--navbar-height))}
+  .hm-page + .site-footer{margin-top:0}      /* barra no topo: sem a "espiada" do rodapé embaixo */
 }
-.hm-footer__brand{font-size:1rem;font-weight:600;margin:0 0 6px;color:#fff}
-.hm-footer__desc{font-size:.75rem;line-height:1.5;color:rgba(255,255,255,.85);max-width:34ch;margin:0 auto}
-.hm-footer__copy{font-size:.7rem;color:rgba(255,255,255,.65);margin:18px 0 0;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)}
-@media (min-width:601px){.hm-footer{padding-bottom:28px}}

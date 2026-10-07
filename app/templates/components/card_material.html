@@ -1,35 +1,46 @@
+{# =====================================================================
+   COMPONENTE: card de material
+   Arquivo:  templates/components/card_material.html
+   Estilo:   static/css/components/card-material.css
+   Script:   static/js/card-material.js
+   Requer:   sprite de ícones (_icons.html) incluído no base.html
+
+   Uso em qualquer página:
+     {% from "components/card_material.html" import lista_materiais, secao_materiais, ver_mais, card_material %}
+     {{ lista_materiais(materiais, "Nenhum material ainda.") }}
+     {{ secao_materiais("Mais vistos", materiais) }}   (mostra até 5)
+     {{ card_material(material, salvar=false) }}
+   ===================================================================== #}
+
+{# URL da capa: material.capa_url, senão a ilustração do curso (static/images/capas/) #}
 {% macro capa_src(material) -%}
 {%- set cn = (material.curso.nome if material.curso else '')|lower -%}
 {%- set c = 'informatica' if 'inform' in cn else ('manutencao' if 'manut' in cn else ('quimica' if 'qu' in cn and 'mica' in cn else ('agropecuaria' if 'agro' in cn else 'generico'))) -%}
 {{ material.capa_url or url_for('static', filename='images/capas/' ~ c ~ '.svg') }}
 {%- endmacro %}
 
-{% macro card_material(material, salvar=true, metrica='views') %}
-  {% set arq = material.arquivos[0] if material.arquivos else none %}
-  {% set tipo = (arq.tipo or '') if arq else '' %}
-  <article class="atv-card">
-    <div class="atv-card__thumb">
+{# Card completo (capa, título, professor, descrição, tipo, visualizações, favoritar) #}
+{% macro card_material(material, salvar=true) %}
+  <article class="mat-card">
+    <div class="mat-card__thumb">
       <img src="{{ capa_src(material) }}" alt="" loading="lazy" width="72" height="72">
     </div>
-    <div class="atv-card__body">
-      <h3 class="atv-card__title">
+    <div class="mat-card__body">
+      <h3 class="mat-card__title">
         <a href="{{ url_for('materials.detalhes_material', id=material.id_material) }}">{{ material.titulo }}</a>
       </h3>
       {# AJUSTE os campos ao seu modelo #}
-      <p class="atv-card__meta">Prof. {{ material.autor.nome_completo }} - <b>{{ material.materia.nome }}</b></p>
-      <p class="atv-card__desc">{{ material.descricao }}</p>
-      <div class="atv-card__foot">
-        <span><svg class="icon" aria-hidden="true"><use href="#{{ 'i-video' if 'video' in tipo else 'i-file' }}"/></svg>
-          {{ 'Vídeo' if 'video' in tipo else ('PDF' if 'pdf' in tipo else 'Arquivo') }}</span>
-        {% if metrica == 'downloads' %}
+      <p class="mat-card__meta">Prof. {{ material.autor.nome_completo }} - <b>{{ material.materia.nome }}</b></p>
+      <p class="mat-card__desc">{{ material.descricao }}</p>
+      <div class="mat-card__foot">
+        {% set dl = material.downloads or 0 %}
+        {% set vw = material.visualizacoes or 0 %}
         <span><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
-          {{ material.downloads|default(0) }} Downloads</span>
-        {% else %}
+          {{ dl }} {{ 'Download' if dl == 1 else 'Downloads' }}</span>
         <span><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
-          {{ material.visualizacoes|default(0) }} Visualizações</span>
-        {% endif %}
+          {{ vw }} {{ 'Visualização' if vw == 1 else 'Visualizações' }}</span>
         {% if salvar %}
-        <button class="atv-card__save" type="button" data-id="{{ material.id_material }}"
+        <button class="mat-card__save" type="button" data-id="{{ material.id_material }}"
                 aria-pressed="false" aria-label="Salvar material">
           <svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg>
         </button>
@@ -42,18 +53,24 @@
 {# Lista vertical de cards; mostra a mensagem quando não há itens #}
 {% macro lista_materiais(itens, vazio='Nenhum material publicado até o momento.', salvar=true) %}
   {% if itens %}
-    <ul class="atv-lista">{% for m in itens %}<li>{{ card_material(m, salvar) }}</li>{% endfor %}</ul>
+    <ul class="mat-lista">{% for m in itens %}<li>{{ card_material(m, salvar) }}</li>{% endfor %}</ul>
   {% else %}
-    <p class="atv-vazio">{{ vazio }}</p>
+    <p class="mat-vazio">{{ vazio }}</p>
   {% endif %}
 {% endmacro %}
 
-{# Seção com título + faixa horizontal com o MESMO card (some se vazia). metrica: 'views' ou 'downloads' #}
-{% macro prateleira_materiais(titulo, itens, metrica='views') %}
+{# Seção com título + lista vertical limitada (padrão: 5). Some se vazia. #}
+{% macro secao_materiais(titulo, itens, limite=5) %}
   {% if itens %}
   <section class="hm-section" aria-label="{{ titulo }}">
     <h2 class="hm-title">{{ titulo }}</h2>
-    <ul class="atv-shelf">{% for m in itens %}<li>{{ card_material(m, true, metrica) }}</li>{% endfor %}</ul>
+    {{ lista_materiais(itens[:limite]) }}
   </section>
   {% endif %}
+{% endmacro %}
+
+{# Botão "Ver mais" que leva a uma página (ex.: a pesquisa filtrada) #}
+{% macro ver_mais(href, texto='Ver mais') %}
+  <a class="mat-vermais" href="{{ href }}">{{ texto }}
+    <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg></a>
 {% endmacro %}

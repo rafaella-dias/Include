@@ -13,3 +13,5 @@ db.sqlite3
 *.log
 
 instance/
+
+teste.py

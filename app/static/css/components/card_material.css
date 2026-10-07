@@ -1,54 +1,58 @@
+/* static/css/components/card-material.css
+   Card de material reutilizável. Usa as variáveis do base.css. */
 
-.atv-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.atv-vazio{margin:0;font-size:.85rem;color:var(--texto-secundario);padding:8px 0}
-@media (min-width:768px){.atv-lista{display:grid;grid-template-columns:repeat(2,1fr)}}
+/* ---------- Lista vertical ---------- */
+.mat-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.mat-vazio{margin:0;font-size:.85rem;color:var(--texto-secundario);padding:8px 0}
+@media (min-width:768px){.mat-lista{display:grid;grid-template-columns:repeat(2,1fr)}}
 
 /* ---------- Card completo ---------- */
-.atv-card{
+.mat-card{
   position:relative;display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;
   padding:8px 10px 8px 8px;border-radius:14px;background:#ececee;
 }
-.atv-card p{margin:0}                       /* neutraliza margem de <p> do Bootstrap */
-.atv-card__thumb{width:72px;height:72px;border-radius:12px;overflow:hidden}
-.atv-card__thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.atv-card__body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mat-card p{margin:0}                       /* neutraliza margem de <p> do Bootstrap */
+.mat-card__thumb{width:72px;height:72px;border-radius:12px;overflow:hidden}
+.mat-card__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.mat-card__body{display:flex;flex-direction:column;gap:2px;min-width:0}
 
-.atv-card__title{
+.mat-card__title{
   margin:0;font-size:.8rem;font-weight:700;line-height:1.2;color:#111827;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.atv-card__title a{color:inherit;text-decoration:none}
-.atv-card__title a::after{content:"";position:absolute;inset:0;border-radius:14px}  /* card inteiro clicável */
-.atv-card__meta{font-size:.64rem;font-weight:600;line-height:1.25;color:#6b7280}
-.atv-card__meta b{font-weight:600;color:var(--azul-principal)}
-.atv-card__desc{
+.mat-card__title a{color:inherit;text-decoration:none}
+.mat-card__title a::after{content:"";position:absolute;inset:0;border-radius:14px}  /* card inteiro clicável */
+.mat-card__meta{font-size:.64rem;font-weight:600;line-height:1.25;color:#6b7280}
+.mat-card__meta b{font-weight:600;color:var(--azul-principal)}
+.mat-card__desc{
   font-size:.66rem;font-weight:500;line-height:1.3;color:#6b7280;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.atv-card__foot{display:flex;align-items:center;gap:12px;margin-top:3px;font-size:.64rem;font-weight:500;color:#6b7280}
-.atv-card__foot span{display:flex;align-items:center;gap:4px}
-.atv-card .icon{width:15px;height:15px}      /* arquivo, visualizações e favoritar: mesmo tamanho */
+.mat-card__foot{display:flex;align-items:center;gap:12px;margin-top:3px;font-size:.64rem;font-weight:500;color:#6b7280}
+.mat-card__foot span{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.mat-card .icon{width:15px;height:15px}      /* arquivo, visualizações e favoritar: mesmo tamanho */
 
-.atv-card__save{
+.mat-card__save{
   position:relative;z-index:1;margin-left:auto;width:26px;height:26px;padding:0;
   border:0;border-radius:8px;background:none;color:#6b7280;cursor:pointer;
   display:grid;place-items:center;
 }
-.atv-card__save:hover{background:rgba(0,0,0,.07)}
-.atv-card__save[aria-pressed="true"]{color:var(--azul-principal)}
-.atv-card__save[aria-pressed="true"] .icon{fill:currentColor}
+.mat-card__save:hover{background:rgba(0,0,0,.07)}
+.mat-card__save[aria-pressed="true"]{color:var(--azul-principal)}
+.mat-card__save[aria-pressed="true"] .icon{fill:currentColor}
 
-/* ---------- Faixa horizontal (mesmo card, largura fixa) ---------- */
-.atv-shelf{
-  list-style:none;margin:0;padding:0 0 2px;
-  display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
+/* ---------- Botão "Ver mais" ---------- */
+.mat-vermais{
+  display:flex;align-items:center;justify-content:center;gap:6px;margin-top:2px;
+  padding:9px 16px;border-radius:12px;font-size:.78rem;font-weight:600;text-decoration:none;
+  color:var(--azul-principal);background:#fff;border:1.5px solid var(--azul-principal);
+  transition:background-color .2s,color .2s;
 }
-.atv-shelf::-webkit-scrollbar{display:none}
-.atv-shelf>li{flex:0 0 100%;scroll-snap-align:start;display:flex}   /* mesma largura do card da lista */
-@media (min-width:768px){.atv-shelf>li{flex-basis:calc(50% - 5px)}} /* 2 por vez, como a lista em 2 colunas */
-.atv-shelf>li>.atv-card{flex:1;min-width:0}
+.mat-vermais:hover{background:var(--azul-principal);color:#fff}
+.mat-vermais .icon{width:15px;height:15px}
+.mat-vermais:focus-visible{outline:3px solid var(--amarelo-destaque);outline-offset:2px}
 
 /* ---------- Foco visível (acessibilidade) ---------- */
-.atv-card a:focus-visible,.atv-card__save:focus-visible{
+.mat-card a:focus-visible,.mat-card__save:focus-visible{
   outline:3px solid var(--amarelo-destaque);outline-offset:2px;
 }

@@ -20,11 +20,15 @@ def home():
 @login_required
 def busca():
     termo = request.args.get('q', '').strip()
+    nome_curso = request.args.get('curso', '').strip()
+    consulta = Material.query
 
-    if not termo:
-        return redirect(url_for('main.home'))
+    if termo:
+        consulta = consulta.filter(Material.titulo.ilike(f'%{termo}%')).all()
+
+    if nome_curso:
+        consulta = consulta.filter(Material.curso.nome.ilike(f'%{nome_curso}')).all()
+
+    materiais = consulta.order_by(Material.id_material.desc()).all()
     
-    materiais = Material.query.filter(
-        Material.titulo.ilike(f'%{termo}%')
-    ).all()
-    return render_template('busca.html', materiais=materiais, termo=termo)
+    return render_template('busca.html', materiais=materiais, termo=termo, nome_curso=nome_curso)
