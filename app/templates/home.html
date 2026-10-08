@@ -1,26 +1,12 @@
-{% extends "base.html" %}
+{% extends "base_app.html" %}
 {% block title %}Página Inicial{% endblock %}
 
-{% block content %}
-{# >>> AJUSTE aqui os caminhos reais das imagens (dentro de static/) <<< #}
-{% set img_logo = 'images/hero-logo.png' %}
+{# Só o conteúdo da folha branca. O topo (pesquisa + logo), a folha e o rodapé vêm do base_app.html #}
+{% block sheet %}
+{# >>> AJUSTE o caminho real da imagem do carrossel (dentro de static/) <<< #}
 {% set img_slide_1 = 'images/slide-01.png' %}
-
 {% from "components/card_material.html" import lista_materiais, secao_materiais, ver_mais %}
 
-<div class="hm-page">
-<header class="hm-hero">
-  <form class="hm-search" role="search" action="{{ url_for('main.busca') }}" method="GET">
-    <input type="search" name="q" placeholder="Buscar materiais..." aria-label="Buscar materiais"
-           value="{{ termo or '' }}" autocomplete="off">
-    <button type="submit" aria-label="Pesquisar">
-      <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
-    </button>
-  </form>
-  <img class="hm-hero__logo" src="{{ url_for('static', filename=img_logo) }}" alt="Include">
-</header>
-
-<main class="hm-sheet">
 
   <section class="hm-carousel" aria-label="Destaques">
     <div class="hm-carousel__track">
@@ -32,9 +18,9 @@
     <div class="hm-carousel__dots"></div>
   </section>
 
-  <section class="hm-section" aria-labelledby="t-materias">
+  <section class="app-section" aria-labelledby="t-materias">
     <div class="hm-title-row">
-      <h2 class="hm-title" id="t-materias">Cursos</h2>
+      <h2 class="app-title" id="t-materias">Cursos</h2>
       <button type="button" class="hm-arrow" id="hm-cursos-next" aria-controls="hm-cursos" aria-label="Ver mais cursos">
         <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
       </button>
@@ -54,9 +40,9 @@
 
   {# ===== Visão de um curso (aparece ao clicar numa matéria) ===== #}
   {% for curso in cursos %}
-  <section class="hm-section hm-panel" id="curso-{{ loop.index }}" aria-labelledby="curso-{{ loop.index }}-t" hidden>
+  <section class="app-section hm-panel" id="curso-{{ loop.index }}" aria-labelledby="curso-{{ loop.index }}-t" hidden>
     <div class="hm-panel__head">
-      <h2 class="hm-title" id="curso-{{ loop.index }}-t">{{ curso.nome }}</h2>
+      <h2 class="app-title" id="curso-{{ loop.index }}-t">{{ curso.nome }}</h2>
       <button type="button" class="hm-panel__close" data-clear>Ver tudo</button>
     </div>
     {% set mats = curso.materiais|sort(attribute='id_material', reverse=true)|list %}
@@ -75,11 +61,11 @@
     {% for c in cursos %}{% for m in c.materiais %}{% set _ = todos.append(m) %}{% endfor %}{% endfor %}
     {% set lista_recentes = recentes if recentes else (todos|sort(attribute='id_material', reverse=true)|list)[:5] %}
 
-    <section class="hm-section" aria-labelledby="t-recentes">
-      <h2 class="hm-title hm-title--icon" id="t-recentes">
+    <section class="app-section" aria-labelledby="t-recentes">
+      <h2 class="app-title app-title--icon" id="t-recentes">
         <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Publicações recentes
       </h2>
-      <p class="hm-sub">Materiais mais recentes dos professores</p>
+      <p class="app-sub">Materiais mais recentes dos professores</p>
       {{ lista_materiais(lista_recentes[:5], 'Nenhum conteúdo publicado até o momento.') }}
     </section>
 
@@ -94,11 +80,9 @@
     {{ secao_materiais('Vídeos', videos|sort(attribute='id_material', reverse=true)|list) }}
 
   </div>
-</main>
-</div>
+{% endblock %}
 
-{% include "components/footer.html" %}
-
+{% block page_scripts %}
 <script>
 /* static/js/home.js */
 (() => {

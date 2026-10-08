@@ -1,0 +1,89 @@
+/* static/css/base/app-shell.css — estrutura compartilhada das telas com topo azul + folha branca */
+/* css/pages/home-mobile.css — mobile-first. Classes com prefixo hm- (não conflita com home.css antigo) */
+.app-hero{
+  background:linear-gradient(160deg,var(--azul-principal),var(--azul-escuro));
+  padding:14px 18px 48px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.app-hero__logo{
+  width:min(88%,270px);aspect-ratio:2.6/1;height:auto;
+  object-fit:cover;object-position:center;display:block;
+}
+/* Barra de pesquisa */
+.app-search,form.app-search{
+  display:flex !important;flex-direction:row !important;align-items:center !important;
+  gap:0 !important;width:100%;max-width:560px;height:48px;margin:0;
+  padding:0 4px 0 18px !important;background:#fff !important;border:0;border-radius:999px;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
+}
+.app-search:focus-within{box-shadow:0 0 0 3px var(--amarelo-destaque)}
+form.app-search input[type="search"]{
+  flex:1 1 auto !important;min-width:0;width:auto !important;height:100% !important;
+  margin:0 !important;padding:0 !important;text-align:left !important;
+  border:0 !important;border-radius:0 !important;outline:0 !important;box-shadow:none !important;
+  background:transparent !important;font-size:.95rem;color:var(--texto-principal);
+  -webkit-appearance:none;appearance:none;
+}
+form.app-search input[type="search"]::placeholder{color:#6b7280;text-align:left}
+form.app-search input[type="search"]::-webkit-search-cancel-button{display:none}
+form.app-search button{
+  flex:none !important;width:40px !important;height:40px !important;margin:0 !important;padding:0 !important;
+  border:0;border-radius:50%;cursor:pointer;
+  background:var(--amarelo-destaque);color:#1f2937;display:grid;place-items:center;
+  transition:background-color .2s;
+}
+form.app-search button:hover{background:var(--amarelo-hover)}
+.app-search button .icon{width:20px;height:20px}
+.app-sheet{
+  position:relative;margin-top:-32px;
+  background:#fff;border-radius:28px 28px 0 0;
+  padding:20px 18px 24px;
+  display:flex;flex-direction:column;gap:26px;
+}
+/* Home: sem faixa vazia de alertas e sem folga extra do body */
+.alert-container:not(:has(.alert)){display:none}
+body:has(.app-sheet){padding-bottom:0}
+/* Cabeçalhos de seção */
+.app-section{display:flex;flex-direction:column;gap:12px}
+.app-title{display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:600;color:var(--texto-principal)}
+.app-title a{color:inherit;text-decoration:none;display:flex;align-items:center;gap:6px}
+.app-title .icon{width:18px;height:18px}
+.app-title--icon .icon:first-child{color:var(--amarelo-destaque);width:24px;height:24px}
+.app-sub{font-size:.72rem;color:var(--texto-secundario);margin-top:-8px;padding-left:30px}
+.app-vazio{font-size:.85rem;color:var(--texto-secundario);padding:8px 0}
+/* Tablet+ (ponto de partida para o desktop) */
+@media (min-width:768px){
+  .app-sheet{max-width:960px;margin-inline:auto;margin-top:-32px;padding:28px 32px}
+}
+/* Troca de visão por matéria */
+.app-sheet [hidden]{display:none !important}
+/* ===== Versão mais delicada (sobrescreve valores anteriores) ===== */
+.app-sheet{gap:20px;padding:16px 16px 20px}
+.app-title{font-size:.88rem}
+.app-sub{font-size:.66rem;padding-left:26px;margin-top:-6px}
+.app-title--icon .icon:first-child{width:20px;height:20px}
+form.app-search{height:44px}
+form.app-search input[type="search"]{font-size:.85rem}
+form.app-search button{width:36px !important;height:36px !important}
+.app-search button .icon{width:18px;height:18px}
+/* ===== Ajuste fino: alinhamento do título/seta e cursos mais compactos ===== */
+.app-title{margin:0;line-height:1.25}
+tail
+
+
+/* O rodapé sobe 28px sobre a folha branca */
+.app-sheet{padding-bottom:56px}
+.app-sheet + .site-footer{margin-top:-28px}
+/* Topo + folha branca ocupam pelo menos a tela inteira: o rodapé fica abaixo da dobra
+   e só aparece ao rolar (o espaço que sobra fica em branco). */
+.app-page{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+.app-page .app-sheet{flex:1 0 auto;width:100%;padding-bottom:56px}
+/* 28px de folga + 28px que o rodapé cobre */
+.app-page + .site-footer{margin-top:-28px}
+@media (min-width:601px){
+  .app-page{min-height:calc(100vh - var(--navbar-height));min-height:calc(100dvh - var(--navbar-height))}
+  .app-page + .site-footer{margin-top:0}
+}
+
+/* Subtítulo sem o recuo do ícone (usado em telas sem ícone no título, como a busca) */
+.app-sub--flush{padding-left:0}

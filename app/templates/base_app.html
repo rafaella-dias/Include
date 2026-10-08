@@ -1,0 +1,29 @@
+{# Estrutura das telas com topo azul fixo no estilo do app: pesquisa + logo, folha branca e rodapé.
+   Telas filhas preenchem só o bloco "sheet" (a folha branca). Ex.: home.html, busca.html.
+   Estilo: static/css/base/app-shell.css #}
+{% extends "base.html" %}
+
+{% block content %}
+{# >>> AJUSTE o caminho real da logo (dentro de static/) <<< #}
+{% set img_logo = 'images/hero-logo.png' %}
+
+<div class="app-page">
+  <header class="app-hero">
+    <form class="app-search" role="search" action="{{ url_for('main.busca') }}" method="GET">
+      <input type="search" name="q" placeholder="Buscar materiais..." aria-label="Buscar materiais"
+             value="{{ termo or '' }}" autocomplete="off">
+      <button type="submit" aria-label="Pesquisar">
+        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+    </form>
+    <img class="app-hero__logo" src="{{ url_for('static', filename=img_logo) }}" alt="Include">
+  </header>
+
+  <main class="app-sheet">
+    {% block sheet %}{% endblock %}
+  </main>
+</div>
+
+{% include "components/footer.html" %}
+{% block page_scripts %}{% endblock %}
+{% endblock %}

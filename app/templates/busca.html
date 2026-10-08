@@ -1,92 +1,26 @@
-{% extends "base.html" %}
-
+{% extends "base_app.html" %}
 {% block title %}Busca{% endblock %}
 
-{% block content %}
+{# Conteúdo da folha branca da busca/explorar.
+   Variáveis enviadas pela rota: materiais, termo (texto buscado) e curso (filtro por curso). #}
+{% block sheet %}
+{% from "components/card_material.html" import lista_materiais, ver_mais %}
+{% set n = materiais|length %}
+{% set filtrado = termo or curso %}
 
+<section class="app-section" aria-labelledby="t-busca">
+  <h2 class="app-title" id="t-busca">
+    {% if termo and curso %}Resultados para “{{ termo }}” em {{ curso }}
+    {% elif termo %}Resultados para “{{ termo }}”
+    {% elif curso %}Materiais de {{ curso }}
+    {% else %}Explorar{% endif %}
+  </h2>
+  <p class="app-sub app-sub--flush">{{ n }} {{ 'material encontrado' if n == 1 else 'materiais encontrados' }}</p>
 
-<section class="home-fixed">
-  <div class="home-fixed-inner">
+  {{ lista_materiais(materiais, 'Nenhum material encontrado.' if filtrado else 'Nenhum material publicado ainda.') }}
 
-    <div class="home-actions">
-      <form class="search-wrapper" action="" method="GET">
-          <input type="text" name="q" placeholder="Buscar materiais...">
-          <button class="search-btn" aria-label="Pesquisar">
-            <img src="{{ url_for('static', filename='images/icons/icon-pesquisar.png') }}" alt="">
-
-          </button>
-        
-      </form>
-
-      <div class="publish-wrapper">
-        <a href="{{ url_for('materials.publicar') }}" class="publish-btn">
-          <span class="plus">+</span>
-        </a>
-        <span class="publish-label">Publicar recurso</span>
-
-      </div>
-
-    </div>
-    
-  </div>
-
+  {% if filtrado and not materiais %}
+    {{ ver_mais(url_for('main.busca'), 'Ver todos os materiais') }}
+  {% endif %}
 </section>
-
-
-<main class="main-container">
-
-    <div class="home-header">
-    <h2>Resultados para "{{ termo }}"</h2>
-
-    </div>
-
-    <section class="materiais">
-        {% if materiais %}
-            <div class="material-lista">
-                {% for material in materiais %}
-                    <div class="material-card">
-
-                        <div class="material-preview">
-                            {% if material.arquivos %}
-                                <img src="{{ material.arquivos[0].arquivo_url }}" alt="Preview da material">
-                  
-                            {% else %}
-                                <div class="material-preview-vazio">Sem preview</div>
-                  
-                            {% endif %}
-
-                        </div>
-
-                        <div class="material-info">
-                            <h3>{{ material.titulo }}</h3>
-                            <p>{{ material.curso.nome }}</p>
-                            <p class="info-materia">{{ material.materia.nome }}</p>
-
-                        </div>
-
-                        <div class="material-actions">
-                            <a href="{{ material.arquivos[0].arquivo_url
-                            | replace('/upload/', '/upload/fl_attachment:material/') }}" 
-                            class="btn-icon-action">
-                                <img src="{{ url_for('static', filename='images/icons/icon-baixar.png') }}" alt="">
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                {% endfor %}
-            
-            </div> 
-            
-        {% else %}
-            <p>Nenhum conteúdo publicado até o momento.</p>
-
-        {% endif %}
-
-    </section>
-
-</main>
-
-
 {% endblock %}

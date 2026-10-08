@@ -62,8 +62,8 @@
 {# Seção com título + lista vertical limitada (padrão: 5). Some se vazia. #}
 {% macro secao_materiais(titulo, itens, limite=5) %}
   {% if itens %}
-  <section class="hm-section" aria-label="{{ titulo }}">
-    <h2 class="hm-title">{{ titulo }}</h2>
+  <section class="app-section" aria-label="{{ titulo }}">
+    <h2 class="app-title">{{ titulo }}</h2>
     {{ lista_materiais(itens[:limite]) }}
   </section>
   {% endif %}

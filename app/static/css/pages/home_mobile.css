@@ -1,47 +1,4 @@
-/* css/pages/home-mobile.css — mobile-first. Classes com prefixo hm- (não conflita com home.css antigo) */
-.hm-hero{
-  background:linear-gradient(160deg,var(--azul-principal),var(--azul-escuro));
-  padding:14px 18px 48px;
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-}
-.hm-hero__logo{
-  width:min(88%,270px);aspect-ratio:2.6/1;height:auto;
-  object-fit:cover;object-position:center;display:block;
-}
-/* Barra de pesquisa */
-.hm-search,form.hm-search{
-  display:flex !important;flex-direction:row !important;align-items:center !important;
-  gap:0 !important;width:100%;max-width:560px;height:48px;margin:0;
-  padding:0 4px 0 18px !important;background:#fff !important;border:0;border-radius:999px;
-  box-shadow:0 2px 10px rgba(0,0,0,.18);
-}
-.hm-search:focus-within{box-shadow:0 0 0 3px var(--amarelo-destaque)}
-form.hm-search input[type="search"]{
-  flex:1 1 auto !important;min-width:0;width:auto !important;height:100% !important;
-  margin:0 !important;padding:0 !important;text-align:left !important;
-  border:0 !important;border-radius:0 !important;outline:0 !important;box-shadow:none !important;
-  background:transparent !important;font-size:.95rem;color:var(--texto-principal);
-  -webkit-appearance:none;appearance:none;
-}
-form.hm-search input[type="search"]::placeholder{color:#6b7280;text-align:left}
-form.hm-search input[type="search"]::-webkit-search-cancel-button{display:none}
-form.hm-search button{
-  flex:none !important;width:40px !important;height:40px !important;margin:0 !important;padding:0 !important;
-  border:0;border-radius:50%;cursor:pointer;
-  background:var(--amarelo-destaque);color:#1f2937;display:grid;place-items:center;
-  transition:background-color .2s;
-}
-form.hm-search button:hover{background:var(--amarelo-hover)}
-.hm-search button .icon{width:20px;height:20px}
-.hm-sheet{
-  position:relative;margin-top:-32px;
-  background:#fff;border-radius:28px 28px 0 0;
-  padding:20px 18px 24px;
-  display:flex;flex-direction:column;gap:26px;
-}
-/* Home: sem faixa vazia de alertas e sem folga extra do body */
-.alert-container:not(:has(.alert)){display:none}
-body:has(.hm-sheet){padding-bottom:0}
+/* static/css/pages/home-mobile.css — estilos só da tela inicial */
 /* Carrossel */
 .hm-carousel__track{
   display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
@@ -56,13 +13,6 @@ body:has(.hm-sheet){padding-bottom:0}
   background:#d1d5db;cursor:pointer;transition:background .2s,width .2s;
 }
 .hm-carousel__dots button[aria-current="true"]{background:var(--amarelo-destaque);width:18px;border-radius:4px}
-/* Cabeçalhos de seção */
-.hm-section{display:flex;flex-direction:column;gap:12px}
-.hm-title{display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:600;color:var(--texto-principal)}
-.hm-title a{color:inherit;text-decoration:none;display:flex;align-items:center;gap:6px}
-.hm-title .icon{width:18px;height:18px}
-.hm-title--icon .icon:first-child{color:var(--amarelo-destaque);width:24px;height:24px}
-.hm-sub{font-size:.72rem;color:var(--texto-secundario);margin-top:-8px;padding-left:30px}
 /* Matérias técnicas */
 .hm-cursos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .hm-curso{
@@ -76,19 +26,15 @@ body:has(.hm-sheet){padding-bottom:0}
 .hm-curso .icon{width:28px;height:28px}
 .hm-curso strong{display:block;font-size:.8rem;font-weight:600;line-height:1.2}
 .hm-curso span{font-size:.7rem;font-weight:500;opacity:.9}
-.hm-vazio{font-size:.85rem;color:var(--texto-secundario);padding:8px 0}
 :where(.hm-curso,.hm-hero__search,.hm-carousel__dots button):focus-visible{
   outline:3px solid var(--amarelo-destaque);outline-offset:2px;
 }
 /* Tablet+ (ponto de partida para o desktop) */
 @media (min-width:768px){
-  .hm-sheet{max-width:960px;margin-inline:auto;margin-top:-32px;padding:28px 32px}
   .hm-cursos{grid-template-columns:repeat(4,1fr)}
 }
-/* Troca de visão por matéria */
-.hm-sheet [hidden]{display:none !important}
 body > svg.icon{display:none}
- /* proteção contra ícone solto fora do sprite */
+/* proteção contra ícone solto fora do sprite */
 button.hm-curso{width:100%;text-align:left;cursor:pointer;font:inherit}
 .hm-curso[aria-pressed="true"]{background:var(--amarelo-destaque);color:#1f2937;border-color:#1f2937}
 .hm-panel__head{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -136,13 +82,12 @@ button.hm-curso{
 .hm-curso .icon{width:24px;height:24px}
 .hm-curso strong{font-size:.76rem}
 .hm-curso span{font-size:.66rem}
-@media (min-width:768px){button.hm-curso{flex-basis:calc(25% - 9px)}}
-@media (prefers-reduced-motion:reduce){.hm-cursos{scroll-behavior:auto}}
-/* ===== Versão mais delicada (sobrescreve valores anteriores) ===== */
-.hm-sheet{gap:20px;padding:16px 16px 20px}
-.hm-title{font-size:.88rem}
-.hm-sub{font-size:.66rem;padding-left:26px;margin-top:-6px}
-.hm-title--icon .icon:first-child{width:20px;height:20px}
+@media (min-width:768px){
+  button.hm-curso{flex-basis:calc(25% - 9px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hm-cursos{scroll-behavior:auto}
+}
 .hm-arrow{width:22px;height:22px}
 .hm-arrow .icon{width:12px;height:12px}
 .hm-cursos{gap:10px}
@@ -150,16 +95,12 @@ button.hm-curso{flex-basis:calc(50% - 5px);min-height:44px;padding:6px 9px;gap:7
 .hm-curso .icon{width:19px;height:19px}
 .hm-curso strong{font-size:.68rem;font-weight:600}
 .hm-curso span{font-size:.6rem}
-@media (min-width:768px){button.hm-curso{flex-basis:calc(25% - 8px)}}
+@media (min-width:768px){
+  button.hm-curso{flex-basis:calc(25% - 8px)}
+}
 .hm-chip{padding:6px 12px;font-size:.7rem}
 .hm-panel__close{font-size:.7rem;padding:5px 12px}
-form.hm-search{height:44px}
-form.hm-search input[type="search"]{font-size:.85rem}
-form.hm-search button{width:36px !important;height:36px !important}
-.hm-search button .icon{width:18px;height:18px}
-/* ===== Ajuste fino: alinhamento do título/seta e cursos mais compactos ===== */
-.hm-title{margin:0;line-height:1.25}
-          /* remove a margem inferior do h2 (Bootstrap) */
+/* remove a margem inferior do h2 (Bootstrap) */
 .hm-title-row{align-items:center;gap:6px}
 .hm-arrow{flex:none;padding:0;line-height:0}
 .hm-cursos{max-width:none;margin-inline:0;gap:10px}
@@ -173,30 +114,19 @@ button.hm-curso{
 .hm-curso span{font-size:.56rem}
 @media (min-width:768px){
   .hm-cursos{max-width:none}
-  button.hm-curso{flex-basis:calc(25% - 8px)}tail{
-}}
+  button.hm-curso{flex-basis:calc(25% - 8px)}
+  tail{
+}
+}
 /* ===== Cursos: todos os quadrinhos com o mesmo alinhamento ===== */
 button.hm-curso{justify-content:flex-start;min-height:52px;padding:6px 12px;gap:8px}
 .hm-curso .icon{flex:none}
 .hm-curso div{min-width:0;text-align:left}
-                 /* ul do Bootstrap empurrava os cards 2rem para a direita */
+/* ul do Bootstrap empurrava os cards 2rem para a direita */
 .hm-curso[aria-pressed="true"]{
   background:var(--azul-escuro);color:#fff;border-color:#00235a;
   box-shadow:inset 0 0 0 2px rgba(255,255,255,.85);
 }
-tail
-
-
-/* O rodapé sobe 28px sobre a folha branca */
-.hm-sheet{padding-bottom:56px}
-.hm-sheet + .site-footer{margin-top:-28px}
-
-/* Topo + folha branca ocupam pelo menos a tela inteira: o rodapé fica abaixo da dobra
-   e só aparece ao rolar (o espaço que sobra fica em branco). */
-.hm-page{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
-.hm-page .hm-sheet{flex:1 0 auto;width:100%;padding-bottom:56px}   /* 28px de folga + 28px que o rodapé cobre */
-.hm-page + .site-footer{margin-top:-28px}
 @media (min-width:601px){
-  .hm-page{min-height:calc(100vh - var(--navbar-height));min-height:calc(100dvh - var(--navbar-height))}
-  .hm-page + .site-footer{margin-top:0}      /* barra no topo: sem a "espiada" do rodapé embaixo */
+  /* barra no topo: sem a "espiada" do rodapé embaixo */{None}
 }
