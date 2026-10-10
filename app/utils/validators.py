@@ -18,6 +18,11 @@ def validar_usuario(nome_usuario):
 
 
 
+def validar_tipo(tipo):
+    return tipo in ('aluno', 'servidor')
+
+
+
 def validar_senha(senha):
     if not senha:
         return False
@@ -29,3 +34,24 @@ def validar_confirm_senha(senha, confirmacao_senha):
     if not confirmacao_senha:
         return False
     return senha == confirmacao_senha
+
+
+
+from urllib.parse import urlsplit
+def validar_lattes(url):
+    if not url: 
+        return False
+
+    try:
+        partes = urlsplit(url.strip())
+        return(
+            partes.scheme in ('http', 'https')
+            and partes.hostname is not None
+            and partes.hostname.lower() == 'lattes.cnpq.br'
+            and bool(partes.path.strip('/'))
+            and partes.username is None
+            and partes.password is None
+        )
+
+    except ValueError:
+        return False

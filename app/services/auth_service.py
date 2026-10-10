@@ -1,7 +1,8 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
-from app.models import Usuario
+from app.utils import validators
+from app.models import Usuario, Cargo
 
 
 
@@ -10,11 +11,29 @@ def buscar_usuario(email):
 
 
 
-def cadastrar_usuario(nome_completo, nome_usuario, email, senha):
-    descricao = None
-    tipo = 'usuario'
-    public_id = None
-    foto_url = None
+def cadastrar_usuario(nome_completo, nome_usuario, email, senha, tipo, id_cargo=None, especializacao=None, lattes_url=None):
+    if not validators.validar_tipo(tipo):
+        raise ValueError('Tipo de usuário inválido')
+
+    if tipo == 'aluno':
+        id_cargo = None
+        especializacao = None
+        lattes_url = None
+
+    elif tipo == 'servidor':
+        if not id_cargo:
+            raise ValueError('Selecione um cargo válido.')
+
+        if not especializacao or not especializacao.strip():
+            raise ValueError('Informe sua especialização.')
+
+        if not validators.validar_lattes(lattes_url):
+            raise ValueError('Informe um link válido do Currículo Lattes.')
+
+        cargo = db.session.get(Cargo, id_cargo)
+
+        if cargo is None:
+            raise ValueError('Cargo inválido.')
 
     senha_hash = generate_password_hash(senha)
 
@@ -23,11 +42,14 @@ def cadastrar_usuario(nome_completo, nome_usuario, email, senha):
             nome_completo=nome_completo,
             nome_usuario=nome_usuario,
             email=email,
-            descricao=descricao,
+            descricao=None,
             senha=senha_hash,
             tipo=tipo,
-            public_id=public_id,
-            foto_url=foto_url
+            id_cargo=id_cargo,
+            especializacao=especializacao,
+            lattes_url=lattes_url,
+            public_id=None,
+            foto_url=None,
         )
         db.session.add(novo_usuario)
         db.session.commit()

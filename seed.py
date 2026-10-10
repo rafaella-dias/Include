@@ -1,7 +1,6 @@
 from app import create_app
 from app.extensions import db
-from app.models import Curso, Materia, Classe_Tag, Tag
-
+from app.models import Curso, Materia, Classe_Tag, Tag, Cargo
 
 
 app = create_app()
@@ -70,6 +69,12 @@ with app.app_context():
         ]
     }
 
+    cargos = ['Pedagogo, Técnico em Assuntos Educacionais', 
+              'Professor de Ensino Básico, Técnico e Tecnológico (EBTT)', 
+              'Professor Substituto / Temporário', 
+              'Orientador Pedagógico / Mediador Pedagógico', 
+              'Psicopedagogo']
+
 
     for nome_curso, nomes_materias in cursos.items():
         curso = Curso.query.filter_by(nome=nome_curso).first()
@@ -104,6 +109,16 @@ with app.app_context():
                 tag = Tag(nome=nome_tag, id_classe=classe.id_classe)
 
                 db.session.add(tag)
+
+
+    for nome_cargo in cargos:
+        cargo = Cargo.query.filter_by(nome=nome_cargo).first()
+
+        if not cargo:
+            cargo = Cargo(nome=nome_cargo)
+
+            db.session.add(cargo)
+            db.session.flush()
 
     db.session.commit()
     print('Seed realizado com sucessso!')

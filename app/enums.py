@@ -8,3 +8,10 @@ class CorTag(enum.Enum):
     VERDE = 'verde'
     ROSA = 'rosa'
     ROXO = 'roxo'
+
+
+
+class Tipo(enum.Enum):
+    ALUNO = 'aluno'
+    SERVIDOR = 'servidor'
+    ADMINISTRADOR = 'administrador'

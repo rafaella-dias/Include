@@ -26,9 +26,13 @@ class Usuario(UserMixin, db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     descricao = db.Column(db.String(200))
     senha = db.Column(db.String(255), nullable=False)
-    tipo =  db.Column(db.String(20), default='user', nullable=False)
+    tipo =  db.Column(db.String(20), default='aluno', nullable=False)
     public_id = db.Column(db.String(100))
     foto_url = db.Column(db.String(255))
+
+    id_cargo = db.Column(db.Integer, db.ForeignKey('cargos.id_cargo'), nullable=True)
+    especializacao = db.Column(db.String(150))
+    lattes_url = db.Column(db.String(255))
 
     materiais = db.relationship('Material', backref='autor', lazy=True)
 
@@ -37,7 +41,20 @@ class Usuario(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<{self.nome_usuario}>'
-    
+
+
+
+class Cargo(db.Model):
+    __tablename__ = 'cargos'
+
+    id_cargo = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(50), nullable=False)
+
+    usuarios = db.relationship('Usuario', backref='cargo', lazy=True)
+
+    def __repr__(self):
+        return f'<{self.nome}>'
+   
 
 
 class Material(db.Model):
@@ -73,7 +90,7 @@ class Arquivo(db.Model):
     id_arquivo = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     nome_unico = db.Column(db.String(300), nullable=False)
-    tipo = db.Column(db.String(50), nullable=False)
+    tipo = db.Column(db.String(200), nullable=False)
     tamanho = db.Column(db.Integer, nullable=False)
     arquivo_url = db.Column(db.String(255), nullable=False)
     storage_path = db.Column(db.String(255), nullable=False)
@@ -102,7 +119,7 @@ class Curso(db.Model):
 class Materia(db.Model):
     __tablename__ = 'materias'
 
-    __tableargs__= (db.UniqueConstraint('nome', 'id_curso', name='uq_materia_curso'),)
+    __table_args__= (db.UniqueConstraint('nome', 'id_curso', name='uq_materia_curso'),)
 
     id_materia = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False, unique=False)
@@ -133,12 +150,18 @@ class Conteudo(db.Model):
 
 
 
+from sqlalchemy import select, func
+def proxima_cor(context):
+    total = context.connecion.execute(select(func.count()).select_from(Classe_Tag.__table__)).scalar()
+    cores = list(CorTag)
+    return cores[total % len(cores)]
+
 class Classe_Tag(db.Model):
     __tablename__ = 'classes_tag'
 
     id_classe = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(50), nullable=False, unique=True)
-    cor = db.Column(db.Enum(CorTag), default=CorTag.AZUL, nullable=False)
+    cor = db.Column(db.Enum(CorTag), default=proxima_cor, nullable=False)
 
     tags = db.relationship('Tag', backref='classe', lazy=True)
 

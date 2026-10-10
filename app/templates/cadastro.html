@@ -1,3 +1,4 @@
+```html
 {% extends "base.html" %}
 
 {% block title %}Cadastro{% endblock %}
@@ -6,61 +7,197 @@
 
 <main class="main-container">
   <div class="container-form">
-    <h2>Cadastrar</h2>
+    <h2>Criar conta</h2>
 
     <form action="" method="post" id="formCadastro">
 
+      <!-- DADOS DA CONTA -->
+
       <div class="form-group">
         <label for="nome_completo">Nome completo</label>
-        <input type="text" id="nome_completo" name="nome_completoForm" placeholder="Exemplo Nome" value="{{ form_data.nome_completoForm if form_data else ''}}" required>
-        <div class="invalid-feedback">
-          Informe seu nome.
-        </div>
+        <input
+          type="text"
+          id="nome_completo"
+          name="nome_completoForm"
+          placeholder="Seu nome completo"
+          value="{{ form_data.get('nome_completoForm', '') if form_data else '' }}"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label for="nome_usuario">Nome de usuário</label>
-        <input type="text" id="nome_usuario" name="nome_usuarioForm" placeholder="exemplo_usuario" value="{{ form_data.nome_usuarioForm if form_data else ''}}" required>
-        <div class="invalid-feedback">
-          Informe um nome de usuário.
-        </div>
+        <input
+          type="text"
+          id="nome_usuario"
+          name="nome_usuarioForm"
+          placeholder="exemplo_usuario"
+          value="{{ form_data.get('nome_usuarioForm', '') if form_data else '' }}"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label for="emailCadastro">E-mail</label>
-        <input type="email" id="emailCadastro" name="emailForm" placeholder="exemplo@email.com" value="{{ form_data.emailForm if form_data else '' }}" required>
-        <div class="invalid-feedback">
-          Informe um e-mail válido.
-        </div>
+        <input
+          type="email"
+          id="emailCadastro"
+          name="emailForm"
+          placeholder="exemplo@email.com"
+          value="{{ form_data.get('emailForm', '') if form_data else '' }}"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label for="senhaCadastro">Senha</label>
-        <input type="password" id="senhaCadastro" name="senhaForm"  value="{{ form_data.senhaForm if form_data else '' }}" required>
-        <div class="invalid-feedback">
-          Informe uma senha.
-        </div>
+        <input
+          type="password"
+          id="senhaCadastro"
+          name="senhaForm"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label for="confirmarSenha">Confirmar senha</label>
-        <input type="password" id="confirmarSenha" name="confirmacao_senhaForm"  value="{{ form_data.confirmacao_senhaForm if form_data else ''}}" required>
-        <div class="invalid-feedback">
-          Confirme sua senha.
-        </div>
+        <input
+          type="password"
+          id="confirmarSenha"
+          name="confirmacao_senhaForm"
+          required
+        >
       </div>
 
-      <input type="submit" value="Cadastrar" class="btn btn-primary">
-      
+      <!-- TIPO DE USUÁRIO -->
+
+      <fieldset class="form-group">
+        <legend>Tipo de usuário</legend>
+
+        <div>
+          <input
+            type="radio"
+            id="tipoAluno"
+            name="tipoForm"
+            value="aluno"
+            {% if not form_data or form_data.get('tipoForm') == 'aluno' %}
+              checked
+            {% endif %}
+            required
+          >
+          <label for="tipoAluno">Aluno</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            id="tipoServidor"
+            name="tipoForm"
+            value="servidor"
+            {% if form_data and form_data.get('tipoForm') == 'servidor' %}
+              checked
+            {% endif %}
+          >
+          <label for="tipoServidor">Professor/Servidor</label>
+        </div>
+      </fieldset>
+
+      <!-- PERFIL PROFISSIONAL -->
+
+      <section
+        id="dadosProfissionais"
+        {% if not form_data or form_data.get('tipoForm') != 'servidor' %}
+          hidden
+        {% endif %}
+        aria-labelledby="tituloProfissional"
+      >
+        <h3 id="tituloProfissional">Perfil profissional</h3>
+
+        <p>
+          Informe seus dados profissionais, se desejar.
+        </p>
+
+        <div class="form-group">
+          <label for="cargo">Cargo</label>
+
+          <select id="cargo" name="cargoForm">
+            <option value="">Selecione seu cargo</option>
+
+            {% for cargo in cargos %}
+              <option
+                value="{{ cargo.id_cargo }}"
+                {% if form_data and form_data.get('cargoForm', '')|string == cargo.id_cargo|string %}
+                  selected
+                {% endif %}
+              >
+                {{ cargo.nome }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="especializacao">Área de especialização</label>
+          <input
+            type="text"
+            id="especializacao"
+            name="especializacaoForm"
+            placeholder="Ex.: Educação inclusiva"
+            value="{{ form_data.get('especializacaoForm', '') if form_data else '' }}"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lattes">
+            Link do Currículo Lattes (opcional)
+          </label>
+          <input
+            type="url"
+            id="lattes"
+            name="lattesForm"
+            placeholder="https://lattes.cnpq.br/..."
+            value="{{ form_data.get('lattesForm', '') if form_data else '' }}"
+          >
+        </div>
+      </section>
+
+      <button type="submit" class="btn btn-primary">
+        Cadastrar
+      </button>
+
     </form>
 
-    <p>Já possui cadastro?<br>
+    <p>
+      Já possui cadastro?
       <a href="{{ url_for('auth.login') }}">Faça login</a>.
     </p>
-
   </div>
+</main>
 
-</main>  
+<script>
+  // Elementos do formulário.
+  const tipoAluno = document.getElementById('tipoAluno');
+  const tipoServidor = document.getElementById('tipoServidor');
+  const dadosProfissionais = document.getElementById('dadosProfissionais');
+
+  // Mostra os campos profissionais apenas para servidores.
+  function atualizarDadosProfissionais() {
+    const servidorSelecionado = tipoServidor.checked;
+
+    dadosProfissionais.hidden = !servidorSelecionado;
+
+    // Evita enviar valores dos campos ocultos.
+    dadosProfissionais.querySelectorAll('input, select').forEach(campo => {
+      campo.disabled = !servidorSelecionado;
+    });
+  }
+
+  tipoAluno.addEventListener('change', atualizarDadosProfissionais);
+  tipoServidor.addEventListener('change', atualizarDadosProfissionais);
+
+  // Mantém a seleção correta após uma validação do backend.
+  atualizarDadosProfissionais();
+</script>
 
 {% endblock %}
-
+```

@@ -1,175 +1,136 @@
-{% extends "base.html" %}
+{% extends "base_pagina.html" %}
 
 {% block title %}Publicar Material{% endblock %}
+{% set voltar_url = url_for('main.home') %}
+{% block page_title %}Publicar Material Adaptado{% endblock %}
+{% block page_subtitle %}Preencha os dados do material{% endblock %}
 
-{% block content %}
+{% block page_content %}
+<form class="pub-form" action="" method="post" enctype="multipart/form-data">
 
-<main class="main-container">
-    <div class="container-form">
-        <h2>Publicar Material Adaptado</h2>
-        <form action="" method="post" enctype="multipart/form-data">
+  <div class="pub-field">
+    <label for="tituloForm">Título do material</label>
+    <input class="pub-input" type="text" id="tituloForm" name="tituloForm"
+           value="{{ form_data.get('tituloForm', '') }}" placeholder="Ex.: Material adaptado de lógica digital" required>
+  </div>
 
+  <div class="pub-field">
+    <label for="cursoForm">Curso</label>
+    <select class="pub-select" name="cursoForm" id="cursoForm" required>
+      <option value="">Selecione um curso</option>
+    </select>
+  </div>
 
+  <div class="pub-field">
+    <label for="materiaForm">Matéria</label>
+    <select class="pub-select" name="materiaForm" id="materiaForm" disabled required>
+      <option value="" disabled selected>Selecione um curso primeiro.</option>
+    </select>
+  </div>
 
+  <div class="pub-field">
+    <label for="conteudoForm">Conteúdo</label>
+    <select class="pub-select" name="conteudoForm" id="conteudoForm" disabled>
+      <option value="" disabled selected>Selecione uma matéria primeiro.</option>
+    </select>
+  </div>
 
+  <div class="pub-field">
+    <span class="pub-label">Tags</span>
 
-            <div class="form-section">
-                <h3>Informações do Material</h3>
+    <select name="tagsForm" id="tagsForm" multiple size="6" hidden>
+      {% for classe in classes %}
+        {% if classe.tags %}
+          <optgroup label="{{ classe.nome }}">
+            {% for tag in classe.tags %}
+              <option value="{{ tag.id_tag }}" {% if tag.id_tag|string in form_data.get('tagsForm', []) %}selected{% endif %}>{{ tag.nome }}</option>
+            {% endfor %}
+          </optgroup>
+        {% endif %}
+      {% endfor %}
+    </select>
 
-                <label for="tituloForm">Título</label>
-                <input type="text" id="tituloForm" name="tituloForm" value="{{ form_data.get('tituloForm', '') }}" required>
-
-                <label for="subtituloForm">Subtítulo</label>
-                <input type="text" id="subtituloForm" name="subtituloForm" value="{{ form_data.get('subtituloForm', '') }}">
-
-                <label for="descricaoForm">Descrição</label>
-                <textarea id="descricaoForm" name="descricaoForm">{{ form_data.get('descricaoForm', '') }}</textarea>
-
-                <label for="textoForm">Conteúdo Textual</label>
-                <textarea name="textoForm" id="textoForm" rows="6">{{ form_data.get('textoForm', '') }}</textarea>
-
-                
-
-            </div>  
-
-
-
-
-
-            <div class="form-section">
-                <h3>Adicionar Arquivos</h3>
-                <div class="upload-wrapper">
-
-                    <label class="upload-label">
-                        Adicionar Arquivo:
-                    </label>
-
-                    <div class="upload-container">
-
-                        <label for="arquivosForm" class="upload-box">
-                            <span>+ Adicionar arquivos</span>
-                        </label>
-
-                        <input type="file" name="arquivosForm" id="arquivosForm" multiple hidden>
-
-                        <div id="lista-arquivos"></div>
-                        <div id="uploadErro" class="upload-erro"></div>
-
-                    </div>
-
-                </div> 
-
+    <details class="pub-tags" {% if form_data.get('tagsForm') %}open{% endif %}>
+      <summary><span id="tagsResumo">Selecione as tags</span></summary>
+      <div class="tags-wrapper pub-tags__panel">
+        {% for classe in classes %}
+          {% if classe.tags %}
+            <div class="tag-grupo">
+              <h4 class="tag-grupo-titulo">{{ classe.nome }}</h4>
+              <div class="tag-lista">
+                {% for tag in classe.tags %}
+                  <button type="button"
+                          class="tag-chip {{ tag.classe.cor.value }} {% if tag.id_tag|string in form_data.get('tagsForm', []) %}active{% endif %}"
+                          data-tag-id="{{ tag.id_tag }}">{{ tag.nome }}</button>
+                {% endfor %}
+              </div>
             </div>
-            
+          {% endif %}
+        {% endfor %}
+      </div>
+    </details>
+  </div>
+
+  <div class="pub-field">
+    <label for="descricaoForm">Descrição</label>
+    <textarea class="pub-textarea" id="descricaoForm" name="descricaoForm"
+              placeholder="Conte como o material foi adaptado e para qual turma ele é indicado.">{{ form_data.get('descricaoForm', '') }}</textarea>
+  </div>
+
+  <details class="pub-extra" {% if form_data.get('subtituloForm') or form_data.get('textoForm') %}open{% endif %}>
+    <summary>Mais detalhes <small>(opcional)</small></summary>
+    <div class="pub-extra__body">
+      <div class="pub-field">
+        <label for="subtituloForm">Subtítulo</label>
+        <input class="pub-input" type="text" id="subtituloForm" name="subtituloForm"
+               value="{{ form_data.get('subtituloForm', '') }}">
+      </div>
+      <div class="pub-field">
+        <label for="textoForm">Conteúdo textual</label>
+        <textarea class="pub-textarea" id="textoForm" name="textoForm" rows="6">{{ form_data.get('textoForm', '') }}</textarea>
+      </div>
+    </div>
+  </details>
+
+  <div class="pub-field">
+    <span class="pub-label">Arquivo do material</span>
+    <div class="upload-container">
+      <label for="arquivosForm" class="upload-box">
+        <span class="pub-upload__icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span>
+        <span class="pub-upload__title">Toque para selecionar um arquivo</span>
+        <span class="pub-upload__hint">PDF ou vídeo • até 50 MB</span>
+      </label>
+      <input type="file" name="arquivosForm" id="arquivosForm" multiple hidden>
+      <div id="lista-arquivos"></div>
+      <div id="uploadErro" class="upload-erro"></div>
+    </div>
+  </div>
 
 
+  <button type="submit" class="pub-submit">
+    <svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Publicar material
+  </button>
+</form>
+{% endblock %}
 
-
-            <div class="form-section">
-                <h3>Classificação do Material</h3>
-
-                <label for="cursoForm">Curso:</label>
-                <select name="cursoForm" id="cursoForm" required>
-                    <option value="">Selecione um curso</option>
-
-                </select>
-                
-                <label for="materiaForm">Materia:</label>
-                <select name="materiaForm" id="materiaForm" disabled required>
-                    <option value="" disabled selected>Selecione um curso primeiro.</option>
-                    
-                </select>
-
-                <label for="conteudoForm">Conteúdo:</label>
-                <select name="conteudoForm" id="conteudoForm" disabled>
-                    <option value="" disabled selected>Selecione uma matéria primeiro.</option>
-
-                </select>
-
-
-
-                <label for="tagsForm">Tags:</label> 
-                <select name="tagsForm" id="tagsForm" multiple size="6" hidden>
-
-                    {% for classe in classes %}
-                        
-                        {% if classe.tags %}
-
-                            <optgroup label="{{ classe.nome }}">
-
-                                {% for tag in classe.tags %}
-
-                                    <option value="{{ tag.id_tag }}"
-                                        {% if tag.id_tag|string in form_data.get('tagsForm', []) %}
-                                            selected
-                                        {% endif %}
-                                    >
-
-                                        {{ tag.nome  }}
-                                
-                                    </option>
-
-                                {% endfor %}
-
-                            </optgroup>
-                        
-                        {% endif %}
-
-                    {% endfor %}
-                </select> 
-                
-                
-                <div class="tags-wrapper">
-
-                    {% for classe in classes %}
-                    
-                        {% if classe.tags %}
-
-                            <div class="tag-grupo">
-                                <h4 class="tag-grupo-titulo">
-                                    {{ classe.nome }}
-
-                                </h4>
-
-                                <div class="tag-lista">
-                                    {% for tag in classe.tags %}   
-                                        
-                                    <button type="button" 
-                                        class="tag-chip {{ tag.classe.cor.value }} {% if tag.id_tag|string in form_data.get('tagsForm', []) %}active{% endif %}"
-                                        data-tag-id="{{ tag.id_tag }}">
-                                        
-                                        {{ tag.nome }}
-
-                                    </button>
-
-                                    {% endfor %}
-
-                                </div>
-
-                            </div>
-                            
-                        {% endif %}
-                        
-                    {% endfor %}
-
-                </div>
-
-            </div>
-            
-
-            
-            <input type="submit" value="Publicar" class="btn btn-action-submit">
-
-        </form>
-
-
-</main>
-
-<script> 
-    const cursos = {{ cursos_json | safe }};
+{% block page_scripts %}
+<script>
+  const cursos = {{ cursos_json | safe }};
 </script>
 <script src="{{ url_for('static', filename='js/pages/publicar/classificacoes.js') }}"></script>
 <script src="{{ url_for('static', filename='js/pages/publicar/arquivos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/tags.js') }}"></script>
-
+<script>
+  (() => {
+    const painel = document.querySelector('.tags-wrapper');
+    const resumo = document.getElementById('tagsResumo');
+    if (!painel || !resumo) return;
+    const atualizar = () => {
+      const n = painel.querySelectorAll('.tag-chip.active').length;
+      resumo.textContent = n ? n + (n === 1 ? ' tag selecionada' : ' tags selecionadas') : 'Selecione as tags';
+    };
+    painel.addEventListener('click', () => setTimeout(atualizar));
+    atualizar();
+  })();
+</script>
 {% endblock %}
