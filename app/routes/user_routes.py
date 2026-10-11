@@ -16,14 +16,14 @@ user_bp = Blueprint('user', __name__)
 @login_required
 def perfil():
     materiais = Material.query.filter_by(id_usuario=current_user.id_usuario).order_by(Material.data_publicacao.desc()).all()
-    return render_template('perfil.html', materiais=materiais)
+    return render_template('user/perfil.html', materiais=materiais)
 
     
 @user_bp.route('/perfil/editar', methods = ['GET', 'POST'])
 @login_required
 def editar_perfil():    
     if request.method == 'GET':
-        return render_template('editar_perfil.html')
+        return render_template('user/editar_perfil.html')
     
     nome_completo = request.form.get('nome_completoForm')
     nome_usuario = request.form.get('nome_usuarioForm')
@@ -38,7 +38,7 @@ def editar_perfil():
     if nome_usuario != current_user.nome_usuario:
         if validators.validar_usuario(nome_usuario) == False:
             flash('O nome de usuário não deve ter espaços.', 'danger')
-            return render_template('editar_perfil.html')
+            return render_template('user/editar_perfil.html', form_data=request.form)
         current_user.nome_usuario = nome_usuario
 
     if descricao != current_user.descricao:
@@ -47,22 +47,22 @@ def editar_perfil():
     if senha:
         if not validators.validar_senha(senha):
             flash('A senha deve ter no mínimo 8 caracteres e não pode ter espaços', 'danger')
-            return render_template('editar_perfil.html')
+            return render_template('user/editar_perfil.html', form_data=request.form)
             
         if not validators.validar_confirm_senha(senha, confirmacao_senha):
             flash('As senhas devem ser iguais', 'danger')
-            return render_template('editar_perfil.html')  
+            return render_template('user/editar_perfil.html', form_data=request.form)  
         current_user.senha = generate_password_hash(senha)
 
 
     if foto_perfil and foto_perfil.filename != '':
         if not upload.validar_imagem(foto_perfil):
             flash('Formato de imagem inválido.', 'danger')
-            return render_template('editar_perfil.html')
+            return render_template('user/editar_perfil.html', form_data=request.form)
             
         if not foto_perfil.mimetype.startswith('image/'):
             flash('O arquivo não é uma imagem válida', 'danger')
-            return render_template('editar_perfil.html')
+            return render_template('user/editar_perfil.html', form_data=request.form)
         
         foto_atual = current_user.public_id
         if foto_atual:

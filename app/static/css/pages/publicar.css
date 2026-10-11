@@ -1,30 +1,5 @@
-.pub-form{display:flex;flex-direction:column;gap:18px}
-.pub-field{display:flex;flex-direction:column;gap:6px}
-.pub-form label,.pub-label{margin:0;font-size:.85rem;font-weight:600;color:#111827}
-
-.pub-form .pub-input,
-.pub-form .pub-select,
-.pub-form .pub-textarea{
-  width:100%;height:46px;margin:0;padding:0 14px;
-  font-size:.88rem;color:var(--texto-principal);
-  background-color:#fff;border:1px solid #e5e7eb;border-radius:14px;
-  box-shadow:none;outline:0;transition:border-color .2s,box-shadow .2s;
-}
-.pub-form .pub-textarea{height:auto;min-height:104px;padding:12px 14px;line-height:1.5;resize:vertical}
-.pub-form ::placeholder{color:#9ca3af}
-.pub-form .pub-input:focus,
-.pub-form .pub-select:focus,
-.pub-form .pub-textarea:focus{border-color:var(--azul-principal);box-shadow:0 0 0 3px rgba(0,74,173,.15)}
-
-.pub-form .pub-select,
 .pub-tags>summary{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003a8c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;background-size:16px;
-}
-.pub-form .pub-select{-webkit-appearance:none;appearance:none;padding-right:42px}
-.pub-form .pub-select:disabled{background-color:#f3f4f6;color:#9ca3af;cursor:not-allowed}
-
-.pub-tags>summary{
+  background-image:var(--fm-chevron);background-repeat:no-repeat;background-position:right 14px center;background-size:16px;
   list-style:none;cursor:pointer;display:flex;align-items:center;
   height:46px;padding:0 42px 0 14px;font-size:.88rem;color:#6b7280;
   background-color:#fff;border:1px solid #e5e7eb;border-radius:14px;
@@ -39,12 +14,12 @@
 .pub-extra>summary small{font-weight:400;color:#6b7280}
 .pub-extra__body{display:flex;flex-direction:column;gap:18px;margin-top:14px}
 
-.pub-form .upload-box{
+.fm-form .upload-box{
   display:flex;flex-direction:column;align-items:center;gap:6px;margin:0;padding:22px 16px;
   text-align:center;cursor:pointer;background:#f3f5fb;border:2px dashed #8aa4d6;border-radius:16px;
   transition:background-color .2s,border-color .2s;
 }
-.pub-form .upload-box:hover{background:#eaeffa;border-color:var(--azul-principal)}
+.fm-form .upload-box:hover{background:#eaeffa;border-color:var(--azul-principal)}
 .pub-upload__icon{
   width:44px;height:44px;margin-bottom:4px;border-radius:50%;
   display:grid;place-items:center;background:#e1e8f8;color:var(--azul-principal);
@@ -65,18 +40,9 @@
 }
 #lista-arquivos button:hover{background:#fee2e2;color:var(--vermelho-alerta)}
 #lista-arquivos button img,#lista-arquivos button svg{width:14px;height:14px}
-.pub-form .upload-erro{margin-top:6px;font-size:.75rem;color:var(--vermelho-alerta)}
+.fm-form .upload-erro{margin-top:6px;font-size:.75rem;color:var(--vermelho-alerta)}
 
-
-.pub-form .pub-submit{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  width:100%;height:50px;margin-top:4px;padding:0;border:0;border-radius:14px;
-  font-size:.95rem;font-weight:600;color:#fff;background:var(--azul-escuro);cursor:pointer;
-  box-shadow:0 8px 18px rgba(0,58,140,.28);transition:background-color .2s,transform .1s;
-}
-.pub-form .pub-submit:hover{background:var(--azul-principal)}
-.pub-form .pub-submit:active{transform:translateY(1px)}
-.pub-submit .icon{width:18px;height:18px}
 
 .pub-tags>summary:focus-visible,
 .pub-extra>summary:focus-visible,
+.fm-form .upload-box:focus-within{outline:3px solid var(--amarelo-destaque);outline-offset:2px}

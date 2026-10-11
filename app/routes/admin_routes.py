@@ -15,7 +15,7 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 def gerenciar_conteudos():
     if request.method == 'GET':
         cursos = Curso.query.all()
-        return render_template('administrador/conteudos.html', cursos=cursos, form_data={})
+        return render_template('admin/conteudos.html', cursos=cursos, form_data={})
 
     try: 
         nome = request.form.get('nomeForm')
@@ -31,12 +31,12 @@ def gerenciar_conteudos():
         db.session.rollback()
         flash(e, 'danger')
         print(e)
-        return render_template('administrador/conteudos.html', cursos=cursos, form_data=request.form)
+        return render_template('admin/conteudos.html', cursos=cursos, form_data=request.form)
 
     except Exception as e:
         flash('Erro interno no servidor.', 'danger')
         print(e)
-        return render_template('administrador/conteudos.html', cursos=cursos, form_data=request.form)
+        return render_template('admin/conteudos.html', cursos=cursos, form_data=request.form)
 
 
 
@@ -45,7 +45,7 @@ def gerenciar_conteudos():
 def gerenciar_materias():
     if request.method == 'GET': 
         cursos = Curso.query.all()
-        return render_template('administrador/materias.html', cursos=cursos)
+        return render_template('admin/materias.html', cursos=cursos)
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
@@ -69,7 +69,7 @@ def gerenciar_materias():
 @login_required
 def gerenciar_cursos():
     if request.method == 'GET':
-        return render_template('administrador/cursos.html')
+        return render_template('admin/cursos.html')
 
     elif request.method =='POST':
         nome = request.form.get('nomeForm')
@@ -93,7 +93,7 @@ def gerenciar_cursos():
 def gerenciar_tags():
     if request.method == 'GET': 
         classes = Classe_Tag.query.all()
-        return render_template('administrador/tags.html', classes=classes)
+        return render_template('admin/tags.html', classes=classes)
     
     elif request.method == 'POST':
         nome = request.form.get('nomeForm')
@@ -117,7 +117,7 @@ def gerenciar_tags():
 @login_required
 def gerenciar_classes():
     if request.method == 'GET':
-        return render_template('administrador/classe_tag.html',form_data={})
+        return render_template('admin/classe_tag.html',form_data={})
 
     else:
         nome_classe = request.form.get('nomeForm')
@@ -147,4 +147,4 @@ def dashboard():
     classes = Classe_Tag.query.all()
     tags = Tag.query.all()
     
-    return render_template('administrador/dashboard.html', cursos=cursos, materias=materias,conteudos=conteudos , classes=classes, tags=tags )
+    return render_template('admin/dashboard.html', cursos=cursos, materias=materias,conteudos=conteudos , classes=classes, tags=tags )

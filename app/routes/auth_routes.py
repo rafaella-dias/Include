@@ -12,24 +12,24 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('auth/login.html')
     
     email = request.form.get('emailForm')
     senha = request.form.get('senhaForm')
 
     if not validators.validar_email(email):
         flash('E-mail inválido', 'danger')
-        return render_template('login.html', form_data=request.form)
+        return render_template('auth/login.html', form_data=request.form)
 
     usuario = auth_service.buscar_usuario(email)
 
     if usuario == None:
         flash('E-mail ou senha incorretos', 'danger')
-        return render_template('login.html', form_data=request.form)
+        return render_template('auth/login.html', form_data=request.form)
     
     if not auth_service.verif_corresp_senha(usuario, senha):
         flash('E-mail ou senha incorretos', 'danger')
-        return render_template('login.html', form_data=request.form)
+        return render_template('auth/login.html', form_data=request.form)
         
     login_user(usuario)
     return redirect(url_for('main.home'))
@@ -41,7 +41,7 @@ def cadastro():
     cargos = Cargo.query.order_by(Cargo.nome).all()
 
     if request.method == 'GET':
-        return render_template('cadastro.html', cargos=cargos)
+        return render_template('auth/cadastro.html', cargos=cargos)
     
     #dados
     nome_completo = request.form.get('nome_completoForm')
@@ -60,7 +60,7 @@ def cadastro():
     #validação
     if not validators.validar_tipo(tipo):
         flash('Tipo de usuário inválido', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     id_cargo = None
 
@@ -69,37 +69,37 @@ def cadastro():
             id_cargo = int(id_cargo_form)
         except(TypeError, ValueError):
             flash('Selecione um cargo válido,', 'danger')
-            return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+            return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     if tipo == 'servidor':
         if not especializacao or  not especializacao.strip():
             flash('Informe sua especialização.','danger')
-            return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+            return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
         if not validators.validar_lattes(lattes):
             flash('Informe um link do currículo lattes válido.', 'danger')
-            return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+            return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
         
 
     if not validators.validar_usuario(nome_usuario):
         flash('O nome de usuário não deve ter espaços.', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     if not validators.validar_email(email):
         flash('E-mail inválido', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     if auth_service.buscar_usuario(email):
         flash('E-mail já cadastrado', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
         
     if not validators.validar_senha(senha):
         flash('A senha deve ter no mínimo 8 caracteres e não pode ter espaços', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     if not validators.validar_confirm_senha(senha, confirmacao_senha):
         flash('As senhas devem ser correspondentes', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
         
     #cadastro
     try:
@@ -107,12 +107,12 @@ def cadastro():
 
     except ValueError as e:
         flash(str(e), 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
 
     except Exception as e:
         print(e)
         flash('Não foi possível realizar cadastro.', 'danger')
-        return render_template('cadastro.html', form_data=request.form, cargos=cargos)
+        return render_template('auth/cadastro.html', form_data=request.form, cargos=cargos)
         
     login_user(novo_usuario)
 

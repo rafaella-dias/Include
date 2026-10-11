@@ -1,4 +1,4 @@
-{% extends "base_pagina.html" %}
+{% extends "bases/base_pagina.html" %}
 
 {% block title %}Publicar Material{% endblock %}
 {% set voltar_url = url_for('main.home') %}
@@ -6,37 +6,37 @@
 {% block page_subtitle %}Preencha os dados do material{% endblock %}
 
 {% block page_content %}
-<form class="pub-form" action="" method="post" enctype="multipart/form-data">
+<form class="fm-form" action="" method="post" enctype="multipart/form-data">
 
-  <div class="pub-field">
+  <div class="fm-field">
     <label for="tituloForm">Título do material</label>
-    <input class="pub-input" type="text" id="tituloForm" name="tituloForm"
+    <input class="fm-input" type="text" id="tituloForm" name="tituloForm"
            value="{{ form_data.get('tituloForm', '') }}" placeholder="Ex.: Material adaptado de lógica digital" required>
   </div>
 
-  <div class="pub-field">
+  <div class="fm-field">
     <label for="cursoForm">Curso</label>
-    <select class="pub-select" name="cursoForm" id="cursoForm" required>
+    <select class="fm-select" name="cursoForm" id="cursoForm" required>
       <option value="">Selecione um curso</option>
     </select>
   </div>
 
-  <div class="pub-field">
+  <div class="fm-field">
     <label for="materiaForm">Matéria</label>
-    <select class="pub-select" name="materiaForm" id="materiaForm" disabled required>
+    <select class="fm-select" name="materiaForm" id="materiaForm" disabled required>
       <option value="" disabled selected>Selecione um curso primeiro.</option>
     </select>
   </div>
 
-  <div class="pub-field">
+  <div class="fm-field">
     <label for="conteudoForm">Conteúdo</label>
-    <select class="pub-select" name="conteudoForm" id="conteudoForm" disabled>
+    <select class="fm-select" name="conteudoForm" id="conteudoForm" disabled>
       <option value="" disabled selected>Selecione uma matéria primeiro.</option>
     </select>
   </div>
 
-  <div class="pub-field">
-    <span class="pub-label">Tags</span>
+  <div class="fm-field">
+    <span class="fm-label">Tags</span>
 
     <select name="tagsForm" id="tagsForm" multiple size="6" hidden>
       {% for classe in classes %}
@@ -71,29 +71,29 @@
     </details>
   </div>
 
-  <div class="pub-field">
+  <div class="fm-field">
     <label for="descricaoForm">Descrição</label>
-    <textarea class="pub-textarea" id="descricaoForm" name="descricaoForm"
+    <textarea class="fm-textarea" id="descricaoForm" name="descricaoForm"
               placeholder="Conte como o material foi adaptado e para qual turma ele é indicado.">{{ form_data.get('descricaoForm', '') }}</textarea>
   </div>
 
   <details class="pub-extra" {% if form_data.get('subtituloForm') or form_data.get('textoForm') %}open{% endif %}>
     <summary>Mais detalhes <small>(opcional)</small></summary>
     <div class="pub-extra__body">
-      <div class="pub-field">
+      <div class="fm-field">
         <label for="subtituloForm">Subtítulo</label>
-        <input class="pub-input" type="text" id="subtituloForm" name="subtituloForm"
+        <input class="fm-input" type="text" id="subtituloForm" name="subtituloForm"
                value="{{ form_data.get('subtituloForm', '') }}">
       </div>
-      <div class="pub-field">
+      <div class="fm-field">
         <label for="textoForm">Conteúdo textual</label>
-        <textarea class="pub-textarea" id="textoForm" name="textoForm" rows="6">{{ form_data.get('textoForm', '') }}</textarea>
+        <textarea class="fm-textarea" id="textoForm" name="textoForm" rows="6">{{ form_data.get('textoForm', '') }}</textarea>
       </div>
     </div>
   </details>
 
-  <div class="pub-field">
-    <span class="pub-label">Arquivo do material</span>
+  <div class="fm-field">
+    <span class="fm-label">Arquivo do material</span>
     <div class="upload-container">
       <label for="arquivosForm" class="upload-box">
         <span class="pub-upload__icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span>
@@ -107,7 +107,7 @@
   </div>
 
 
-  <button type="submit" class="pub-submit">
+  <button type="submit" class="fm-submit">
     <svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Publicar material
   </button>
 </form>

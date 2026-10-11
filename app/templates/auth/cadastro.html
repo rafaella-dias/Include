@@ -1,0 +1,115 @@
+{% extends "bases/base_auth.html" %}
+
+{% block title %}Cadastro{% endblock %}
+{% block auth_title %}Criar conta!{% endblock %}
+{% block auth_lead %}Crie sua conta{% endblock %}
+{% block auth_alt %}Já possui cadastro? <a href="{{ url_for('auth.login') }}">Faça login</a>{% endblock %}
+
+{% block auth_content %}
+<form class="fm-form auth-form" action="" method="post" id="formCadastro">
+
+  <div class="fm-field">
+    <label class="fm-sr" for="nome_completo">Nome completo</label>
+    <input class="fm-input" type="text" id="nome_completo" name="nome_completoForm"
+           placeholder="Nome completo" autocomplete="name"
+           value="{{ form_data.get('nome_completoForm', '') if form_data else '' }}" required>
+  </div>
+
+  <div class="fm-field">
+    <label class="fm-sr" for="nome_usuario">Nome de usuário</label>
+    <input class="fm-input" type="text" id="nome_usuario" name="nome_usuarioForm"
+           placeholder="Nome de usuário (ex.: exemplo_usuario)" autocomplete="username"
+           value="{{ form_data.get('nome_usuarioForm', '') if form_data else '' }}" required>
+  </div>
+
+  <div class="fm-field">
+    <label class="fm-sr" for="emailCadastro">E-mail</label>
+    <input class="fm-input" type="email" id="emailCadastro" name="emailForm"
+           placeholder="E-mail" autocomplete="email"
+           value="{{ form_data.get('emailForm', '') if form_data else '' }}" required>
+  </div>
+
+  <div class="fm-field">
+    <label class="fm-sr" for="senhaCadastro">Senha</label>
+    <input class="fm-input" type="password" id="senhaCadastro" name="senhaForm"
+           placeholder="Senha" autocomplete="new-password" required>
+  </div>
+
+  <div class="fm-field">
+    <label class="fm-sr" for="confirmarSenha">Confirmar senha</label>
+    <input class="fm-input" type="password" id="confirmarSenha" name="confirmacao_senhaForm"
+           placeholder="Confirmar senha" autocomplete="new-password" required>
+  </div>
+
+  <fieldset class="auth-seg">
+    <legend class="fm-sr">Tipo de usuário</legend>
+
+    <label class="auth-seg__opt">
+      <input type="radio" id="tipoAluno" name="tipoForm" value="aluno"
+             {% if not form_data or form_data.get('tipoForm') == 'aluno' %}checked{% endif %} required>
+      <span>Aluno</span>
+    </label>
+
+    <label class="auth-seg__opt">
+      <input type="radio" id="tipoServidor" name="tipoForm" value="servidor"
+             {% if form_data and form_data.get('tipoForm') == 'servidor' %}checked{% endif %}>
+      <span>Professor/Servidor</span>
+    </label>
+  </fieldset>
+
+  <section class="auth-pro" id="dadosProfissionais" aria-labelledby="tituloProfissional"
+           {% if not form_data or form_data.get('tipoForm') != 'servidor' %}hidden{% endif %}>
+    <h2 class="auth-pro__title" id="tituloProfissional">Perfil profissional</h2>
+    <p class="auth-pro__hint">Informe seus dados profissionais, se desejar.</p>
+
+    <div class="fm-field">
+      <label class="fm-sr" for="cargo">Cargo</label>
+      <select class="fm-select" id="cargo" name="cargoForm">
+        <option value="">Selecione seu cargo</option>
+        {% for cargo in cargos %}
+          <option value="{{ cargo.id_cargo }}"
+                  {% if form_data and form_data.get('cargoForm', '')|string == cargo.id_cargo|string %}selected{% endif %}>
+            {{ cargo.nome }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="fm-field">
+      <label class="fm-sr" for="especializacao">Área de especialização</label>
+      <input class="fm-input" type="text" id="especializacao" name="especializacaoForm"
+             placeholder="Área de especialização (ex.: Educação inclusiva)"
+             value="{{ form_data.get('especializacaoForm', '') if form_data else '' }}">
+    </div>
+
+    <div class="fm-field">
+      <label class="fm-sr" for="lattes">Link do Currículo Lattes (opcional)</label>
+      <input class="fm-input" type="url" id="lattes" name="lattesForm"
+             placeholder="Currículo Lattes (opcional): https://lattes.cnpq.br/..."
+             value="{{ form_data.get('lattesForm', '') if form_data else '' }}">
+    </div>
+  </section>
+
+  <button type="submit" class="fm-submit">Cadastrar</button>
+</form>
+{% endblock %}
+
+{% block auth_scripts %}
+<script>
+  const tipoAluno = document.getElementById('tipoAluno');
+  const tipoServidor = document.getElementById('tipoServidor');
+  const dadosProfissionais = document.getElementById('dadosProfissionais');
+
+  function atualizarDadosProfissionais() {
+    const servidor = tipoServidor.checked;
+    dadosProfissionais.hidden = !servidor;
+    dadosProfissionais.querySelectorAll('input, select').forEach(campo => {
+      campo.disabled = !servidor;
+    });
+  }
+
+  tipoAluno.addEventListener('change', atualizarDadosProfissionais);
+  tipoServidor.addEventListener('change', atualizarDadosProfissionais);
+  atualizarDadosProfissionais();
+</script>
+{% endblock %}

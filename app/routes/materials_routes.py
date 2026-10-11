@@ -19,7 +19,7 @@ def publicar():
     cursos_json = json.dumps(materials_service.gerar_cursos_dados(), ensure_ascii=False)
 
     if request.method == 'GET':
-        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={'tagsForm': []})
+        return render_template('materials/publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data={'tagsForm': []})
     
     try: #tira o elif pq só tem POST como segunda opção
         #---- dados ----
@@ -41,12 +41,12 @@ def publicar():
     except ValueError as e:
         flash(str(e), 'warning')
         print(e)
-        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
+        return render_template('materials/publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
     
     except Exception as e:
         flash('Erro interno no servidor', 'danger')
         print(e)
-        return render_template('publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
+        return render_template('materials/publicar.html', cursos=cursos, classes=classes, cursos_json=cursos_json, form_data=request.form)
 
 
 
@@ -82,4 +82,4 @@ def detalhes_material(id):
     except Exception as e:
         logging.error(f'Erro ao computar a vizualização da material{id}: {e}')
         db.session.rollback()
-    return render_template('detalhes.html', material=material)
+    return render_template('materials/detalhes.html', material=material)

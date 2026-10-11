@@ -8,13 +8,13 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route('/')
 def inicio():
-    return render_template('inicio.html')
+    return render_template('main/inicio.html')
 
 @main_bp.route('/home')
 def home():
     cursos = Curso.query.all()
     materiais = Material.query.order_by(Material.data_publicacao.desc()).all()
-    return render_template('home.html', materiais=materiais, cursos=cursos)
+    return render_template('main/home.html', materiais=materiais, cursos=cursos)
 
 @main_bp.route('/busca')
 @login_required
@@ -31,4 +31,4 @@ def busca():
 
     materiais = consulta.order_by(Material.id_material.desc()).all()
     
-    return render_template('busca.html', materiais=materiais, termo=termo, nome_curso=nome_curso)
+    return render_template('main/busca.html', materiais=materiais, termo=termo, nome_curso=nome_curso)

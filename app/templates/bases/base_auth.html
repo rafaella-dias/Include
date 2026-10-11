@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set img_logo_auth = 'images/mascote_empe.png' %}
+
+<main class="auth-page">
+  <img class="auth-logo" src="{{ url_for('static', filename=img_logo_auth) }}" alt="Include">
+  <h1 class="auth-title">{% block auth_title %}{% endblock %}</h1>
+  <p class="auth-lead">{% block auth_lead %}{% endblock %}</p>
+  <p class="auth-alt">{% block auth_alt %}{% endblock %}</p>
+
+  {% block auth_content %}{% endblock %}
+
+  <p class="auth-legal">
+    Ao continuar, você concorda com os <a href="#">Termos de Serviço</a>
+    e com a <a href="#">Política de Privacidade</a>.
+  </p>
+</main>
+
+{% block auth_scripts %}{% endblock %}
+{% endblock %}
