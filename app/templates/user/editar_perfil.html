@@ -1,137 +1,139 @@
-{% extends "base.html" %}
+{% extends "bases/base_pagina.html" %}
 
 {% block title %}Editar Perfil{% endblock %}
+{% set voltar_url = url_for('user.perfil') %}
+{% block page_title %}Editar perfil{% endblock %}
+{% block page_subtitle %}Atualize os seus dados{% endblock %}
 
-{% block content %}
+{% block page_content %}
+{% set fd = form_data if form_data else {} %}
+{% set eh_servidor = (tipo_usuario|default(current_user.tipo)) == 'servidor' %}
 
-<main class="main-container">
-    <div class="container-form">
+<div class="ep-foto">
+  <label class="ep-foto__label" for="foto_perfilForm">
+    <img id="fotoPreview" class="ep-foto__img"
+         src="{{ current_user.foto_url if current_user.foto_url else url_for('static', filename='images/default.png') }}"
+         alt="Foto de perfil">
+    <span class="ep-foto__badge"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg></span>
+  </label>
+  <p class="ep-foto__hint" id="fotoDica">Toque na foto para alterar</p>
 
-        <h2>Editar Perfil</h2>
+  {% if current_user.public_id %}
+    <form action="{{ url_for('user.delete_image') }}" method="post"
+          onsubmit="return confirm('Remover a sua foto de perfil?')">
+      {% include "components/csrf.html" %}
+      <button type="submit" class="ep-foto__remover">Remover foto</button>
+    </form>
+  {% endif %}
+</div>
 
-        <div class="form-section">
+<form class="fm-form ep-form" id="formEditarPerfil" action="" method="post" enctype="multipart/form-data">
+  {% include "components/csrf.html" %}
+  <input type="file" id="foto_perfilForm" name="foto_perfilForm" accept="image/jpeg,image/png,image/webp" hidden>
 
-            {% if current_user.public_id %}
-                <img
-                    src="{{ current_user.foto_url }}"
-                    alt="Foto de perfil"
-                    class="foto-perfil"
-                >
+  <section class="ep-group" aria-labelledby="g-basico">
+    <h2 class="ep-group__title" id="g-basico">Informações básicas</h2>
 
-                <form action="{{ url_for('user.delete_image') }}" method="post">
-                    <button
-                        type="submit"
-                        class="btn-remover-foto"
-                    >
-                        Remover foto
-                    </button>
-                </form>
-
-            {% else %}
-
-                <img
-                    src="{{ url_for('static', filename='images/default.png') }}"
-                    alt="Foto de perfil padrão"
-                    class="foto-perfil"
-                >
-
-            {% endif %}
-
-        </div>
-
-        <form action="" method="post" enctype="multipart/form-data">
-
-            <div class="form-section">
-
-                <h3>Foto de Perfil</h3>
-
-                <label for="foto_perfilForm">
-                    Nova foto
-                </label>
-
-                <input
-                    type="file"
-                    name="foto_perfilForm"
-                    id="foto_perfilForm"
-                >
-
-            </div>
-
-            <div class="form-section">
-
-                <h3>Informações Básicas</h3>
-
-                <label for="nome_completoForm">
-                    Nome completo
-                </label>
-
-                <input
-                    type="text"
-                    name="nome_completoForm"
-                    id="nome_completoForm"
-                    value="{{ current_user.nome_completo }}"
-                >
-
-                <label for="nome_usuarioForm">
-                    Nome de usuário
-                </label>
-
-                <input
-                    type="text"
-                    name="nome_usuarioForm"
-                    id="nome_usuarioForm"
-                    value="{{ current_user.nome_usuario }}"
-                >
-
-                <label for="descricaoForm">
-                    Descrição
-                </label>
-
-                <textarea
-                    name="descricaoForm"
-                    id="descricaoForm"
-                    maxlength="250"
-                    rows="3"
-                    placeholder="Adicionar descrição..."
-                >{{ current_user.descricao if current_user.descricao else '' }}</textarea>
-
-            </div>
-
-            <div class="form-section">
-
-                <h3>Segurança</h3>
-
-                <label for="senhaForm">
-                    Nova senha
-                </label>
-
-                <input
-                    type="password"
-                    name="senhaForm"
-                    id="senhaForm"
-                >
-
-                <label for="confirmacao_senhaForm">
-                    Confirmar senha
-                </label>
-
-                <input
-                    type="password"
-                    name="confirmacao_senhaForm"
-                    id="confirmacao_senhaForm"
-                >
-
-            </div>
-
-            <input
-                type="submit"
-                value="Salvar Alterações"
-                class="btn-salvar-perfil"
-            >
-
-        </form>
-
+    <div class="fm-field">
+      <label for="nome_completoForm">Nome completo</label>
+      <input class="fm-input" type="text" id="nome_completoForm" name="nome_completoForm" maxlength="50"
+             autocomplete="name" value="{{ fd.get('nome_completoForm', current_user.nome_completo) }}" required>
     </div>
-</main>
 
+    <div class="fm-field">
+      <label for="nome_usuarioForm">Nome de usuário</label>
+      <input class="fm-input" type="text" id="nome_usuarioForm" name="nome_usuarioForm" maxlength="50"
+             autocomplete="username" value="{{ fd.get('nome_usuarioForm', current_user.nome_usuario) }}" required>
+    </div>
+
+    <div class="fm-field">
+      <label for="descricaoForm">Sobre mim</label>
+      <textarea class="fm-textarea" id="descricaoForm" name="descricaoForm" maxlength="200" rows="4"
+                placeholder="Conte um pouco sobre você...">{{ fd.get('descricaoForm', current_user.descricao or '') }}</textarea>
+      <span class="ep-contador" id="descContador" aria-live="polite"></span>
+    </div>
+  </section>
+
+  {% if eh_servidor %}
+  <section class="ep-group" aria-labelledby="g-prof">
+    <h2 class="ep-group__title" id="g-prof">Perfil profissional</h2>
+
+    <div class="fm-field">
+      <label for="cargoForm">Cargo</label>
+      <select class="fm-select" id="cargoForm" name="cargoForm">
+        <option value="">Selecione seu cargo</option>
+        {% for cargo in cargos|default([]) %}
+          <option value="{{ cargo.id_cargo }}"
+                  {% if fd.get('cargoForm', current_user.id_cargo)|string == cargo.id_cargo|string %}selected{% endif %}>
+            {{ cargo.nome }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="fm-field">
+      <label for="especializacaoForm">Área de atuação</label>
+      <input class="fm-input" type="text" id="especializacaoForm" name="especializacaoForm" maxlength="150"
+             placeholder="Ex.: Educação inclusiva"
+             value="{{ fd.get('especializacaoForm', current_user.especializacao or '') }}">
+    </div>
+
+    <div class="fm-field">
+      <label for="lattesForm">Link do Currículo Lattes</label>
+      <input class="fm-input" type="url" id="lattesForm" name="lattesForm" maxlength="255"
+             placeholder="https://lattes.cnpq.br/..."
+             value="{{ fd.get('lattesForm', current_user.lattes_url or '') }}">
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="ep-group" aria-labelledby="g-seg">
+    <h2 class="ep-group__title" id="g-seg">Segurança</h2>
+    <p class="ep-group__hint">Deixe em branco para manter a senha atual.</p>
+
+    <div class="fm-field">
+      <label for="senha_atualForm">Senha atual</label>
+      <input class="fm-input" type="password" id="senha_atualForm" name="senha_atualForm" autocomplete="current-password">
+    </div>
+
+    <div class="fm-field">
+      <label for="senhaForm">Nova senha</label>
+      <input class="fm-input" type="password" id="senhaForm" name="senhaForm" autocomplete="new-password">
+    </div>
+
+    <div class="fm-field">
+      <label for="confirmacao_senhaForm">Confirmar nova senha</label>
+      <input class="fm-input" type="password" id="confirmacao_senhaForm" name="confirmacao_senhaForm" autocomplete="new-password">
+    </div>
+  </section>
+
+  <button type="submit" class="fm-submit">Salvar alterações</button>
+  <a class="ep-cancelar" href="{{ url_for('user.perfil') }}">Cancelar</a>
+</form>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+  (() => {
+    const arquivo = document.getElementById('foto_perfilForm');
+    const preview = document.getElementById('fotoPreview');
+    const dica = document.getElementById('fotoDica');
+    arquivo.addEventListener('change', () => {
+      const foto = arquivo.files[0];
+      if (!foto) return;
+      preview.src = URL.createObjectURL(foto);
+      dica.textContent = foto.name;
+    });
+
+    const desc = document.getElementById('descricaoForm');
+    const contador = document.getElementById('descContador');
+    const contar = () => { contador.textContent = desc.value.length + '/' + desc.maxLength; };
+    desc.addEventListener('input', contar);
+    contar();
+
+    const nova = document.getElementById('senhaForm');
+    const atual = document.getElementById('senha_atualForm');
+    nova.addEventListener('input', () => { atual.required = nova.value.length > 0; });
+  })();
+</script>
 {% endblock %}

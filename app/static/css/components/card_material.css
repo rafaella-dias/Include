@@ -41,6 +41,17 @@
 .mat-card__save[aria-pressed="true"]{color:var(--azul-principal)}
 .mat-card__save[aria-pressed="true"] .icon{fill:currentColor}
 
+/* ---------- Excluir (dono do material) ---------- */
+.mat-card .mat-card__del{display:flex;margin:0 0 0 auto;gap:0}
+.mat-card__del button{
+  width:26px;height:26px;padding:0;display:grid;place-items:center;
+  border:0;border-radius:8px;background:none;color:#6b7280;cursor:pointer;
+  transition:background-color .2s,color .2s;
+}
+.mat-card__del button:hover{background:#fee2e2;color:var(--vermelho-alerta)}
+.mat-card__del + .mat-card__save{margin-left:0}
+.mat-card__del button:focus-visible{outline:3px solid var(--amarelo-destaque);outline-offset:2px}
+
 /* ---------- Botão "Ver mais" ---------- */
 .mat-vermais{
   display:flex;align-items:center;justify-content:center;gap:6px;margin-top:2px;

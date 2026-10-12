@@ -21,12 +21,16 @@ class Usuario(UserMixin, db.Model):
     __tablename__ = 'usuarios'
 
     id_usuario = db.Column(db.Integer, primary_key=True)
+    tipo =  db.Column(db.String(20), default='aluno', nullable=False)
+    servidor_verificado = db.Column(db.Boolean, default=False, nullable=False)
+
     nome_completo = db.Column(db.String(50), nullable=False)
     nome_usuario = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     descricao = db.Column(db.String(200))
+    data_cadastro = db.Column(db.DateTime(timezone=True), default=agora_utc, nullable=False)
     senha = db.Column(db.String(255), nullable=False)
-    tipo =  db.Column(db.String(20), default='aluno', nullable=False)
+
     public_id = db.Column(db.String(100))
     foto_url = db.Column(db.String(255))
 
@@ -48,7 +52,7 @@ class Cargo(db.Model):
     __tablename__ = 'cargos'
 
     id_cargo = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(50), nullable=False)
+    nome = db.Column(db.String(100), nullable=False)
 
     usuarios = db.relationship('Usuario', backref='cargo', lazy=True)
 

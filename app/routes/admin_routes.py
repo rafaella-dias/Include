@@ -5,12 +5,14 @@ from app.extensions import db
 from app.enums import CorTag
 from app.models import Curso, Materia, Conteudo, Classe_Tag, Tag
 from app.services import admin_service
+from app.utils.permissões import admin_required
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 
 @admin_bp.route('/conteudos', methods = ['GET', 'POST'])
+@admin_required
 @login_required
 def gerenciar_conteudos():
     if request.method == 'GET':
@@ -41,6 +43,7 @@ def gerenciar_conteudos():
 
 
 @admin_bp.route('/materias', methods = ['GET', 'POST'])
+@admin_required
 @login_required
 def gerenciar_materias():
     if request.method == 'GET': 
@@ -66,6 +69,7 @@ def gerenciar_materias():
 
 
 @admin_bp.route('/cursos', methods = ['GET', 'POST'])
+@admin_required
 @login_required
 def gerenciar_cursos():
     if request.method == 'GET':
@@ -89,6 +93,7 @@ def gerenciar_cursos():
 
 
 @admin_bp.route('/tags', methods = ['GET', 'POST'])
+@admin_required
 @login_required
 def gerenciar_tags():
     if request.method == 'GET': 
@@ -114,6 +119,7 @@ def gerenciar_tags():
 
 
 @admin_bp.route('/classes', methods = ['GET', 'POST'])
+@admin_required
 @login_required
 def gerenciar_classes():
     if request.method == 'GET':
@@ -139,6 +145,7 @@ def gerenciar_classes():
     
 
 @admin_bp.route('/dashboard')
+@admin_required
 @login_required
 def dashboard():
     cursos = Curso.query.all()

@@ -6,12 +6,14 @@ from flask_login import login_required, current_user
 from app.extensions import db
 from app.models import Material, Curso, Classe_Tag
 from app.services import materials_service
+from app.utils.permissões import servidor_required
 
 materials_bp = Blueprint('materials', __name__)
 
 
 
 @materials_bp.route('/publicar', methods = ['GET', 'POST'])
+@servidor_required
 @login_required
 def publicar():
     cursos = Curso.query.all()
@@ -51,6 +53,7 @@ def publicar():
 
 
 @materials_bp.route('/delete/material/<int:id>', methods = ['POST'])
+@servidor_required
 @login_required
 def excluir_material(id):
     material = Material.query.get_or_404(id)

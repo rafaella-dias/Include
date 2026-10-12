@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 import cloudinary.uploader
 
 from app.extensions import db
-from app.models import Material
+from app.models import Material, Cargo
 from app.services import storage_service
 from app.utils import upload, validators
 
@@ -15,15 +15,22 @@ user_bp = Blueprint('user', __name__)
 @user_bp.route('/perfil')
 @login_required
 def perfil():
-    materiais = Material.query.filter_by(id_usuario=current_user.id_usuario).order_by(Material.data_publicacao.desc()).all()
-    return render_template('user/perfil.html', materiais=materiais)
+    tipo_usuario = current_user.tipo
+    materiais = []
+    print('Tipo no perfil:', current_user.tipo)
+
+    if tipo_usuario == 'servidor':
+        materiais = Material.query.filter_by(id_usuario=current_user.id_usuario).order_by(Material.data_publicacao.desc()).all()
+
+    return render_template('user/perfil.html', materiais=materiais, tipo_usuario=tipo_usuario)
 
     
 @user_bp.route('/perfil/editar', methods = ['GET', 'POST'])
 @login_required
-def editar_perfil():    
+def editar_perfil(): 
+    cargos = Cargo.query.all()   
     if request.method == 'GET':
-        return render_template('user/editar_perfil.html')
+        return render_template('user/editar_perfil.html', cargos=cargos)
     
     nome_completo = request.form.get('nome_completoForm')
     nome_usuario = request.form.get('nome_usuarioForm')
@@ -38,7 +45,7 @@ def editar_perfil():
     if nome_usuario != current_user.nome_usuario:
         if validators.validar_usuario(nome_usuario) == False:
             flash('O nome de usuário não deve ter espaços.', 'danger')
-            return render_template('user/editar_perfil.html', form_data=request.form)
+            return render_template('user/editar_perfil.html', form_data=request.form, cargos=cargos)
         current_user.nome_usuario = nome_usuario
 
     if descricao != current_user.descricao:
@@ -47,22 +54,22 @@ def editar_perfil():
     if senha:
         if not validators.validar_senha(senha):
             flash('A senha deve ter no mínimo 8 caracteres e não pode ter espaços', 'danger')
-            return render_template('user/editar_perfil.html', form_data=request.form)
+            return render_template('user/editar_perfil.html', form_data=request.form, cargos=cargos)
             
         if not validators.validar_confirm_senha(senha, confirmacao_senha):
             flash('As senhas devem ser iguais', 'danger')
-            return render_template('user/editar_perfil.html', form_data=request.form)  
+            return render_template('user/editar_perfil.html', form_data=request.form, cargos=cargos)  
         current_user.senha = generate_password_hash(senha)
 
 
     if foto_perfil and foto_perfil.filename != '':
         if not upload.validar_imagem(foto_perfil):
             flash('Formato de imagem inválido.', 'danger')
-            return render_template('user/editar_perfil.html', form_data=request.form)
+            return render_template('user/editar_perfil.html', form_data=request.form, cargos=cargos)
             
         if not foto_perfil.mimetype.startswith('image/'):
             flash('O arquivo não é uma imagem válida', 'danger')
-            return render_template('user/editar_perfil.html', form_data=request.form)
+            return render_template('user/editar_perfil.html', form_data=request.form, cargos=cargos)
         
         foto_atual = current_user.public_id
         if foto_atual:

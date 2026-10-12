@@ -20,7 +20,7 @@
 {%- endmacro %}
 
 {# Card completo (capa, título, professor, descrição, tipo, visualizações, favoritar) #}
-{% macro card_material(material, salvar=true) %}
+{% macro card_material(material, salvar=true, excluir=false, salvo=false) %}
   <article class="mat-card">
     <div class="mat-card__thumb">
       <img src="{{ capa_src(material) }}" alt="" loading="lazy" width="72" height="72">
@@ -39,9 +39,16 @@
           {{ dl }} {{ 'Download' if dl == 1 else 'Downloads' }}</span>
         <span><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
           {{ vw }} {{ 'Visualização' if vw == 1 else 'Visualizações' }}</span>
+        {% if excluir %}
+        <form class="mat-card__del" action="{{ url_for('materials.excluir_material', id=material.id_material) }}" method="post"
+              onsubmit="return confirm('Tem certeza de que deseja excluir este material?')">
+          {% include "components/csrf.html" %}
+          <button type="submit" aria-label="Excluir material"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>
+        </form>
+        {% endif %}
         {% if salvar %}
         <button class="mat-card__save" type="button" data-id="{{ material.id_material }}"
-                aria-pressed="false" aria-label="Salvar material">
+                aria-pressed="{{ 'true' if salvo else 'false' }}" aria-label="Salvar material">
           <svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg>
         </button>
         {% endif %}
@@ -51,9 +58,9 @@
 {% endmacro %}
 
 {# Lista vertical de cards; mostra a mensagem quando não há itens #}
-{% macro lista_materiais(itens, vazio='Nenhum material publicado até o momento.', salvar=true) %}
+{% macro lista_materiais(itens, vazio='Nenhum material publicado até o momento.', salvar=true, excluir=false, salvo=false) %}
   {% if itens %}
-    <ul class="mat-lista">{% for m in itens %}<li>{{ card_material(m, salvar) }}</li>{% endfor %}</ul>
+    <ul class="mat-lista">{% for m in itens %}<li>{{ card_material(m, salvar, excluir, salvo) }}</li>{% endfor %}</ul>
   {% else %}
     <p class="mat-vazio">{{ vazio }}</p>
   {% endif %}
